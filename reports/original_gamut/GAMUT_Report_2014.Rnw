@@ -1,0 +1,557 @@
+\documentclass[twoside]{article}
+
+\setlength{\oddsidemargin}{5mm}
+\setlength{\evensidemargin}{5mm}
+\usepackage{multicol}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyheadoffset{0cm}
+\fancyhead[LE,RO]{\thepage}
+\cfoot{Confidential report for quality improvement purposes}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage[letterpaper]{geometry}
+\geometry{hmarginratio=1:1}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%\renewcommand\footnotetext{}  % removes the footnote number
+\renewcommand{\abstractname}{\vspace{-\baselineskip}}
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\title{GAMUT Database Quality Metrics}
+\date{2014 Year-to-date Report}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+This demonstration report is based on incomplete data for the year. In each of the graphs that follow, the vertical line shows the overall combined rate for all progams. The dots reflect the rate for each program and the horizontal bars indicate the 95\% confidence interval. When the horizontal bar does not cross the vertical line, this indicates that program's rate is significantly higher or lower than the overall rate.\\
+\emph{Generated: \date{\today}}
+
+\end{abstract}
+
+\tableofcontents{}
+
+<<r load data & functions, cache=FALSE, echo=FALSE, message=FALSE, warning=FALSE>>=
+require(lattice)
+require(xtable)
+require(plyr)
+require(REDCapR)
+
+source("functions/dotplot.errors.R")
+source("functions/dotplot.No_errors.R")
+
+source("functions/get.CI.R")
+source("functions/rc_export.R")
+source("functions/plot.metrics.R")
+source("functions/plot.metrics.wm.R")
+source("functions/anonymize.R")
+
+use.ID <- TRUE
+
+## load data
+uri <- "https://ampa.org/redcap/api/"
+#token <- "1549742112EEBB389E4C17527EF39BA8"
+token <- "C212EB36C4A8347D35690465E350E6C3"
+
+
+
+redcap_data <- redcap_read(redcap_uri=uri, token=token,
+                           export_data_access_groups=TRUE,
+                           raw_or_label = "label")$data
+
+redcap_data$program_name <- as.factor(redcap_data$program_name)
+redcap_data$redcap_event_name <- as.factor(redcap_data$redcap_event_name)
+redcap_data$redcap_data_access_group <- as.factor(redcap_data$redcap_data_access_group)
+
+mydata <- redcap_data
+
+#mydata <- read.csv("../Data/SOTMPediatricQuality_raw.csv")
+# remove demographics rows
+mydata <- mydata[mydata$redcap_event_name != "Demographics",]
+mydata <- mydata[mydata$redcap_event_name != "Annual",]
+
+mydata$total_patients <- mydata$total_neo_patients + mydata$total_peds_patients + mydata$total_adult_patients
+
+#mydata$total_runs <- mydata$total_neo_runs + mydata$total_peds_runs
+
+ID.lookup <- data.frame(
+  program_name = levels(mydata$program_name)
+  , ID = anonymize(as.factor(mydata$program_name))
+)
+
+mydata <- merge(mydata, ID.lookup, by="program_name")
+
+mydata <- mydata[,c(1,74,14:72)]
+
+#mydata <- working[,c(1,74,14:37)]
+
+#metricData <- aggregate( . ~ redcap_data_access_group + ID  , FUN=sum, data=mydata[c(1,3:23,48,49,50)])
+metricData <- aggregate( . ~ program_name + ID,
+                        FUN=sum,
+                        na.rm=TRUE, na.action=NULL,
+                        data=mydata
+)
+
+ID.lookup <- merge(ID.lookup, metricData[2:3], by="ID", all.x=TRUE)
+
+#timeData <- ddply(mydata[, c(1, 3,20,49,50)], .(redcap_data_access_group, ID),
+mobilization <- ddply(mydata[mydata$mean_mobilization > 0, c(1,2,3,39,40,41)], .(program_name, ID),
+                  function(x) data.frame(
+                      mobilization.wavg=weighted.mean(x$mean_mobilization, x$total_patients, na.rm=TRUE)
+                      )
+      )
+
+bedside_stemi <- ddply(mydata[mydata$stemi_cases > 0, c(1,2,39,40,41,42)], .(program_name, ID),
+                  function(x) data.frame(
+                      bedside_stemi.wavg=weighted.mean(x$mean_bedside_stemi, x$stemi_cases, na.rm=TRUE)
+                      )
+      )
+
+scene_stemi <- ddply(mydata[mydata$stemi_cases > 0, c(1,2,39,40,41,42)], .(program_name, ID),
+                  function(x) data.frame(
+                      scene_stemi.wavg=weighted.mean(x$mean_scene_stemi, x$stemi_case, na.rm=TRUE)
+                      )
+      )
+
+
+
+
+
+
+if (use.ID == TRUE) {
+  metricData$group <- metricData$ID
+  mobilization$group <- mobilization$ID
+  bedside_stemi$group <- bedside_stemi$ID
+  scene_stemi$group <- scene_stemi$ID
+} else {
+  metricData$group <- metricData$program_name
+  mobilization$group <- mobilization$program_name
+  bedside_stemi$group <- bedside_stemi$program_name
+  scene_stemi$group <- scene_stemi$program_name
+}
+
+
+
+@
+
+\newpage
+\section{Introduction}
+This report is designed to give representation of a high-level cumulative overview of the individual institutional performance related to the included quality metrics.  As we`ve discussed, quality improvement run charts will be included in a separate report and are designed to present performance over time which is the optimal way to monitor these quality data on a continual basis.\\
+
+Included in this report are the 12 “national” consensus metrics.  Reports for the remaining Ohio Collaborative metrics will be generated separately.  You`ll notice that there are some areas where we suspect that the “detection” of events is not sensitive (ex. medication administration errors) which is likely to afford us the opportunity as a collaborative to build the right detection/reporting mechanism. \\
+
+Lastly, please remember that these data are de-identified, though there may be examples where you`ll be able to “infer” which program identifier is associated with which program.  There are no formal data-sharing agreements in place, though it is the expectation that these data should be solely used for quality improvement of critical care transport – both locally and nationally.  Performance data should not be used for marketing one program versus another.\\
+
+\begin{multicols}{2}
+
+  Michael T Bigham, MD, FAAP\\
+  \\
+  Pediatric Intensivist, Division of Critical Care Medicine\\
+  Medical Director, Transport Services\\
+  Assistant Patient Safety Officer\\
+  Clinical Assistant Professor, NEOMED\\
+  \url{mbigham@chmca.org}
+
+
+Hamilton P. Schwartz, MD\\
+\\
+Medical Director, Statline\\
+Medical Director, Pediatric Transport Program\\
+Assistant Professor, UC Department of Pediatrics\\
+\url{hamilton.schwartz@cchmc.org}\\
+
+\end{multicols}
+
+\newpage
+\subsection*{Program Name - ID crosswalk}
+<<ID Lookup table, eval=TRUE, results='asis', echo=FALSE, comment="">>=
+
+print(xtable(ID.lookup, digits=c(0,0,0,0)), include.rownames=FALSE)
+#metricData
+#names(mydata)
+@
+
+
+
+
+%\let\thefootnote\relax\footnote{n = number of elligible cases (denominator)}
+%\let\thefootnote\relax\footnote{k = number of cases of interest (numerator)}
+%\let\thefootnote\relax\footnote{est = estimated percentage}
+%\let\thefootnote\relax\footnote{lower/upper = lower \& upper 95\% confidence intervals}
+
+
+\newpage
+\section{Clinical metrics}
+\subsection{Unintended neonatal hypothermia upon arrival to destination}
+The number of neonates (infants less than 28 days) with admission temperatures at the destination facility less than 36.5 C axillary (excluding those being actively cooled) DIVIDED by the number of neonates transported during the calendar month.
+
+\begin{center}
+<<r neonatal hypothermia, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+plotData <- metricData[metricData$total_neo_patients > 0,
+                       c("group", "unintended_hypothermia", "total_neo_patients")]
+
+metric.table <- plot.metrics("Percent of neonates found \nhypothermic upon admission",
+                             program_name = plotData$group,
+                             num = plotData$unintended_hypothermia,
+                             den = plotData$total_neo_patients,
+                             reordering = "increasing"
+                             )
+@
+\end{center}
+
+<<r table: neo hypothermia , eval=TRUE, results='asis', echo=FALSE, message=FALSE>>=
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Neonatal Hypothermia Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+
+@
+
+
+\newpage
+\subsection{Verification of tracheal tube placement}
+The number of tracheal tubes (TT) on transport (regardless of whether or not the transport team placed them themselves) for which there is documentation confirming placement using a minimum of 2 of the following confirmatory techniques: x-ray, direct visualization through the cords, continuous capnometry, or use of a colorimetric capnometer, and assessment for symetric breath sounds DIVIDED by the number of intubated patients transported during the calendar month.
+
+\begin{center}
+<<r tracheal tube placement, eval=TRUE, fig.show='asis', message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+
+plotData <- metricData[metricData$adv_airway_tt_cases > 0,
+                       c("group", "adv_airway_tt_confirmed", "adv_airway_tt_cases")]
+colnames(plotData) <- c("group", "num", "den")
+
+metric.table <- plot.metrics("Percentage of intubated patients \nwith documented TT verification",
+                             program_name = plotData$group,
+                             num = plotData$num,
+                             den = plotData$den)
+@
+\end{center}
+
+<<r table: tracheal tube placement, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Tracheal tube confirmation Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+@
+
+
+\newpage
+\subsection{Unplanned dislodgement of therapeutic devices}
+The number of documented dislodgements (may be more than 1 per tansport) while under the care of the transport team of the following devices (IOs, IVs, UACs/UVCs, central venous lines, arterial lines, tracheal tubes, chest tubes, and tracheostomy tubes) DIVIDED by the number of transports during the calendar month. This does not include IVs that infiltrate without obvious dislodgement.
+
+\begin{center}
+<<r unplanned dislodgement, eval=TRUE, fig.show='asis', message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+
+metric.table <- plot.metrics("Dislodgements of therapeutic devices \nper 1000 transports",
+                             program_name = metricData$group,
+                             num = metricData$dislodgements,
+                             den = metricData$total_patients,
+                             reordering = "increasing",
+                             rate = "per 1000",
+                             qlabel = "Estimated cases per 1000")
+@
+\end{center}
+
+<<r table: unplanned dislodgement, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Neonatal Hypothermia Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+@
+
+\newpage
+\subsection{Neonatal: First attempt tracheal tube placement success}
+The total number of intubations successful on the first attempt DIVIDED by the number of patients on whom intubation was attempted by the transport team during the calendar month. "Intubation attempt" is further defined as laryngoscopy by any member of the transport team regardless of whether there is an attempt to pass a tracheal tube. A successful intubation is further defined as that which has been confirmed as described in "Verification of TT tube placement." First-attempt success should not be disqualified by necessary adjustments to the depth of the TT and re-securing it. Includes patients less than 28 days (neonates).
+
+\begin{center}
+<<r neonatal intubation success, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+metric.table <- plot.metrics("Percent of neonatal intubations \nwith a successful first attempt",
+                             program_name = metricData$group[metricData$intubate_neo_attempts > 0],
+                             num = metricData$intubate_neo_success_1st[metricData$intubate_neo_attempts > 0],
+                             den = metricData$intubate_neo_attempts[metricData$intubate_neo_attempts > 0]
+                             )
+@
+\end{center}
+
+<<r table: neo 1st intubation, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Neonatal Hypothermia Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+
+
+@
+
+
+\newpage
+\subsection{Pediatric: First attempt tracheal tube placement success}
+The total number of intubations successful on the first attempt DIVIDED by the number of patients on whom intubation was attempted by the transport team during the calendar month. "Intubation attempt" is further defined as laryngoscopy by any member of the transport team regardless of whether there is an attempt to pass a tracheal tube. A successful intubation is further defined as that which has ben confmrimed as described in "Verification of TT tube placement." First-attempt success should not be disqualified by necessary adjustments to the depth of the TT and re-securing it. Includes patients older than than 28 days (non-neonates).
+
+\begin{center}
+<<r pediatric intubation success, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+
+metric.table <- plot.metrics("Percent of non-neonatal intubations \nwith a successful first attempt",
+                             program_name = metricData$group[metricData$intubate_ped_attempts > 0],
+                             num = metricData$intubate_ped_success_1st[metricData$intubate_ped_attempts > 0],
+                             den = metricData$intubate_ped_attempts[metricData$intubate_ped_attempts > 0]
+                             )
+@
+\end{center}
+
+<<r peds intubation success table, eval=TRUE, results='asis', echo=FALSE, message=FALSE>>=
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Neonatal Hypothermia Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+
+@
+
+
+
+
+\newpage
+\section{Operational metrics}
+\subsection{Use of a standardized patient-care handoff}
+The number of transports for which there is documented use of a standardized hand-off procedure for turning over patient care at the destination hospital DIVIDED by the number of transports during the calendar month.
+
+\begin{center}
+<<r standardized handoff, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=4>>=
+metric.table <- plot.metrics("Percent of transports involving \na standardized patient care hand-off",
+                             program_name = metricData$group,
+                             num = metricData$standardized_handoffs,
+                             den = metricData$total_patients
+                             )
+@
+\end{center}
+
+<<r standardized handoff table, eval=TRUE, results='asis', echo=FALSE, message=FALSE>>=
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Standardized handoff'),
+      type = 'latex',
+      include.rownames=FALSE)
+
+@
+
+\newpage
+\subsection{Average mobilization time of the transport team}
+The average time (includes all transports in the calendar month, excluding transports scheduled in advance and patient transports out of the originating facility) in minutes (rounded up to nearest minute) from the start of the referral phone call to the transport team to the time the transport team is en route to the referral facility. "Stacked" trips or transports right after the last during which the team never returns to base should still be included in this count.
+
+\let\thefootnote\relax\footnote{Average time weighted by monthly run volume.}
+
+\begin{center}
+<<r mobilization time, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=4>>=
+rate.overall <- weighted.mean(mydata$mobilization_minutes, mydata$total_runs, na.rm=TRUE)
+
+metric.table <- plot.metrics.wm("Average mobilization time \nfor an unscheduled transport",
+                             group = timeData$group,
+                             wavg = timeData$wavg,
+                             rate.overall= rate.overall,
+                             reordering="increasing",
+                             qlabel="Weighted average* time in minutes"
+                             )
+@
+\end{center}
+
+<<r mobilization time table, eval=FALSE, results='asis', echo=FALSE, message=FALSE>>=
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Weighted average time data'),
+      type = 'latex',
+      include.rownames=FALSE)
+
+@
+
+
+
+
+\newpage
+\section{Safety metrics}
+\subsection{Rate of patient medical equipment failure during transport}
+The number of documented medical equipment failures (may be more than 1 per transport) while under the care of the transport team DIVIDED by the number of transports during the calendar month. Examples include IV pumps and ventilators that malfunction during transport, broken monitor leads, empty medical gas tanks, etc.
+
+\begin{center}
+<<r med equip failure, eval=TRUE, fig.show='asis', message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+
+metric.table <- plot.metrics("Medical equipment failures per 1000 transports",
+                             program_name = metricData$group,
+                             num = metricData$med_equip_failure,
+                             den = metricData$total_runs,
+                             reordering = "increasing",
+                             rate = "per 1000",
+                             qlabel = "Cases Per 1000 transports")
+@
+\end{center}
+
+<<r table: med equip failure, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Med Equip Failure Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+@
+
+
+\newpage
+\subsection{Rate of transport-related patient injuries}
+The number of documented transport-related patient injuries or deaths DIVIDED by the number of transports during the calendar month. Excluded are injuries and deaths related to the medical care itself or the omission of medical care. Examples include a patient fall, a loose piece of transport equipment that falls and strikes the patient, injury suffered in a transport vehicle accident, etc.
+
+\begin{center}
+<<r patient injuries, eval=TRUE, fig.show='asis', message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=4>>=
+
+metric.table <- plot.metrics("Transport-related patient injury rate \nper 10,000 transports",
+                             program_name = metricData$group,
+                             num = metricData$patient_injuries_transport,
+                             den = metricData$total_patients,
+                             reordering = "increasing",
+                             rate = "per 10000",
+                             qlabel = "Estimated percentage")
+@
+\end{center}
+
+<<r table: patient injuries, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Patient Injuries Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+@
+
+
+\newpage
+\subsection{Rate of transport-related crew injuries}
+The number of transport-related crew injuries or deaths reported to the institution's employee health department or equivalent during the calendar month DIVIDED by the number of transports during the calendar month.
+
+\begin{center}
+<<r crew injuries, eval=TRUE, fig.show='asis', message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=4>>=
+
+metric.table <- plot.metrics("Transport-related crew injury rate \nper 10,000 transports",
+                             program_name = metricData$group,
+                             num = metricData$crew_injuries,
+                             den = metricData$total_runs,
+                             reordering = "increasing",
+                             rate = "per 10000",
+                             qlabel = "Cases Per 10,000 transports")
+@
+\end{center}
+
+<<r table: crew injuries, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Crew Injury Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+@
+
+\newpage
+\section{Rare Events}
+\subsection{Rate of medication administration errors}
+The number of documented medication administration errors during a calendar month DIVIDED by the number of transports during the calendar month. Medication administration errors are further defined as drug admnistrations violating any of the "five-rights" -- right patient, right medication, right dose, right route, and right time.
+
+\begin{center}
+<<r med errors, eval=TRUE, fig.show='asis', message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+
+metric.table <- plot.metrics("Medication administration errors per 1000 transports",
+                             program_name = metricData$group,
+                             num = metricData$medication_errors,
+                             den = metricData$total_runs,
+                             reordering = "increasing",
+                             rate = "per 1000",
+                             qlabel = "Estimated percentage")
+@
+\end{center}
+
+<<r table: med errors, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'Medication administration Error Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+@
+
+
+\newpage
+\subsection{Rate of CPR performed during transport}
+The number of transports during which chest compressions are performed from the time the transport team assumes care ("hands on") until the patient hand-off is completed at the destination facility DIVIDED by the number of transports during the calendar month. Multiple episodes of chest compressions in a single transport should only be counted as one episode. If CPR is in progress when the team arrives, this should not be included in this count.
+
+\begin{center}
+<<r cpr, eval=TRUE, fig.show='asis', message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+
+metric.table <- plot.metrics("CPR Rate per 10,000 transports",
+                             program_name = metricData$group,
+                             num = metricData$cpr_runs,
+                             den = metricData$total_runs,
+                             reordering = "increasing",
+                             rate = "per 10000",
+                             qlabel = "Cases per 10000 transports")
+@
+\end{center}
+
+<<r table: cpr, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'CPR Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+@
+
+
+\newpage
+\subsection{Rate of Serious Reportable Events (SREs)}
+The number of SREs during the calendar month DIVIDED by the number of transports during the calendar month. An SRE is defined as any unanticipated and largely preventable event involving death, life-threatening consequences, or serious physical or psychological harm. Qualifying events include but are not limited to the National Quality Forum's Serious Reportable Events available at \url{http://www.qualityforum.org/Topics/SREs/List_of_SREs.aspx}.
+
+\begin{center}
+<<r SRE, eval=TRUE, fig.show='asis', message=FALSE, echo=FALSE, warning=FALSE, fig.width=5, fig.height=3.5>>=
+
+metric.table <- plot.metrics("SRE rate per 10000 transports",
+                             program_name = metricData$group,
+                             num = metricData$sre,
+                             den = metricData$total_runs,
+                             reordering = "increasing",
+                             rate = "per 10000",
+                             qlabel = "Cases per 10000 transports")
+@
+\end{center}
+
+<<r table: SRE, eval=TRUE, results='asis', message=FALSE, echo=FALSE, warning=FALSE>>=
+
+print(xtable(metric.table,
+             digits=1),
+             #caption = 'SRE Data'),
+      type = 'latex',
+      include.rownames=FALSE)
+@
+
+
+\newpage
+
+
+
+
+\end{center}
+\end{document}
