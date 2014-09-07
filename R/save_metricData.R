@@ -19,7 +19,6 @@ source("../reports/original_gamut/functions/dotplot.errors.R")
 source("../reports/original_gamut/functions/dotplot.No_errors.R")
 
 source("../reports/original_gamut/functions/get.CI.R")
-source("../reports/original_gamut/functions/rc_export.R")
 source("../reports/original_gamut/functions/plot.metrics.R")
 source("../reports/original_gamut/functions/plot.metrics.wm.R")
 
