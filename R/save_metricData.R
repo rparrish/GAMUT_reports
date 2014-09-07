@@ -1,5 +1,14 @@
-##
-## get GAMUT data and transform to metricData
+#'
+#' save_metricData
+#'
+#' get GAMUT data from REDCap, transform/aggregate by
+#' individual program. Save as metricData to
+#' GAMUT.Rdata file in the data folder
+#'
+#' @author Rollie Parrish <rollie.parrish@@ampa.org>
+#' @export
+
+save_metricData <- function() {
 
 require(lattice)
 require(xtable)
@@ -13,7 +22,6 @@ source("../reports/original_gamut/functions/get.CI.R")
 source("../reports/original_gamut/functions/rc_export.R")
 source("../reports/original_gamut/functions/plot.metrics.R")
 source("../reports/original_gamut/functions/plot.metrics.wm.R")
-source("../reports/original_gamut/functions/anonymize.R")
 
 use.ID <- TRUE
 
@@ -113,3 +121,5 @@ GAMUT_date_loaded <- date()
 save(mydata, metricData, ID.lookup, GAMUT_date_loaded,
      mobilization, scene_stemi, bedside_stemi,
      file="../data/GAMUT.Rdata")
+
+}
