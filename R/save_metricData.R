@@ -24,7 +24,7 @@ token <- "C212EB36C4A8347D35690465E350E6C3"
 
 
 
-redcap_data <- redcap_read(redcap_uri=uri, token=token,
+redcap_data <- redcap_read_oneshot(redcap_uri=uri, token=token,
                            export_data_access_groups=TRUE,
                            raw_or_label = "label")$data
 
@@ -33,6 +33,7 @@ redcap_data$redcap_event_name <- as.factor(redcap_data$redcap_event_name)
 redcap_data$redcap_data_access_group <- as.factor(redcap_data$redcap_data_access_group)
 
 mydata <- redcap_data
+
 
 #mydata <- read.csv("../Data/SOTMPediatricQuality_raw.csv")
 # remove demographics rows
@@ -56,7 +57,7 @@ ID.lookup <- data.frame(
 
 mydata <- merge(mydata, ID.lookup, by="program_name")
 
-mydata <- mydata[,c(1,74,14:72)]
+mydata <- mydata[,c(1,75,15:73)]
 
 #mydata <- working[,c(1,74,14:37)]
 
@@ -87,6 +88,7 @@ scene_stemi <- ddply(mydata[mydata$stemi_cases > 0, c(1,2,39,40,41,42)], .(progr
                          scene_stemi.wavg=weighted.mean(x$mean_scene_stemi, x$stemi_case, na.rm=TRUE)
                      )
 )
+
 
 
 
