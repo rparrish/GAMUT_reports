@@ -6,21 +6,18 @@
 #' GAMUT.Rdata file in the data folder
 #'
 #' @author Rollie Parrish <rollie.parrish@@ampa.org>
+#' @import lattice
+#' @import xtable
+#' @import plyr
+#' @import REDCapR
+#' @import dplyr
+#' @import magrittr
 #' @export
 
 save_metricData <- function() {
 
-require(lattice)
-require(xtable)
-require(plyr)
-require(REDCapR)
-
 source("../reports/original_gamut/functions/dotplot.errors.R")
 source("../reports/original_gamut/functions/dotplot.No_errors.R")
-
-source("../reports/original_gamut/functions/get.CI.R")
-source("../reports/original_gamut/functions/plot.metrics.R")
-source("../reports/original_gamut/functions/plot.metrics.wm.R")
 
 use.ID <- TRUE
 
