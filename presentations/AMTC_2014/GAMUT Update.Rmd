@@ -23,20 +23,11 @@ options(scipen = 4)
 
 
 ```{r load data, echo=FALSE}
+library(GAMUT)
+
+## load data
+
 load("../../data/GAMUT.Rdata")
-library(lattice)
-library(xtable)
-library(plyr)
-library(REDCapR)
-
-source("../../reports/original_gamut/functions/dotplot.errors.R")
-source("../../reports/original_gamut/functions/dotplot.No_errors.R")
-
-source("../../reports/original_gamut/functions/get.CI.R")
-source("../../reports/original_gamut/functions/rc_export.R")
-source("../../reports/original_gamut/functions/plot.metrics.R")
-source("../../reports/original_gamut/functions/plot.metrics.wm.R")
-source("../../reports/original_gamut/functions/anonymize.R")
 
 ```
 
@@ -52,7 +43,7 @@ total.full <- length(reporting[reporting >=7])
 
 ```  
 
-### `r total.enrolled` Total programs enrolled  
+### `r total.enrolled` total programs enrolled  
  
  - `r total.reporting` reporting data   
  - `r total.not_reporting` not reporting data   
@@ -86,7 +77,7 @@ plotData <- metricData[metricData$adv_airway_cases > 0 & metricData$adv_airway_c
 colnames(plotData) <- c("group", "num", "den")
 
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of patient transport contacts with 
     an advanced airway supported by a mechanical ventilator",
                              program_name = plotData$group,
@@ -107,7 +98,7 @@ plotData <- metricData[metricData$adv_airway_cases > 0,
 colnames(plotData) <- c("group", "num", "den")
 
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of patient transport contacts with advanced airways
  in whom continuous waveform capnography was used.",
                              program_name = plotData$group,
@@ -127,7 +118,7 @@ plotData <- metricData[metricData$adv_airway_tt_cases > 0,
                        c("group", "adv_airway_tt_confirmed", "adv_airway_tt_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of intubated patient transport contacts 
 with documentation of confirmed tracheal tube placement.",
                              program_name = plotData$group,
@@ -146,7 +137,7 @@ plotData <- metricData[metricData$intub_neo_attempts > 0,
                        c("group", "intub_neo_first_success", "intub_neo_attempts")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Neonatal - Percent of patient transport contacts successfully intubated 
     on the 1st attempt by the transport team",
                              program_name = plotData$group,
@@ -166,7 +157,7 @@ plotData <- metricData[metricData$intub_neo_attempts > 0,
                        c("group", "intub_neo_no_hypoxia", "intub_neo_attempts")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Neonatal - Percent of patients with definitive airway during the 1st attempt 
     by the transport team without suffering hypoxia or hypotension",
                              program_name = plotData$group,
@@ -186,7 +177,7 @@ plotData <- metricData[metricData$intub_ped_attempts > 0,
                        c("group", "intub_ped_first_success", "intub_ped_attempts")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Pediatric - Percent of patient transport contacts successfully intubated 
     on the 1st attempt by the transport team",
                              program_name = plotData$group,
@@ -206,7 +197,7 @@ plotData <- metricData[metricData$intub_ped_attempts > 0,
                        c("group", "intub_ped_no_hypoxia", "intub_ped_attempts")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Pediatric - Percent of patients with definitive airway during the 1st attempt 
     by the transport team without suffering hypoxia or hypotension",
                              program_name = plotData$group,
@@ -226,7 +217,7 @@ plotData <- metricData[metricData$intub_adult_attempts > 0,
                        c("group", "intub_adult_first_success", "intub_adult_attempts")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Adult - Percent of patient transport contacts successfully intubated 
     on the 1st attempt by the transport team",
                              program_name = plotData$group,
@@ -246,7 +237,7 @@ plotData <- metricData[metricData$intub_adult_attempts > 0,
                        c("group", "intub_adult_no_hypoxia", "intub_adult_attempts")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Adult - Percent of patients with definitive airway during the 1st attempt 
     by the transport team without suffering hypoxia or hypotension",
                              program_name = plotData$group,
@@ -266,7 +257,7 @@ plotData <- metricData[metricData$intub_rsi_cases > 0,
                        c("group", "intub_rsi_compliant", "intub_rsi_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of patient transport contacts undergoing RSI 
 where all indicated elements of the program’s RSI protocol were completed.",
                              program_name = plotData$group,
@@ -294,7 +285,7 @@ plotData <- metricData[metricData$total_patients > 0,
                        c("group", "pain_scale_used", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of patient transport contacts with a 
 documented pain assessment.",
                              program_name = plotData$group,
@@ -328,7 +319,7 @@ plotData <- metricData[metricData$hypoxia_event_cases >= 0,
                        c("ID", "hypoxia_events", "hypoxia_event_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-# metric.table <- plot.metrics(
+# metric.table <- plot_metrics(
 #     "Percent of patient transport contacts experiencing 
 # transport-related hypoxia.",
 #                              program_name = plotData$group,
@@ -369,7 +360,7 @@ plotData <- metricData[metricData$hems_cases > 0,
                        c("group", "hems_ed_discharge", "hems_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of the HEMS patient transport contacts 
 discharged without hospital admission",
                              program_name = plotData$group,
@@ -388,7 +379,7 @@ metric.table$plot
 plotData <- metricData[metricData$total_neo_patients > 0 & !is.na(metricData$unintended_hypothermia),
                        c("group", "unintended_hypothermia", "total_neo_patients")]
 
-metric.table <- plot.metrics("Percent of neonates found \nhypothermic upon admission",
+metric.table <- plot_metrics("Percent of neonates found \nhypothermic upon admission",
                              program_name = plotData$group,
                              num = plotData$unintended_hypothermia,
                              den = plotData$total_neo_patients,
@@ -402,12 +393,12 @@ metric.table$plot
 ```{r bedside_stemi, fig.cap="",  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 rate.overall <- weighted.mean(mydata$mean_bedside_stemi, mydata$stemi_cases, na.rm=TRUE)
 
-metric.table <- plot.metrics.wm(
+metric.table <- plot_metrics_wm(
     "Average bedside time for 
 STEMI activation patients",
-                             group = bedside_stemi$group,
+                             program_name = bedside_stemi$group,
                              wavg = bedside_stemi$bedside_stemi.wavg,
-                             rate.overall= rate.overall,
+                             rate_overall= rate.overall,
                              reordering="increasing",
                              qlabel="Weighted average* time in minutes"
                              )
@@ -420,12 +411,12 @@ STEMI activation patients",
 
 rate.overall <- weighted.mean(mydata$mean_scene_stemi, mydata$stemi_cases, na.rm=TRUE)
 
-metric.table <- plot.metrics.wm(
+metric.table <- plot_metrics_wm(
     "Average scene time for 
 STEMI activation patients",
-                             group = scene_stemi$group,
+                             program_name = scene_stemi$group,
                              wavg = scene_stemi$scene_stemi.wavg,
-                             rate.overall= rate.overall,
+                             rate_overall= rate.overall,
                              reordering="increasing",
                              qlabel="Weighted average* time in minutes"
                              )
@@ -441,7 +432,7 @@ plotData <- metricData[metricData$ecg_cases > 0,
                        c("group", "ecg_accurate_interpret", "ecg_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of transport patient contacts with accurately 
 interpreted 12-lead ECG evaluations",
                              program_name = plotData$group,
@@ -459,7 +450,7 @@ plotData <- metricData[metricData$alt_ment_cases > 0,
                        c("group", "alt_ment_bg_checks", "alt_ment_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of patient transport contacts with altered mental status 
     or focal neurologic deficit with a documented blood glucose check.",
                              program_name = plotData$group,
@@ -478,7 +469,7 @@ plotData <- metricData[metricData$hem_stroke_cases > 0,
                        c("group", "hem_stroke_bp_managed", "hem_stroke_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of transport patient contacts with 
 hemorrhagic stroke and appropriate blood pressure management",
                              program_name = plotData$group,
@@ -496,7 +487,7 @@ plotData <- metricData[metricData$hem_shock_cases > 0,
                        c("group", "hem_shock_managed", "hem_shock_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of patient transport contacts with 
 hemorrhagic shock appropriately managed",
                              program_name = plotData$group,
@@ -514,7 +505,7 @@ plotData <- metricData[metricData$aortic_dissect_cases > 0,
                        c("group", "aortic_dissect_managed", "aortic_dissect_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Percent of patient transport contacts with known or suspected 
     aortic dissection receiving indicated blood pressure and heart rate therapies.",
                              program_name = plotData$group,
@@ -535,7 +526,7 @@ plotData <- metricData[metricData$total_patients > 0,
                        c("group", "med_equip_failure", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Medical equipment failures 
     per 1000 patient transport contacts.",
                              program_name = plotData$group,
@@ -555,7 +546,7 @@ plotData <- metricData[metricData$total_patients > 0,
                        c("group", "ade", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Adverse drug events 
     per 1000 patient transport contacts",
                              program_name = plotData$group,
@@ -575,7 +566,7 @@ plotData <- metricData[metricData$total_patients > 0,
                        c("group", "near_miss", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "(Rolling 12 month) transport-related patient mishap rate 
     per 10,000 patient transport contacts",
                              program_name = plotData$group,
@@ -595,7 +586,7 @@ plotData <- metricData[metricData$total_patients > 0,
                        c("group", "sre", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "(Rolling 12 month) SRE rate 
     per 10,000 patient transport contacts",
                              program_name = plotData$group,
@@ -615,7 +606,7 @@ plotData <- metricData[metricData$total_patients > 0,
                        c("group", "dislodgements", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "Unplanned dislodgements of therapeutic devices 
     per 1000 patient transport contacts",
                              program_name = plotData$group,
@@ -635,7 +626,7 @@ plotData <- metricData[metricData$total_patients > 0,
                        c("group", "medication_errors", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
-metric.table <- plot.metrics(
+metric.table <- plot_metrics(
     "(Rolling 12 month) medication error rate 
     per 10,000 patient transport contacts.",
                              program_name = plotData$group,
