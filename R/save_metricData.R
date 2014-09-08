@@ -16,8 +16,6 @@
 
 save_metricData <- function() {
 
-source("../reports/original_gamut/functions/dotplot.errors.R")
-source("../reports/original_gamut/functions/dotplot.No_errors.R")
 
 use.ID <- TRUE
 
