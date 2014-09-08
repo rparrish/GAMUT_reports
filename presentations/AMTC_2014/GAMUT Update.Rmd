@@ -22,11 +22,13 @@ options(scipen = 4)
 ```
 
 
-```{r load data, echo=FALSE}
+```{r load data, include=FALSE, echo=FALSE}
 library(GAMUT)
 
-## load data
+## Refresh data - best to run manually once when refreshing reports/slides
+# save_metricData()
 
+## load data
 load("../../data/GAMUT.Rdata")
 
 ```
