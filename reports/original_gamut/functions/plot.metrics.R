@@ -1,7 +1,20 @@
+#' plot_metrics
+#'
+#' Returns a dot plot for a given metric. Based on numerators and denominators
+#'
+#' @param metric Name of the GAMUT metric
+#' @param program_name Vector of names of the transport program
+#' @param num vector of numerators for the metric
+#' @param den vector of denominators
+#' @param reordering Sets the sorting order. Default is 'decreaseing'
+#' @param qlabel Default is 'Estimated rate'
+#' @param rate units of measure. Default is '%'
+#'
+#' @author Rollie Parrish <rollie.parrish@@ampa.org>
+#' @export
 
 
-
-plot.metrics <- function (metric= "metric name", program_name, num, den, reordering="decreasing", qlabel="Estimated rate", rate="%") {
+plot_metrics <- function (metric= "metric name", program_name, num, den, reordering="decreasing", qlabel="Estimated rate", rate="%") {
 
 
   x <- get.CI(program_name
