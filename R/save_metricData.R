@@ -23,7 +23,6 @@ use.ID <- TRUE
 
 ## load data
 uri <- "https://ampa.org/redcap/api/"
-#token <- "1549742112EEBB389E4C17527EF39BA8"
 token <- "C212EB36C4A8347D35690465E350E6C3"
 
 
@@ -46,6 +45,8 @@ participants <- mydata[mydata$redcap_event_name == "Annual",1:13]
 mydata <- mydata[mydata$redcap_event_name != "Demographics",]
 mydata <- mydata[mydata$redcap_event_name != "Annual",]
 
+program_info<- redcap_data[redcap_data$redcap_event_name == "Annual",c(1:13)]
+
 ## complete data only
 mydata <- mydata[mydata$monthly_data_complete == "Complete", ]
 
@@ -58,6 +59,8 @@ ID.lookup <- data.frame(
     program_name = levels(mydata$program_name)
     , ID = anonymize(as.factor(mydata$program_name))
 )
+
+ID.lookup <- merge(ID.lookup, program_info[,c("program_name", "dm_email")], by="program_name")
 
 mydata <- merge(mydata, ID.lookup, by="program_name")
 
@@ -116,6 +119,6 @@ GAMUT_date_loaded <- date()
 
 save(mydata, metricData, ID.lookup, GAMUT_date_loaded,
      mobilization, scene_stemi, bedside_stemi,
-     file="../data/GAMUT.Rdata")
+     file="../GAMUT.Rdata")
 
 }

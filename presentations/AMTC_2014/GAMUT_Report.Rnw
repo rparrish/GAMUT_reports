@@ -1,75 +1,94 @@
----
-title: "GAMUT Update"
-author: "GAMUT Database"
-date: "Monday, Sept 22, 2014"
-output:
-  beamer_presentation:
-    fig_height: 6
-    fig_width: 7
-    highlight: espresso
-    keep_tex: yes
-    slide_level: 2
-    theme: Marburg
-    toc: no
-  ioslides_presentation:
-    fig_caption: yes
----
+\documentclass[twoside]{article}
 
-```{r setup, include=FALSE}
-require(knitr)
-opts_chunk$set(dev = 'pdf')
-options(scipen = 4)
-```
+\setlength{\oddsidemargin}{5mm}
+\setlength{\evensidemargin}{5mm}
+\usepackage{multicol}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyheadoffset{0cm}
+\fancyhead[LE,RO]{\thepage}
+\cfoot{Confidential report for quality improvement purposes}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage[letterpaper]{geometry}
+\geometry{hmarginratio=1:1}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\renewcommand\footnotetext{}  % removes the footnote number
+\renewcommand{\abstractname}{\vspace{-\baselineskip}}
+\renewcommand{\familydefault}{\sfdefault}
 
 
-```{r load data, include=FALSE, echo=FALSE}
-library(GAMUT)
+\title{GAMUT Database Quality Metrics}
+\date{2014 Year-to-date Report}
+\author{}
 
-## load data
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+This report is based on partial data for the year. In each of the graphs that follow, the vertical line shows the overall combined rate for all progams. The dots reflect the rate for each program and the horizontal bars indicate the 95\% confidence interval. Wide confidence intervals indicate lower numbers of elligible cases and narrow confidence intervals indicate higher numbers of elligible cases. When the horizontal bar does not cross the vertical line, this indicates that program's rate is significantly higher or lower than the overall rate. The graphs are oriented so that the top-performers for each metric are at the bottom.\\
+\emph{Generated: \date{\today}}
+
+\end{abstract}
+
+%\tableofcontents{}
+
+
+<<r loaddata, cache=FALSE, include=FALSE, echo=TRUE, message=TRUE, warning=TRUE>>=
+require(lattice)
+require(xtable)
+require(GAMUT)
 
 load("../../GAMUT.Rdata")
 
-```
 
-# Participation
-## GAMUT Overview
-```{r overview, echo=FALSE}
-reporting <- table(mydata$program_name)
-total.enrolled <- length(reporting)
-total.not_reporting <- length(reporting[reporting == 0])
-total.reporting <- length(reporting[reporting > 0])
-total.partial <- length(reporting[reporting > 0 & reporting <= 3])
-total.full <- length(reporting[reporting >=7])
+@
 
-```  
+% \newpage
+% \section{Introduction}
+% This report is designed to give representation of a high-level cumulative overview of the individual institutional performance related to the included quality metrics.  As we`ve discussed, quality improvement run charts will be included in a separate report and are designed to present performance over time which is the optimal way to monitor these quality data on a continual basis.\\
+%
+% Included in this report are the 12 “national” consensus metrics.  Reports for the remaining Ohio Collaborative metrics will be generated separately.  You`ll notice that there are some areas where we suspect that the “detection” of events is not sensitive (ex. medication administration errors) which is likely to afford us the opportunity as a collaborative to build the right detection/reporting mechanism. \\
+%
+% Lastly, please remember that these data are de-identified, though there may be examples where you`ll be able to “infer” which program identifier is associated with which program.  There are no formal data-sharing agreements in place, though it is the expectation that these data should be solely used for quality improvement of critical care transport – both locally and nationally.  Performance data should not be used for marketing one program versus another.\\
+%
+% \begin{multicols}{2}
+%
+%   Michael T Bigham, MD, FAAP\\
+%   \\
+%   Pediatric Intensivist, Division of Critical Care Medicine\\
+%   Medical Director, Transport Services\\
+%   Assistant Patient Safety Officer\\
+%   Clinical Assistant Professor, NEOMED\\
+%   \url{mbigham@chmca.org}
+%
+%
+% Hamilton P. Schwartz, MD\\
+% \\
+% Medical Director, Statline\\
+% Medical Director, Pediatric Transport Program\\
+% Assistant Professor, UC Department of Pediatrics\\
+% \url{hamilton.schwartz@cchmc.org}\\
+%
+% \end{multicols}
 
-### `r total.enrolled` total programs enrolled  
- 
- - `r total.reporting` reporting data   
- - `r total.not_reporting` not reporting data   
-
- - `r total.full` reporting all of 2014 YTD 
- 
-```{r hist_reporting, fig.path="figures/", fig.height=3.5, include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-hist(reporting, 
-     main="",
-     xlab="number of months reported")
-
-```
-
-## Patients
-### `r sum(metricData$total_patients)` Total Patients   
-
- - `r sum(metricData$total_neo_patients)` Neonatal   
- - `r sum(metricData$total_peds_patients)` Pediatric  
- - `r sum(metricData$total_adult_patients)` Adult  
-
-Data as of  : `r GAMUT_date_loaded`
-
-
-# Advanced Airway Management
-## Mechanical Ventilation
-```{r vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+\section*{Advanced Airway Management}
+<<r vent_adv_airway, include=TRUE, fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$adv_airway_cases > 0 & metricData$adv_airway_cases >= metricData$adv_airway_ventilator,
@@ -78,7 +97,7 @@ colnames(plotData) <- c("group", "num", "den")
 
 
 metric.table <- plot_metrics(
-    "Percent of patient transport contacts with 
+    "Percent of patient transport contacts with
     an advanced airway supported by a mechanical ventilator",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -86,11 +105,11 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-## Waveform Capnography - All Patients
-```{r waveform_capno, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<waveform_capno, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$adv_airway_cases > 0,
@@ -107,10 +126,10 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
-## Waveform Capnography - Neonatal
-```{r neo_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+<<r neo_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$neo_adv_airway_cases > 0,
                        c("group", "neo_adv_airway_capno", "neo_adv_airway_cases")]
@@ -126,11 +145,10 @@ metric.table <- plot_metrics(
     reordering = "increasing"
 )
 metric.table$plot
-```
+@
 
 
-## Waveform Capnography - Pediatrics
-```{r ped_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+<<r ped_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$ped_adv_airway_cases > 0,
                        c("group", "ped_adv_airway_capno", "ped_adv_airway_cases")]
@@ -146,13 +164,14 @@ metric.table <- plot_metrics(
     reordering = "increasing"
 )
 metric.table$plot
-```
+@
 
 
 
 
-## Confirmed tracheal tube placement
-```{r confirmed_tt, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<confirmed_tt, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$adv_airway_tt_cases > 0,
@@ -160,7 +179,7 @@ plotData <- metricData[metricData$adv_airway_tt_cases > 0,
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of intubated patient transport contacts 
+    "Percent of intubated patient transport contacts
 with documentation of confirmed tracheal tube placement.",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -168,18 +187,18 @@ with documentation of confirmed tracheal tube placement.",
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
-# Intubation
-## Neonatal - First Attempt Success
-```{r first_attempt_success_neo,  eval=FALSE, fig.path="figures/", include=TRUE, fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+\section*{Intubation}
+<<r first_attempt_success_neo,  eval=FALSE, fig.path="figures/", include=TRUE, fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$intub_neo_attempts > 0,
                        c("group", "intub_neo_first_success", "intub_neo_attempts")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Neonatal - Percent of patient transport contacts successfully intubated 
+    "Neonatal - Percent of patient transport contacts successfully intubated
     on the 1st attempt by the transport team",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -187,11 +206,11 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
+@
 
-```
 
-## Neonatal - DASH-1A
-```{r DASH1A_neo, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<DASH1A_neo, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$intub_neo_attempts > 0,
@@ -199,7 +218,7 @@ plotData <- metricData[metricData$intub_neo_attempts > 0,
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Neonatal - Percent of patients with definitive airway during the 1st attempt 
+    "Neonatal - Percent of patients with definitive airway during the 1st attempt
     by the transport team without suffering hypoxia or hypotension",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -207,11 +226,11 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-## Pediatric - First Attempt Success
-```{r first_attempt_success_ped, eval=FALSE, fig.path="figures/", include=TRUE, fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<r first_attempt_success_ped, eval=FALSE, fig.path="figures/", include=TRUE, fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$intub_ped_attempts > 0,
@@ -219,7 +238,7 @@ plotData <- metricData[metricData$intub_ped_attempts > 0,
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Pediatric - Percent of patient transport contacts successfully intubated 
+    "Pediatric - Percent of patient transport contacts successfully intubated
     on the 1st attempt by the transport team",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -227,11 +246,10 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
-
-## Pediatric - DASH-1A 
-```{r DASH1A_ped, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<r DASH1A_ped, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$intub_ped_attempts > 0,
@@ -239,7 +257,7 @@ plotData <- metricData[metricData$intub_ped_attempts > 0,
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Pediatric - Percent of patients with definitive airway during the 1st attempt 
+    "Pediatric - Percent of patients with definitive airway during the 1st attempt
     by the transport team without suffering hypoxia or hypotension",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -247,11 +265,11 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-## Adult - First Attempt Success
-```{r first_attempt_success_adult, eval=FALSE, fig.path="figures/", include=TRUE, fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<r first_attempt_success_adult, eval=FALSE, fig.path="figures/", include=TRUE, fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$intub_adult_attempts > 0,
@@ -259,7 +277,7 @@ plotData <- metricData[metricData$intub_adult_attempts > 0,
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Adult - Percent of patient transport contacts successfully intubated 
+    "Adult - Percent of patient transport contacts successfully intubated
     on the 1st attempt by the transport team",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -267,11 +285,11 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-## Adult DASH-1A
-```{r DASH1A_adult, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<DASH1A_adult, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$intub_adult_attempts > 0,
@@ -279,7 +297,7 @@ plotData <- metricData[metricData$intub_adult_attempts > 0,
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Adult - Percent of patients with definitive airway during the 1st attempt 
+    "Adult - Percent of patients with definitive airway during the 1st attempt
     by the transport team without suffering hypoxia or hypotension",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -287,11 +305,11 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-## RSI protocol compliance
-```{r RSI_compliance, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<r RSI_compliance, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
 plotData <- metricData[metricData$intub_rsi_cases > 0,
@@ -299,7 +317,7 @@ plotData <- metricData[metricData$intub_rsi_cases > 0,
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of patient transport contacts undergoing RSI 
+    "Percent of patient transport contacts undergoing RSI
 where all indicated elements of the program’s RSI protocol were completed.",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -307,27 +325,19 @@ where all indicated elements of the program’s RSI protocol were completed.",
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-
-
-
-
-
-
-
-
-# General Metrics
-## Reliable pain assessments
-```{r pain_assessment, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+\section*{General Metrics}
+<<pain_assessment, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$total_patients > 0,
                        c("group", "pain_scale_used", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of patient transport contacts with a 
+    "Percent of patient transport contacts with a
 documented pain assessment.",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -335,74 +345,20 @@ documented pain assessment.",
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-## Incidence of hypoxia during transport   
-
-### NUMERATOR:  
-Number of patient transport contacts during which the documented 
-pulse oximetry reading drops below 90%.  
-
-Multiple incidents with one patient are 
-considered as one incident. If the pulse oximetry reading is chronically low or is below 
-90% when contact is made, the patient is not included except for those patients where 
-the saturation has been corrected to greater than 90% and falls again. 
-
-### DENOMINATOR:  
-Number of patient transport contacts during the calendar month 
-(excluding those with chronic oxygen saturations lower than 90% or oxygen saturations 
-lower than 90% that persist throughout the entire transport).
-
-```{r incidence_hypoxia, include=TRUE, results='asis', fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- metricData[metricData$hypoxia_event_cases >= 0,
-                       c("ID", "hypoxia_events", "hypoxia_event_cases")]
-colnames(plotData) <- c("group", "num", "den")
-
-# metric.table <- plot_metrics(
-#     "Percent of patient transport contacts experiencing 
-# transport-related hypoxia.",
-#                              program_name = plotData$group,
-#                              num = plotData$num,
-#                              den = plotData$den,
-#                              reordering = "decreasing"
-#                              )
-#metric.table$plot
-#kable(plotData)
-
-```
-## Incidence of hypoxia during transport   
-
-```{r incidence_hypoxia1, include=TRUE, results='asis', fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-kable(plotData[1:7,], row.names=FALSE)  
-
-```
-
-## Incidence of hypoxia during transport  
-
-```{r incidence_hypoxia2, include=TRUE, results='asis', fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-kable(plotData[8:14,], row.names=FALSE)
-
-```
-
-## Incidence of hypoxia during transport  
-
-```{r incidence_hypoxia3, include=TRUE, results='asis', fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-kable(plotData[15:20, ], row.names=FALSE)
-
-```
 
 
-## HEMS Over-triage
-```{r hems_over_triage, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<hems_over_triage, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$hems_cases > 0,
                        c("group", "hems_ed_discharge", "hems_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of the HEMS patient transport contacts 
+    "Percent of the HEMS patient transport contacts
 discharged without hospital admission",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -410,12 +366,11 @@ discharged without hospital admission",
                              reordering = "decreasing"
                              )
 metric.table$plot
-```
+@
 
 
-# Focused Populations
-## Neonatal Hypothermia on Arrival
-```{r neonatal_hypothermia, fig.cap="",  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<neonatal_hypothermia, fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$total_neo_patients > 0 & !is.na(metricData$unintended_hypothermia),
                        c("group", "unintended_hypothermia", "total_neo_patients")]
@@ -427,15 +382,16 @@ metric.table <- plot_metrics("Percent of neonates found \nhypothermic upon admis
                              reordering = "decreasing"
                              )
 metric.table$plot
-```
+@
 
 
-## STEMI Bedside
-```{r bedside_stemi, fig.cap="",  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<bedside_stemi, fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 rate.overall <- weighted.mean(mydata$mean_bedside_stemi, mydata$stemi_cases, na.rm=TRUE)
 
 metric.table <- plot_metrics_wm(
-    "Average bedside time for 
+    "Average bedside time for
 STEMI activation patients",
                              program_name = bedside_stemi$group,
                              wavg = bedside_stemi$bedside_stemi.wavg,
@@ -445,15 +401,16 @@ STEMI activation patients",
                              )
 
 #metric.table$plot
-```
+@
 
-## STEMI Scene
-```{r scene_stemi, fig.cap="",  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<scene_stemi, fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 rate.overall <- weighted.mean(mydata$mean_scene_stemi, mydata$stemi_cases, na.rm=TRUE)
 
 metric.table <- plot_metrics_wm(
-    "Average scene time for 
+    "Average scene time for
 STEMI activation patients",
                              program_name = scene_stemi$group,
                              wavg = scene_stemi$scene_stemi.wavg,
@@ -463,18 +420,19 @@ STEMI activation patients",
                              )
 
 #metric.table
-```
+@
 
-## ECG interpretation for STEMI patients
 
-```{r ecg_stemi, include=TRUE,  fig.path="figures/", fig.cap="Data only reported for one  month by 1 program", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<ecg_stemi, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$ecg_cases > 0,
                        c("group", "ecg_accurate_interpret", "ecg_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of transport patient contacts with accurately 
+    "Percent of transport patient contacts with accurately
 interpreted 12-lead ECG evaluations",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -482,17 +440,18 @@ interpreted 12-lead ECG evaluations",
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
-## Blood glucose check for altered mental status  
-```{r bg_check, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<bg_check, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$alt_ment_cases > 0,
                        c("group", "alt_ment_bg_checks", "alt_ment_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of patient transport contacts with altered mental status 
+    "Percent of patient transport contacts with altered mental status
     or focal neurologic deficit with a documented blood glucose check.",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -500,18 +459,18 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-## Management of hypertension in hemorrhagic stroke
-```{r htn_hem_stroke, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<htn_hem_stroke, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$hem_stroke_cases > 0,
                        c("group", "hem_stroke_bp_managed", "hem_stroke_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of transport patient contacts with 
+    "Percent of transport patient contacts with
 hemorrhagic stroke and appropriate blood pressure management",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -519,17 +478,18 @@ hemorrhagic stroke and appropriate blood pressure management",
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
-## Appropriate management of hemorrhagic shock
-```{r hem_shock_managed, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<hem_shock_managed, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$hem_shock_cases > 0,
                        c("group", "hem_shock_managed", "hem_shock_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of patient transport contacts with 
+    "Percent of patient transport contacts with
 hemorrhagic shock appropriately managed",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -537,17 +497,18 @@ hemorrhagic shock appropriately managed",
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
-## Appropriate management of blood pressure for aortic emergencies
-```{r bp_aortic, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<bp_aortic, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$aortic_dissect_cases > 0,
                        c("group", "aortic_dissect_managed", "aortic_dissect_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Percent of patient transport contacts with known or suspected 
+    "Percent of patient transport contacts with known or suspected
     aortic dissection receiving indicated blood pressure and heart rate therapies.",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -555,20 +516,18 @@ metric.table <- plot_metrics(
                              reordering = "increasing"
                              )
 metric.table$plot
-```
+@
 
 
-
-# Rare Events
-## Medical equipment failure
-```{r med_equip_failure, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<med_equip_failure, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$total_patients > 0,
                        c("group", "med_equip_failure", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Medical equipment failures 
+    "Medical equipment failures
     per 1000 patient transport contacts.",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -578,17 +537,18 @@ metric.table <- plot_metrics(
                              qlabel = "Estimated cases per 1000"
                              )
 metric.table$plot
-```
+@
 
-## Adverse drug event during transport
-```{r ade, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<ade, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$total_patients > 0,
                        c("group", "ade", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Adverse drug events 
+    "Adverse drug events
     per 1000 patient transport contacts",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -598,17 +558,17 @@ metric.table <- plot_metrics(
                              qlabel = "Estimated cases per 1000"
                              )
 metric.table$plot
-```
+@
 
-## Patient near-miss events 
-```{r nearmiss, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+\newpage
+<<nearmiss, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$total_patients > 0,
                        c("group", "near_miss", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "(Rolling 12 month) transport-related patient mishap rate 
+    "(Rolling 12 month) transport-related patient mishap rate
     per 10,000 patient transport contacts",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -618,17 +578,18 @@ metric.table <- plot_metrics(
                              qlabel = "Estimated cases per 10000"
                              )
 metric.table$plot
-```
+@
 
-## Rate of Serious Reportable Event
-```{r sre, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<sre, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$total_patients > 0,
                        c("group", "sre", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "(Rolling 12 month) SRE rate 
+    "(Rolling 12 month) SRE rate
     per 10,000 patient transport contacts",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -638,17 +599,18 @@ metric.table <- plot_metrics(
                              qlabel = "Estimated cases per 10000"
                              )
 metric.table$plot
-```
+@
 
-## Unplanned device dislodgements
-```{r device_dislogement, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<device_dislogement, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$total_patients > 0,
                        c("group", "dislodgements", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "Unplanned dislodgements of therapeutic devices 
+    "Unplanned dislodgements of therapeutic devices
     per 1000 patient transport contacts",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -658,17 +620,18 @@ metric.table <- plot_metrics(
                              qlabel = "Estimated cases per 1000"
                              )
 metric.table$plot
-```
+@
 
-## Medication errors on transport
-```{r med_error, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+\newpage
+<<med_error, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 plotData <- metricData[metricData$total_patients > 0,
                        c("group", "medication_errors", "total_patients")]
 colnames(plotData) <- c("group", "num", "den")
 
 metric.table <- plot_metrics(
-    "(Rolling 12 month) medication error rate 
+    "(Rolling 12 month) medication error rate
     per 10,000 patient transport contacts.",
                              program_name = plotData$group,
                              num = plotData$num,
@@ -678,6 +641,9 @@ metric.table <- plot_metrics(
                              qlabel = "Estimated cases per 10000"
                              )
 metric.table$plot
-```
+@
 
 
+
+
+\end{document}
