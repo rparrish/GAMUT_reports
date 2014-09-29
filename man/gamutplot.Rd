@@ -8,7 +8,7 @@ gamutplot(title = "test", mydata, reordering)
 \arguments{
 \item{title}{the main title for the plot}
 
-\item{mydata}{data frame with (group, numerator, denominator)}
+\item{mydata}{data frame with group, numerator, denominator}
 
 \item{reordering}{sort order for the table and plot}
 }

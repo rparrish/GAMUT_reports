@@ -4,11 +4,11 @@
 #' returns the GAMUT dotplot and table
 #'
 #' @param title the main title for the plot
-#' @param mydata data frame with (group, numerator, denominator)
+#' @param mydata data frame with group, numerator, denominator
 #' @param reordering sort order for the table and plot
 #' @return a list - table has the raw data and plot has the dotplot
 #' @author Rollie Parrish <rollie.parrish@@ampa.org>
-#'
+#' @export
 
 gamutplot <- function(title = "test",
                        mydata,
