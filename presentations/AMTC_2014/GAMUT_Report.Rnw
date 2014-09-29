@@ -53,7 +53,7 @@ require(lattice)
 require(xtable)
 require(GAMUT)
 
-load("../../GAMUT.Rdata")
+load("../../data/GAMUT.Rdata")
 
 
 @
