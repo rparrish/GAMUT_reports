@@ -38,12 +38,11 @@ mydata <- redcap_data
 
 #mydata <- read.csv("../Data/SOTMPediatricQuality_raw.csv")
 # remove demographics rows
-participants <- mydata[mydata$redcap_event_name == "Annual",1:13]
+program_info <- mydata[mydata$redcap_event_name == "Annual",1:11]
 
 mydata <- mydata[mydata$redcap_event_name != "Demographics",]
 mydata <- mydata[mydata$redcap_event_name != "Annual",]
 
-program_info<- redcap_data[redcap_data$redcap_event_name == "Annual",c(1:13)]
 
 ## complete data only
 mydata <- mydata[mydata$monthly_data_complete == "Complete", ]
@@ -60,11 +59,10 @@ ID.lookup <- data.frame(
 
 ID.lookup <- merge(ID.lookup, program_info[,c("program_name", "dm_email")], by="program_name")
 
-mydata <- merge(mydata, ID.lookup, by="program_name")
+mydata <- merge(mydata, ID.lookup, by=c("program_name"))
 
-mydata <- mydata[,c(1,75,15:73)]
+mydata <- mydata[,c(1,73,13:71)]
 
-#mydata <- working[,c(1,74,14:37)]
 
 #metricData <- aggregate( . ~ redcap_data_access_group + ID  , FUN=sum, data=mydata[c(1,3:23,48,49,50)])
 metricData <- aggregate( . ~ program_name + ID,
@@ -76,7 +74,8 @@ metricData <- aggregate( . ~ program_name + ID,
 ID.lookup <- merge(ID.lookup, metricData[2:3], by="ID", all.x=TRUE)
 
 #timeData <- ddply(mydata[, c(1, 3,20,49,50)], .(redcap_data_access_group, ID),
-mobilization <- ddply(mydata[mydata$mean_mobilization > 0, c(1,2,3,39,40,41)], .(program_name, ID),
+mobilization <- ddply(mydata[mydata$mean_mobilization > 0,
+                             c(1,2,3,39,40,41)], .(program_name, ID),
                       function(x) data.frame(
                           mobilization.wavg=weighted.mean(x$mean_mobilization, x$total_patients, na.rm=TRUE)
                       )
@@ -117,6 +116,7 @@ GAMUT_date_loaded <- date()
 
 save(mydata, metricData, ID.lookup, GAMUT_date_loaded,
      mobilization, scene_stemi, bedside_stemi,
-     file="../GAMUT.Rdata")
+     program_info,
+     file="../../data/GAMUT.Rdata")
 
 }
