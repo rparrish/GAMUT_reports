@@ -21,17 +21,29 @@ use.ID <- TRUE
 
 ## load data
 uri <- "https://ampa.org/redcap/api/"
-token <- "C212EB36C4A8347D35690465E350E6C3"
+GAMUT_token <- "C212EB36C4A8347D35690465E350E6C3"
+AIM_token <- "E17BB265BCA6A364356DE042C60DDC58"
+AEL_token <- "EEA2ADCE64D53B28BDD2BA4432922B30"
 
+GAMUT_data <- redcap_read_oneshot(redcap_uri=uri, token=GAMUT_token,
+                           export_data_access_groups=TRUE,
+                           raw_or_label = "label",
+                           sslversion=NULL)$data
 
+AIM_data <- redcap_read_oneshot(redcap_uri=uri, token=AIM_token,
+                                  export_data_access_groups=TRUE,
+                                  raw_or_label = "label",
+                                  sslversion=NULL)$data
 
+AEL_data <- redcap_read_oneshot(redcap_uri=uri, token=AEL_token,
+                                  export_data_access_groups=TRUE,
+                                  raw_or_label = "label",
+                                  sslversion=NULL)$data
 
-#redcap_data <- redcap_read_oneshot(redcap_uri=uri, token=token,
-#                           export_data_access_groups=TRUE,
-#                           raw_or_label = "label")$data
+#raw <- read.csv("data/GAMUTDatabase_DATA_2014-10-27_1843.csv", stringsAsFactors=FALSE, nrows=1)
+#redcap_data <- read.csv("data/GAMUTDatabase_DATA_LABELS_2014-10-27_1827.csv", stringsAsFactors=FALSE)
 
-raw <- read.csv("data/GAMUTDatabase_DATA_2014-10-27_1843.csv", stringsAsFactors=FALSE, nrows=1)
-redcap_data <- read.csv("data/GAMUTDatabase_DATA_LABELS_2014-10-27_1827.csv", stringsAsFactors=FALSE)
+redcap_data <- rbind(GAMUT_data, AIM_data, AEL_data)
 
 names(redcap_data) <- names(raw)
 
@@ -44,10 +56,10 @@ mydata <- redcap_data
 
 #mydata <- read.csv("../Data/SOTMPediatricQuality_raw.csv")
 # remove demographics rows
-program_info <- mydata[mydata$redcap_event_name == "Annual",1:10]
+program_info <- mydata[mydata$redcap_event_name == "Initial",1:10]
 
 mydata <- mydata[mydata$redcap_event_name != "Demographics",]
-mydata <- mydata[mydata$redcap_event_name != "Annual",]
+mydata <- mydata[mydata$redcap_event_name != "Initial",]
 
 
 ## complete data only
@@ -98,10 +110,6 @@ scene_stemi <- ddply(mydata[mydata$stemi_cases > 0, c(1,2,39,40,41,42)], .(progr
                          scene_stemi.wavg=weighted.mean(x$mean_scene_stemi, x$stemi_case, na.rm=TRUE)
                      )
 )
-
-
-
-
 
 
 
