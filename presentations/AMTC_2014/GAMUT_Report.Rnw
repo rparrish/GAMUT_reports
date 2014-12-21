@@ -90,26 +90,21 @@ load("../../data/GAMUT.Rdata")
 \section*{Advanced Airway Management}
 <<r vent_adv_airway, include=TRUE, fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
+variables <- c("group", "adv_airway_ventilator", "adv_airway_cases")
 
-plotData <- metricData[metricData$adv_airway_cases > 0 & metricData$adv_airway_cases >= metricData$adv_airway_ventilator,
-                       c("group", "adv_airway_ventilator", "adv_airway_cases")]
-colnames(plotData) <- c("group", "num", "den")
+gamutplot("Percent of patient transport contacts with
+          an advanced airway supported by a mechanical ventilator",
+          metricData[, variables],
+          reordering = "increasing"
+          )$plot
 
-
-metric.table <- plot_metrics(
-    "Percent of patient transport contacts with
-    an advanced airway supported by a mechanical ventilator",
-                             program_name = plotData$group,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing"
-                             )
-metric.table$plot
 @
 
 
 \newpage
 <<waveform_capno, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+
 
 
 plotData <- metricData[metricData$adv_airway_cases > 0,
@@ -150,7 +145,8 @@ metric.table$plot
 
 <<r ped_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- metricData[metricData$ped_adv_airway_cases > 0,
+plotData <- metricData[metricData$ped_adv_airway_cases > 0 &
+                           metricData$ped_adv_airway_capno <= metricData$ped_adv_airway_cases,
                        c("group", "ped_adv_airway_capno", "ped_adv_airway_cases")]
 colnames(plotData) <- c("group", "num", "den")
 
@@ -174,7 +170,8 @@ metric.table$plot
 <<confirmed_tt, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
 
-plotData <- metricData[metricData$adv_airway_tt_cases > 0,
+plotData <- metricData[metricData$adv_airway_tt_cases > 0 &
+                           metricData$adv_airway_tt_confirmed <= metricData$adv_airway_tt_cases,
                        c("group", "adv_airway_tt_confirmed", "adv_airway_tt_cases")]
 colnames(plotData) <- c("group", "num", "den")
 

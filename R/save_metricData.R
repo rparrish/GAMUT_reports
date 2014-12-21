@@ -25,9 +25,15 @@ token <- "C212EB36C4A8347D35690465E350E6C3"
 
 
 
-redcap_data <- redcap_read_oneshot(redcap_uri=uri, token=token,
-                           export_data_access_groups=TRUE,
-                           raw_or_label = "label")$data
+
+#redcap_data <- redcap_read_oneshot(redcap_uri=uri, token=token,
+#                           export_data_access_groups=TRUE,
+#                           raw_or_label = "label")$data
+
+raw <- read.csv("data/GAMUTDatabase_DATA_2014-10-27_1843.csv", stringsAsFactors=FALSE, nrows=1)
+redcap_data <- read.csv("data/GAMUTDatabase_DATA_LABELS_2014-10-27_1827.csv", stringsAsFactors=FALSE)
+
+names(redcap_data) <- names(raw)
 
 redcap_data$program_name <- as.factor(redcap_data$program_name)
 redcap_data$redcap_event_name <- as.factor(redcap_data$redcap_event_name)
@@ -38,7 +44,7 @@ mydata <- redcap_data
 
 #mydata <- read.csv("../Data/SOTMPediatricQuality_raw.csv")
 # remove demographics rows
-program_info <- mydata[mydata$redcap_event_name == "Annual",1:11]
+program_info <- mydata[mydata$redcap_event_name == "Annual",1:10]
 
 mydata <- mydata[mydata$redcap_event_name != "Demographics",]
 mydata <- mydata[mydata$redcap_event_name != "Annual",]
@@ -61,7 +67,7 @@ ID.lookup <- merge(ID.lookup, program_info[,c("program_name", "dm_email")], by="
 
 mydata <- merge(mydata, ID.lookup, by=c("program_name"))
 
-mydata <- mydata[,c(1,73,13:71)]
+mydata <- mydata[,c(1,72,12:70)]
 
 
 #metricData <- aggregate( . ~ redcap_data_access_group + ID  , FUN=sum, data=mydata[c(1,3:23,48,49,50)])
@@ -117,6 +123,6 @@ GAMUT_date_loaded <- date()
 save(mydata, metricData, ID.lookup, GAMUT_date_loaded,
      mobilization, scene_stemi, bedside_stemi,
      program_info,
-     file="../../data/GAMUT.Rdata")
+     file="../data/GAMUT.Rdata")
 
 }

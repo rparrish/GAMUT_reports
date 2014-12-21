@@ -3,8 +3,10 @@
 .RData
 GAMUT.Rproj
 data/
-
 *.log
 *.synctex.gz
 *.tex
-
+*.html
+*.pdf
+*.png
+*.tex

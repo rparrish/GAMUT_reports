@@ -1,7 +1,7 @@
 ---
 title: "GAMUT Update"
 author: "GAMUT Database"
-date: "Monday, Sept 22, 2014"
+date: "Oct 7, 2014"
 output:
   beamer_presentation:
     fig_height: 6
