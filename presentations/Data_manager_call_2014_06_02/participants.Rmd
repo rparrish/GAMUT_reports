@@ -1,0 +1,156 @@
+---
+title: "Data Manager Call"
+author: "GAMUT Database"
+date: "Monday, June 2, 2014"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+  beamer_presentation:
+    fig_height: 6
+    fig_width: 7
+    highlight: espresso
+    keep_tex: yes
+    slide_level: 2
+    theme: Marburg
+    toc: yes
+---
+
+
+```{r setup, include=FALSE}
+require(knitr)
+opts_chunk$set(dev = 'pdf')
+```
+
+
+```{r load data, echo=FALSE}
+load("../../data/GAMUT.Rdata")
+library(lattice)
+library(xtable)
+library(plyr)
+library(REDCapR)
+
+source("../../reports/original_gamut/functions/dotplot.errors.R")
+source("../../reports/original_gamut/functions/dotplot.No_errors.R")
+
+source("../../reports/original_gamut/functions/get.CI.R")
+source("../../reports/original_gamut/functions/rc_export.R")
+source("../../reports/original_gamut/functions/plot.metrics.R")
+source("../../reports/original_gamut/functions/plot.metrics.wm.R")
+source("../../reports/original_gamut/functions/anonymize.R")
+
+
+```
+
+
+# Participation
+## GAMUT Overview
+```{r overview, echo=FALSE}
+reporting <- table(mydata$program_name)
+total.enrolled <- length(reporting)
+total.reporting <- length(reporting[reporting > 0])
+total.full <- length(reporting[reporting >=3])
+
+```  
+
+### `r total.enrolled` Total Programs   
+ 
+ - `r total.reporting` reporting data   
+ - `r total.full` reporting all months 
+
+### `r sum(metricData$total_patients)` Total Patients   
+
+ - `r sum(metricData$total_neo_patients)` Neonatal   
+ - `r sum(metricData$total_peds_patients)` Pediatric  
+ - `r sum(metricData$total_adult_patients)` Adult:  
+
+ 
+
+
+Data as of  : `r GAMUT_date_loaded`
+
+
+## Record Status Dashboard
+<div style="text-align:center" markdown="1">
+
+![](C:\Users\Rollie\Documents\AMPA\Projects\GAMUT\presentations\Data_manager_call_2014_06_02\figures\record_status_dashboard.png)
+
+</div>
+
+
+
+## Data Quality 
+
+<div style="text-align:center" markdown="1">
+
+![](.\figures\data_quality\data_quality_1.png)
+
+</div>
+
+
+
+## Data Quality
+
+<div style="text-align:center" markdown="1">
+
+![](.\figures\data_quality\data_quality_2.png)
+
+</div>
+
+
+## Data Quality
+
+<div style="text-align:center" markdown="1">
+
+![](.\figures\data_quality\data_quality_3.png)
+
+</div>
+
+
+
+## Data Quality
+
+<div style="text-align:center" markdown="1">
+
+![](.\figures\data_quality\data_quality_4.png)
+
+</div>
+
+
+
+## Issue Resolution
+
+<div style="text-align:center" markdown="1">
+
+![](.\figures\resolve_issues\resolve_issues_1.png)
+
+</div>
+
+
+## Issue Resolution
+
+<div style="text-align:center" markdown="1">
+
+![](.\figures\resolve_issues\resolve_issues_1a.png)
+
+</div>
+
+
+## Issue Resolution
+
+<div style="text-align:center" markdown="1">
+
+![](.\figures\resolve_issues\resolve_issues_2.png)
+
+</div>
+
+
+## Issue Resolution - alternative
+
+<div style="text-align:center" markdown="1">
+
+![](.\figures\resolve_issues\resolve_issues_10.png)
+
+</div>
+
+
+

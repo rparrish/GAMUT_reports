@@ -1,0 +1,87 @@
+GAMUT Data Managers
+========================================================
+author: Mike Bigham, MD
+date: June 2, 2014
+
+GAMUT Summary
+========================================================
+
+- 51 Data Managers
+- 38 Organizations
+    - 11 have submitted data for Q1
+
+
+
+2013 AAP-SOTM Neonatal & Pediatrics
+========================================================
+
+- 28 Data Managers
+- 24 Organizations
+    - 12 submitted data for 2013
+- 13,000+ patient contacts
+
+```{r, echo=FALSE, eval=FALSE}
+GAMUT Participants
+========================================================
+
+
+library(ggmap)
+
+stores <- data.frame(name=c("Commercial","Union","Bedford"),
+        longitude=c(-70.25042295455933,-70.26050806045532,-70.27726650238037),
+        latitude=c(43.657471302616806,43.65663299041943,43.66091757424481))
+location = c(-70.2954, 43.64278, -70.2350, 43.68093)
+
+# Fetch the map
+portland = get_map(location = location, source = "osm")
+
+# Draw the map
+portlandMap = ggmap(portland)
+
+# Add the points layer
+portlandMap = portlandMap + geom_point(data = stores, aes(x = longitude, y = latitude), size = 5)
+
+# Add the labels
+portlandMap + geom_text(data = stores, aes(label = name, x = longitude+.001, y = latitude), hjust = 0)
+```
+
+Examples
+========================================================
+
+![2013 hypothermia on arrival](Data_Managers_Call_-_2014_06_02-figure/example-hypothermia.png)
+
+
+
+
+
+Examples
+=========================================================
+
+```{r load data}
+load("data/GAMUT.Rdata")
+
+getwd()
+GAMUT_data_loaded
+```
+
+
+New feature
+========================================================
+Data Quality Rules
+
+- Integrity Checks for data quality
+- Error message will display
+    - larger numerators than denominators
+
+- Other checks may be introduced as needed
+
+
+
+
+Feedback requested
+========================================================
+
+- Reasons why programs have signed up but are not submitting
+- Ease of obtaining data from source systems
+- Clarity of data definitions
+- Interest in downloading data from REDCap for your organization
