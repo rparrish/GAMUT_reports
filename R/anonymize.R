@@ -1,7 +1,7 @@
 #'
 #' anonymize
 #'
-#' recodes a list of factors to a number (from 100 to 999)
+#' recodes a list of factors to a number from 100 to 999
 #'
 #' @param x a list of factors
 #' @return a list of numbers

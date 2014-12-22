@@ -104,12 +104,15 @@ bedside_stemi <- ddply(mydata[mydata$stemi_cases > 0, c(1,2,39,40,41,42)], .(pro
                            bedside_stemi.wavg=weighted.mean(x$mean_bedside_stemi, x$stemi_cases, na.rm=TRUE)
                        )
 )
+bedside_stemi <- bedside_stemi[bedside_stemi$bedside_stemi.wavg >= 0, ]
 
 scene_stemi <- ddply(mydata[mydata$stemi_cases > 0, c(1,2,39,40,41,42)], .(program_name, ID),
                      function(x) data.frame(
                          scene_stemi.wavg=weighted.mean(x$mean_scene_stemi, x$stemi_case, na.rm=TRUE)
                      )
 )
+scene_stemi <- scene_stemi[scene_stemi$scene_stemi.wavg >= 0, ]
+
 
 
 
@@ -131,6 +134,6 @@ GAMUT_date_loaded <- date()
 save(mydata, metricData, ID.lookup, GAMUT_date_loaded,
      mobilization, scene_stemi, bedside_stemi,
      program_info,
-     file="../data/GAMUT.Rdata")
+     file="data/GAMUT.Rdata")
 
 }
