@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.RData
+GAMUT_Reports.Rproj
+data/
+*.log
+*.synctex.gz
+*.tex
+*.html
+*.pdf
+*.png
+*.tex
