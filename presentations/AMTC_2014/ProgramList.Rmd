@@ -5,14 +5,24 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: pdf_document
 ---
 
-```{r load data, echo=FALSE, message=FALSE}
+```{r load data, echo=FALSE, message=FALSE, warning=FALSE}
 require(knitr)
-load("../../data/GAMUT.Rdata")
+require(dplyr)
+
+setwd("C:/Users/Rollie/Documents/AMPA/Projects/GAMUT/reports")
+
+load("data/GAMUT.Rdata")
 
 ```
 
-```{r table of IDs and program names, echo=FALSE, results="asis"}
-kable(ID.lookup)
+```{r table of IDs and program names, echo=FALSE, message=FALSE, results="asis"}
+program_name_ID <-
+    ID.lookup %>%
+    inner_join(program_info) %>%
+    select(program_name, ID, city, state, dm_email)
+
+
+kable(program_name_ID, col.names = c("Program Name", "ID", "City", "State", "Email"))
 
 
 ```
