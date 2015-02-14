@@ -1,0 +1,45 @@
+---
+title: "Program Report Cards"
+author: "Rollie Parrish"
+date: "Wednesday, December 24, 2014"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r load_data, echo=FALSE, message=FALSE, Warning=FALSE}
+library(knitr) 
+library(dplyr)
+
+#load("../../data/GAMUT.Rdata")
+setwd("C:/Users/Rollie/Documents/AMPA/Projects/GAMUT/reports")
+
+load("data/GAMUT.Rdata")
+
+```
+
+```{r measure_data, results='asis', warning=FALSE, echo=FALSE}
+measure_data <- mydata 
+
+measures <- 
+    measure_data %>%
+    select(program_name:ID, total_neo_patients, unintended_hypothermia) %>%
+    filter(total_neo_patients > 0, 
+           !is.na(unintended_hypothermia)
+           ) %>%
+    group_by(program_name, ID) %>%
+    summarise(months_reported = n(), 
+              neo_patients = sum(total_neo_patients), 
+              unintended_hypothermia = sum(unintended_hypothermia), 
+              metric = unintended_hypothermia/neo_patients
+              ) %>%
+    ungroup() %>%
+    arrange(desc(metric)) %>%
+    mutate(metric_percent = paste0(round(metric,2) * 100, "%"))
+    
+kable(measures)
+    
+```
+
