@@ -10,3 +10,4 @@ data/
 *.pdf
 *.png
 *.tex
+.REDCap_config.R
