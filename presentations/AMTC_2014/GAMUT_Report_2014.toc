@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}
+\contentsline {section}{\numberline {2}Clinical metrics}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}Unintended neonatal hypothermia upon arrival to destination}{5}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Verification of tracheal tube placement}{6}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Unplanned dislodgement of therapeutic devices}{7}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Neonatal: First attempt tracheal tube placement success}{8}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Pediatric: First attempt tracheal tube placement success}{9}{subsection.2.5}
+\contentsline {section}{\numberline {3}Operational metrics}{10}{section.3}
+\contentsline {subsection}{\numberline {3.1}Use of a standardized patient-care handoff}{10}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Average mobilization time of the transport team}{11}{subsection.3.2}
+\contentsline {section}{\numberline {4}Safety metrics}{12}{section.4}
+\contentsline {subsection}{\numberline {4.1}Rate of patient medical equipment failure during transport}{12}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Rate of transport-related patient injuries}{13}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Rate of transport-related crew injuries}{14}{subsection.4.3}
+\contentsline {section}{\numberline {5}Rare Events}{15}{section.5}
+\contentsline {subsection}{\numberline {5.1}Rate of medication administration errors}{15}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Rate of CPR performed during transport}{16}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Rate of Serious Reportable Events (SREs)}{17}{subsection.5.3}
