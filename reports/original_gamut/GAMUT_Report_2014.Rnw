@@ -32,7 +32,7 @@
 \title{GAMUT Database Quality Metrics}
 \date{2014 Year-to-date Report}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 \maketitle
 \thispagestyle{empty}
 
