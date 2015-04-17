@@ -6,8 +6,9 @@ output: pdf_document
 ---
 
 ```{r load data, echo=FALSE, message=FALSE, warning=FALSE}
-require(knitr)
+require(GAMUT)
 require(dplyr)
+require(knitr)
 
 setwd("C:/Users/Rollie/Documents/AMPA/Projects/GAMUT/reports")
 
