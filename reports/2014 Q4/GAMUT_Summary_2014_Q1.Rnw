@@ -12,7 +12,7 @@
 \fancyheadoffset{0cm}
 \rhead{}
 \lhead{\Sexpr{dag}}
-\chead{GAMUT 2014 Summary Report}
+\chead{GAMUT 2014 Summary Report v2}
 \cfoot{Confidential report for quality improvement purposes}
 \fancyfoot[LE,RO]{\thepage}
 
@@ -55,12 +55,12 @@ group <- "program_name"
 @
 
 \title{GAMUT Database Quality Metrics}
-\date{2014 Summary Report}
+\date{2014 Summary Report v2}
 
 \maketitle
 \thispagestyle{empty}
 \begin{center}
-{\Large \Sexpr{paste(dag)}}\\
+{\Large \Sexpr{paste(dag, ifelse(operator == "AIM", "Air Methods", ""))}}\\
 \vfill
 \Sexpr{paste("Report generated on ", Sys.Date())}
 \end{center}
@@ -75,16 +75,28 @@ library(zoo)
 
 # Uncomment next line to get new data from REDCap
 #GAMUT_data("../data/GAMUT.Rdata")
-
 load("../data/GAMUT.Rdata")
 
 
 # Filter for 2014 data only
 monthly_data <- filter(monthly_data, month >= "2014-01-01" & month < "2015-01-01")
 
-#metricData$mark <- 19
-#metricData$mark <- ifelse(substr(metricData$program_name, 1, 3) %in% c("AEL", "AIM"),
-# 6,20)
+
+## replace AIM program names with "Air Methods"
+#
+# detach("package:GAMUT", unload=TRUE)
+# remove.packages("GAMUT", lib="~/R/win-library/3.1")
+# devtools::install_github("rparrish/GAMUT")
+# library(GAMUT)
+
+# monthly_data <-
+#     monthly_data %>%
+#     mutate_each(funs(as.character), program_name, redcap_data_access_group) %>%
+#     mutate(program_name = as.factor(ifelse(grepl("AIM", redcap_data_access_group), "Air Methods", program_name))) %>%
+#     mutate(ID =  as.factor(ifelse(grepl("AIM", redcap_data_access_group), 999, ID))) %>%
+#     mutate(redcap_data_access_group = as.factor(ifelse(grepl("AIM", redcap_data_access_group), "Air Methods", redcap_data_access_group)))
+#
+
 
 @
 
@@ -151,28 +163,26 @@ In the example below, 88.9\% of 19,368 transports had a documented pain assessme
 \end{center}
 
 <<r vent_adv_airway, fig.path="figures/", fig.height=10, include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
-
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="adv_airway_ventilator",
                den="adv_airway_cases"
                )
 
 metric.table <- plot_metrics(
     "Percent of patient transport contacts with
-    an advanced airway supported by a mechanical ventilator",
+  an advanced airway supported by a mechanical ventilator",
                              program_name = plotData$label,
                              num = plotData$num,
                              den = plotData$den,
                              reordering = "increasing",
-                             pch = 16
+                             pch = plotData$mark
                              )
 metric.table$plot
 
 @
 
 <<r waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
-
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="adv_airway_wave_capno",
                den="adv_airway_cases"
                )
@@ -187,11 +197,12 @@ metric.table <- plot_metrics(
                              pch = plotData$mark
                              )
 metric.table$plot
+
 @
 
 <<r confirmed_tt, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="adv_airway_tt_confirmed",
                den="adv_airway_tt_cases"
                )
@@ -210,14 +221,14 @@ metric.table$plot
 
 <<r RSI_compliance, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="intub_rsi_compliant",
                den="intub_rsi_cases"
                )
 
 metric.table <- plot_metrics(
     "Percent of patient transport contacts undergoing RSI
-where all indicated elements of the program’s RSI protocol were completed.",
+where all indicated elements of the program`s RSI protocol were completed.",
                              program_name = plotData$label,
                              num = plotData$num,
                              den = plotData$den,
@@ -232,7 +243,7 @@ metric.table$plot
 
 <<r neo_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="neo_adv_airway_vent",
                den="neo_adv_airway_cases"
                )
@@ -251,7 +262,7 @@ metric.table$plot
 
 <<r neo_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="neo_adv_airway_capno",
                den="neo_adv_airway_cases"
                )
@@ -270,7 +281,7 @@ metric.table$plot
 
 <<r first_attempt_success_neo,  eval=FALSE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="intub_neo_first_success",
                den="intub_neo_attempts"
                )
@@ -290,7 +301,7 @@ metric.table$plot
 
 <<r DASH1A_neo, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="intub_neo_no_hypoxia",
                den="intub_neo_attempts"
                )
@@ -310,7 +321,7 @@ metric.table$plot
 
 <<r ped_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="ped_adv_airway_vent",
                den="ped_adv_airway_cases"
                )
@@ -329,6 +340,11 @@ metric.table$plot
 
 <<r ped_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
+plotData <- pd(dag=dag, operator = operator,
+               num="ped_adv_airway_capno",
+               den="ped_adv_airway_cases"
+               )
+
 metric.table <- plot_metrics(
     "Percent of Pediatric patient transport contacts with advanced airways
  in whom continuous waveform capnography was used.",
@@ -343,7 +359,7 @@ metric.table$plot
 
 <<r first_attempt_success_ped, eval=FALSE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="intub_ped_first_success",
                den="intub_ped_attempts"
                )
@@ -362,7 +378,7 @@ metric.table$plot
 
 <<r DASH1A_ped, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="intub_ped_no_hypoxia",
                den="intub_ped_attempts"
                )
@@ -384,7 +400,7 @@ metric.table$plot
 
 <<r adult_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="adult_adv_airway_vent",
                den="adult_adv_airway_cases"
                )
@@ -405,7 +421,7 @@ metric.table$plot
 
 <<r adult_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="adult_adv_airway_capno",
                den="adult_adv_airway_cases"
                )
@@ -426,7 +442,7 @@ metric.table$plot
 
 <<r first_attempt_success_adult, eval=FALSE, fig.path="figures/",  fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="intub_adult_first_success",
                den="intub_adult_attempts"
                )
@@ -445,7 +461,7 @@ metric.table$plot
 
 <<r DASH1A_adult, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="intub_adult_no_hypoxia",
                den="intub_adult_attempts"
                )
@@ -465,7 +481,7 @@ metric.table$plot
 
 <<r pain_assessment, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="pain_scale_used",
                den="total_patients"
                )
@@ -485,7 +501,7 @@ metric.table$plot
 
 <<r hems_over_triage, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="hems_ed_discharge",
                den="hems_cases"
                )
@@ -521,7 +537,7 @@ HEMS <-
 
 <<r cpr, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="cpr_cases",
                den="total_patients"
                )
@@ -542,7 +558,7 @@ metric.table$plot
 
 <<r handoff_tool, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="standardized_handoffs",
                den="total_patients"
                )
@@ -564,7 +580,7 @@ metric.table$plot
 
 <<r neonatal_hypothermia,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="unintended_hypothermia",
                den="total_neo_patients"
                )
@@ -581,7 +597,7 @@ metric.table$plot
 
 <<r bg_check, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="alt_ment_bg_checks",
                den="alt_ment_cases"
                )
@@ -647,7 +663,7 @@ STEMI activation patients",
 
 <<r ecg_stemi, include=TRUE,  fig.path="figures/",  fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="ecg_accurate_interpret",
                den="ecg_cases"
                )
@@ -679,7 +695,7 @@ STEMI <-
 
 <<r htn_hem_stroke, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="hem_stroke_bp_managed",
                den="hem_stroke_cases"
                )
@@ -700,7 +716,7 @@ metric.table$plot
 
 <<r hem_shock_managed, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="hem_shock_managed",
                den="hem_shock_cases"
                )
@@ -721,7 +737,7 @@ metric.table$plot
 
 <<r bp_aortic, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="aortic_dissect_managed",
                den="aortic_dissect_cases"
                )
@@ -743,7 +759,7 @@ metric.table$plot
 
 <<r patient_injuries, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="patient_injuries",
                den="total_patients"
                )
@@ -764,7 +780,7 @@ metric.table$plot
 
 <<r crew_injuries, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="crew_injuries",
                den="total_patients"
                )
@@ -785,7 +801,7 @@ metric.table$plot
 
 <<r med_equip_failure, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="med_equip_failure",
                den="total_patients"
                )
@@ -806,7 +822,7 @@ metric.table$plot
 
 <<r device_dislogement, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="dislodgements",
                den="total_patients"
                )
@@ -826,7 +842,7 @@ metric.table$plot
 
 <<r med_error, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="medication_errors",
                den="total_patients"
                )
@@ -847,7 +863,7 @@ metric.table$plot
 
 <<r sre, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="sre",
                den="total_patients"
                )
@@ -867,7 +883,7 @@ metric.table$plot
 
 <<r nearmiss, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="near_miss",
                den="total_patients"
                )
@@ -888,7 +904,7 @@ metric.table$plot
 
 <<r ade, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
 
-plotData <- pd(dag=dag, operator = "",
+plotData <- pd(dag=dag, operator = operator,
                num="ade",
                den="total_patients"
                )
