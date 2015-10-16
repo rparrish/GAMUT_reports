@@ -1,0 +1,51 @@
+---
+title: "GAMUT STEMI times"
+author: "Rollie Parrish"
+date: "October 11, 2015"
+output: html_document
+---
+
+```{r load_data, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(REDCapR)
+library(knitr)
+library(dplyr)
+library(magrittr)
+library(GAMUT)
+library(zoo)
+
+# Uncomment next line to get new data from REDCap
+#GAMUT_data("../data/GAMUT.Rdata")
+load("../data/GAMUT.Rdata")
+
+
+# Filter for 2014 Q3 through 2015 Q2 data only
+monthly_data <- filter(monthly_data,
+                       month >= "2014-07-01",
+                       month < "2015-07-01")
+
+stemi_data <- 
+    monthly_data %>%
+    filter(!is.na(stemi_cases) & stemi_cases > 0) %>%
+    arrange(redcap_data_access_group) %>%
+    mutate(sb_diff = (mean_scene_stemi - mean_bedside_stemi), 
+           group = ifelse(grepl("AIM", program_name), "AIM", "Others")) %>%
+    select(program_name:redcap_data_access_group, stemi_cases, mean_bedside_stemi, mean_scene_stemi, sb_diff, group)
+
+
+
+
+
+```
+
+```{r plots}
+
+stemi_scatterplot <- 
+    plot(stemi_data$mean_scene_stemi, stemi_data$mean_bedside_stemi)
+
+
+
+
+```
+

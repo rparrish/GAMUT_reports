@@ -1,0 +1,978 @@
+\documentclass[twoside]{article}
+
+\setcounter{tocdepth}{1}
+
+\setlength{\oddsidemargin}{5mm}
+\setlength{\evensidemargin}{5mm}
+
+\usepackage{multicol}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyheadoffset{0cm}
+\rhead{}
+\lhead{\Sexpr{dag}}
+\chead{GAMUT 2015 Midyear Summary Report (July 2014 - June 2015)}
+\cfoot{Confidential report for quality improvement purposes}
+\fancyfoot[LE,RO]{\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage[
+top    = 2.75cm,
+bottom = 2.50cm,
+left   = 3.00cm,
+right  = 2.50cm]{geometry}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{ {figures/} }
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+%\renewcommand\footnotetext{}  % removes the footnote number
+\renewcommand{\abstractname}{\vspace{-\baselineskip}}
+\renewcommand{\familydefault}{\sfdefault}
+
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+
+
+<<r setup, include=FALSE>>=
+library(knitr)
+opts_chunk$set(dev = 'pdf')
+options(scipen = 4)
+
+## change group to "ID" to use anonymized ID
+group <- "program_name"
+#group <- "ID"
+@
+
+\title{GAMUT Database Quality Metrics}
+\date{2015 Midyear Summary Report}
+
+\maketitle
+\thispagestyle{empty}
+\begin{center}
+{\Large \Sexpr{paste(dag, ifelse(operator == "AIM", "Air Methods", ""))}}\\
+\vfill
+\Sexpr{paste("Report generated on ", Sys.Date())}
+\end{center}
+
+<<r load_data, echo=FALSE, message=FALSE, warning=FALSE>>=
+library(REDCapR)
+library(knitr)
+library(dplyr)
+library(magrittr)
+library(GAMUT)
+library(zoo)
+
+# Uncomment next line to get new data from REDCap
+#GAMUT_data("../data/GAMUT.Rdata")
+load("../data/GAMUT.Rdata")
+
+
+# Filter for 2014 Q3 through 2015 Q2 data only
+monthly_data <- filter(monthly_data,
+                       month >= "2014-07-01",
+                       month < "2015-07-01")
+
+
+## replace AIM program names with "Air Methods"
+#
+# detach("package:GAMUT", unload=TRUE)
+# remove.packages("GAMUT", lib="~/R/win-library/3.1")
+# devtools::install_github("rparrish/GAMUT")
+# library(GAMUT)
+
+# monthly_data <-
+#     monthly_data %>%
+#     mutate_each(funs(as.character), program_name, redcap_data_access_group) %>%
+#     mutate(program_name = as.factor(ifelse(grepl("AIM", redcap_data_access_group), "Air Methods", program_name))) %>%
+#     mutate(ID =  as.factor(ifelse(grepl("AIM", redcap_data_access_group), 999, ID))) %>%
+#     mutate(redcap_data_access_group = as.factor(ifelse(grepl("AIM", redcap_data_access_group), "Air Methods", redcap_data_access_group)))
+#
+
+
+@
+
+%\newpage
+
+% %\section{Introduction}
+% Dear Colleagues,\\
+%
+% It is an exciting time for the field of critical care transport and for the GAMUT (Ground and Air Medical qUality in Transport) Database.  Most of you are aware that the GAMUT Database was born out of the commitment by the American Academy of Pediatrics – Section on Transport Medicine (AAP-SOTM) and the Air Medical Physician Association (AMPA) to continually improve the quality of transport care for infants, children, and adults.\\
+%
+% Some of you may also know that the GAMUT Database has just celebrated its 1st birthday.  During that year, the GAMUT Database has seen over 100 transport programs register and over 100,000 patient contacts cataloged.  Not dissimilar from a baby learning to crawl and eventually walk around its 1st birthday, the GAMUT database is developing and maturing after turning one.\\
+%
+% We`ve developed a GAMUT database oversight committee – consisting of AMPA, AAP-SOTM, and other stakeholders.  That group will help guide the project as it grows –- and more importantly as strides are made around quality improvement projects.  We`ve begun to embark on a number of projects leveraging the data to drive improvement: one project focusing on neonatal and pediatric waveform capnography and another focusing on pediatric pain assessment.  We are exploring opportunities for leveraging improvement work for Maintenance of Certification requirements amongst some subspecialty boards.  We are initiating the steps in gaining National Quality Foundation endorsement for the quality metrics.\\
+%
+% Most importantly, we`ve identified two priorities for 2015-16.  First, the GAMUT database oversight committee wants to focus on the product delivered to you –- the database participants.  We want to ensure accurate, timely, and useful data returned to transport programs to permit programs to benchmark against their industry peers.  We`re exploring dashboard and run chart software options –- though those won`t be immediately ready.  Second, the oversight committee is focusing on funding opportunities to ensure sustainability and infrastructure to support the quality improvement work that will develop once we gain awareness of our performance around these consensus quality metrics.\\
+%
+% In reviewing your program`s performance on the attached data, please consider how your program`s performance compares to other programs.  Please gather your questions, use the Data Managers Google Group for additional thoughts, and mark your calendars for a GAMUT users webinar on April 20 at 10:30 AM Eastern (7:30 AM Pacific).  Details will be distributed via the Google Group.\\
+%
+% On behalf of the GAMUT database oversight committee,\\
+% \vfill
+%
+% \begin{multicols}{2}
+%
+%   Michael T. Bigham, MD, FAAP, FCCM\\
+%   \\
+%   Pediatric Intensivist, Division of Critical Care Medicine\\
+%   Medical Director, Transport Services\\
+%   Assistant Patient Safety Officer\\
+%   Clinical Assistant Professor, NEOMED\\
+%   \url{mbigham@chmca.org}\\
+%   \\
+%
+%
+% Hamilton P. Schwartz, MD, MEd, FAAP, FACEP\\
+% \\
+% EMS Medical Director, Cincinnati Children's\\
+% Medical Director, Cincinnati Children's Transport Team\\
+% Associate Professor, UC Department of Pediatrics\\
+% \url{hamilton.schwartz@cchmc.org}\\
+%
+% \end{multicols}
+%
+% \begin{center}
+% Rollie Parrish, RN, BSN\\
+% GAMUT Database Manager, AMPA\\
+% Quality \& Analytics Manager, Providence Sacred Heart Medical Center\\
+% \url{rollie.parrish@ampa.org}\\
+% \end{center}
+%
+% \vfill
+
+\newpage
+
+\section*{Interpreting the graphs}
+
+In each of the graphs that follow, your program name is displayed on your report only, while the other participants are de-identified with a unique ID number. The vertical line shows the overall combined rate across all GAMUT participants. The dots reflect the estimated rate for each program and the horizontal bars indicate the 95\% confidence interval. When the horizontal bar crosses the vertical line, this indicates that program's rate is not significantly higher or lower than the overall rate. Wide horizontal bars (confidence intervals) indicate lower volumes, while narrow horizontal bars indicate higher volumes.\\
+
+Better performing programs are listed toward the bottom of each graph.  If your program(s) are not listed in a metric, that is because valid data was not submitted. Invalid data would include months with a higher numerator than the denominator for a given metric.
+
+In the example below, 88.9\% of 19,368 transports had a documented pain assessment during this 12-month period. Program A's performance is significantly lower than the overall GAMUT rate, while Program B's performance is significantly higher. Compared to other metrics, not all GAMUT participants are reporting data for this metric.
+
+\begin{center}
+\includegraphics[totalheight=0.5\textheight]{example}}
+\end{center}
+
+<<r vent_adv_airway, fig.path="figures/", fig.height=10, include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+plotData <- pd(dag=dag, operator = operator,
+               num="adv_airway_ventilator",
+               den="adv_airway_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of patient transport contacts with
+  an advanced airway supported by a mechanical ventilator",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+
+@
+
+<<r waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+plotData <- pd(dag=dag, operator = operator,
+               num="adv_airway_wave_capno",
+               den="adv_airway_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+
+@
+
+<<r confirmed_tt, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="adv_airway_tt_confirmed",
+               den="adv_airway_tt_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of intubated patient transport contacts
+with documentation of confirmed tracheal tube placement.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+<<r RSI_compliance, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_rsi_compliant",
+               den="intub_rsi_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of patient transport contacts undergoing RSI
+where all indicated elements of the program`s RSI protocol were completed.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+
+
+
+<<r neo_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="neo_adv_airway_vent",
+               den="neo_adv_airway_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of Neonatal patient transport contacts with
+    an advanced airway supported by a mechanical ventilator",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+<<r neo_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="neo_adv_airway_capno",
+               den="neo_adv_airway_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of Neonatal patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used.",
+    program_name = plotData$label,
+    num = plotData$num,
+    den = plotData$den,
+    reordering = "increasing",
+    pch = plotData$mark
+)
+metric.table$plot
+@
+
+<<r first_attempt_success_neo,  eval=FALSE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_neo_first_success",
+               den="intub_neo_attempts"
+               )
+
+metric.table <- plot_metrics(
+    "Neonatal - Percent of patient transport contacts successfully intubated
+    on the 1st attempt by the transport team",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+
+@
+
+<<r DASH1A_neo, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_neo_no_hypoxia",
+               den="intub_neo_attempts"
+               )
+
+metric.table <- plot_metrics(
+    "Neonatal - Percent of patients with definitive airway during the 1st attempt
+    by the transport team without suffering hypoxia or hypotension",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+
+<<r ped_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="ped_adv_airway_vent",
+               den="ped_adv_airway_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of Pediatric patient transport contacts with
+    an advanced airway supported by a mechanical ventilator",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+<<r ped_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="ped_adv_airway_capno",
+               den="ped_adv_airway_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of Pediatric patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used.",
+    program_name = plotData$label,
+    num = plotData$num,
+    den = plotData$den,
+    reordering = "increasing",
+    pch = plotData$mark
+)
+metric.table$plot
+@
+
+<<r first_attempt_success_ped, eval=FALSE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_ped_first_success",
+               den="intub_ped_attempts"
+               )
+
+metric.table <- plot_metrics(
+    "Pediatric - Percent of patient transport contacts successfully intubated
+    on the 1st attempt by the transport team",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+<<r DASH1A_ped, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_ped_no_hypoxia",
+               den="intub_ped_attempts"
+               )
+
+metric.table <- plot_metrics(
+    "Pediatric - Percent of patients with definitive airway during the 1st attempt
+    by the transport team without suffering hypoxia or hypotension",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+
+@
+
+
+
+<<r adult_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="adult_adv_airway_vent",
+               den="adult_adv_airway_cases"
+               )
+#plotData <- plotData[plotData$den >= 50,]
+
+
+metric.table <- plot_metrics(
+    "Percent of Adult patient transport contacts with
+    an advanced airway supported by a mechanical ventilator",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+<<r adult_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="adult_adv_airway_capno",
+               den="adult_adv_airway_cases"
+               )
+
+#plotData <- plotData[plotData$den >= 50,]
+
+metric.table <- plot_metrics(
+    "Percent of Adult patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used.",
+    program_name = plotData$label,
+    num = plotData$num,
+    den = plotData$den,
+    reordering = "increasing",
+    pch = plotData$mark
+)
+metric.table$plot
+@
+
+<<r first_attempt_success_adult, eval=FALSE, fig.path="figures/",  fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_adult_first_success",
+               den="intub_adult_attempts"
+               )
+
+metric.table <- plot_metrics(
+    "Adult - Percent of patient transport contacts successfully intubated
+    on the 1st attempt by the transport team",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+<<r DASH1A_adult, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_adult_no_hypoxia",
+               den="intub_adult_attempts"
+               )
+
+metric.table <- plot_metrics(
+    "Adult - Percent of patients with definitive airway during the 1st attempt
+    by the transport team without suffering hypoxia or hypotension",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+
+<<r pain_assessment, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="pain_scale_used",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of patient transport contacts with a
+documented pain assessment.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+
+<<r hems_over_triage, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="hems_ed_discharge",
+               den="hems_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of the HEMS patient transport contacts
+discharged without hospital admission",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+
+<<r hems_over_triage_table, results='asis', include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+HEMS <-
+    monthly_data %>%
+    select(month, program_name, num=hems_ed_discharge, den=hems_cases) %>%
+    filter(!is.na(num),
+           !is.na(den),
+            den > 0,
+            den >= num)
+
+# kable(HEMS)
+@
+
+
+
+
+<<r cpr, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="cpr_cases",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "Rolling 12 month CPR rate per 10,000 transports",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 10000",
+                             qlabel = "Estimated cases per 10000",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+
+<<r handoff_tool, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="standardized_handoffs",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of cases involving a standardized patient care hand-off",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+
+
+
+
+<<r neonatal_hypothermia,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="unintended_hypothermia",
+               den="total_neo_patients"
+               )
+
+metric.table <- plot_metrics("Percent of neonates found \nhypothermic upon admission",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+<<r bg_check, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="alt_ment_bg_checks",
+               den="alt_ment_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of patient transport contacts with altered mental status
+    or focal neurologic deficit with a documented blood glucose check.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+<<r bedside_stemi, fig.path="figures/", fig.height=8, eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+bedside_stemi_data <-
+    bedside_monthly_data %>%
+    #filter(stemi_cases > 0 & mean_bedside_stemi > 0) %>%
+    mutate(overall_bedside_stemi = weighted.mean(mean_bedside_stemi, stemi_cases, na.rm = TRUE)) %>%
+    mutate(overall_scene_stemi = weighted.mean(mean_scene_stemi, stemi_cases, na.rm = TRUE)) %>%
+    group_by(program_name) %>%
+    mutate(wm_bedside_stemi = weighted.mean(mean_bedside_stemi, stemi_cases, na.rm = TRUE)) %>%
+    mutate(wm_scene_stemi = weighted.mean(mean_scene_stemi, stemi_cases, na.rm = TRUE)) %>%
+    group_by(program_name, ID) %>%
+    summarize(total_stemi_cases = sum(stemi_cases),
+              total_wm_bedside_stemi = round(mean(wm_bedside_stemi),2),
+              total_wm_scene_stemi = round(mean(wm_scene_stemi),2),
+              overall_bedside_stemi = round(mean(overall_bedside_stemi),2),
+              overall_scene_stemi = round(mean(overall_scene_stemi),2)) %>%
+    select(program_name:ID, total_stemi_cases, total_wm_bedside_stemi, overall_bedside_stemi,
+           total_wm_scene_stemi, overall_scene_stemi)
+
+
+metric.table <- plot_metrics_wm(
+                             program_name = bedside_stemi_data$program_name,
+                             wavg = bedside_stemi_data$total_wm_bedside_stemi,
+                             rate_overall= bedside_stemi_data$overall_bedside_stemi,
+                             num = sum(bedside_stemi_data$total_stemi_cases),
+                             reordering="decreasing",
+                             qlabel="Weighted average* time in minutes"
+                             )
+metric.table$main = "Average bedside time for STEMI activation patients"
+metric.table
+
+@
+
+<<r scene_stemi, fig.cap="",  fig.path="figures/", fig.height=10, eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+scene_stemi_data <-
+    monthly_data %>%
+    filter(stemi_cases > 0 & mean_scene_stemi > 0) %>%
+    mutate(overall_bedside_stemi = weighted.mean(mean_bedside_stemi, stemi_cases, na.rm = TRUE)) %>%
+    mutate(overall_scene_stemi = weighted.mean(mean_scene_stemi, stemi_cases, na.rm = TRUE)) %>%
+    group_by(program_name) %>%
+    mutate(wm_bedside_stemi = weighted.mean(mean_bedside_stemi, stemi_cases, na.rm = TRUE)) %>%
+    mutate(wm_scene_stemi = weighted.mean(mean_scene_stemi, stemi_cases, na.rm = TRUE)) %>%
+    group_by(program_name, ID) %>%
+    summarize(total_stemi_cases = sum(stemi_cases),
+              total_wm_bedside_stemi = round(mean(wm_bedside_stemi),2),
+              total_wm_scene_stemi = round(mean(wm_scene_stemi),2),
+              overall_bedside_stemi = round(mean(overall_bedside_stemi),2),
+              overall_scene_stemi = round(mean(overall_scene_stemi),2)) %>%
+    select(program_name:ID, total_stemi_cases, total_wm_bedside_stemi, overall_bedside_stemi,
+           total_wm_scene_stemi, overall_scene_stemi)
+
+metric.table <- plot_metrics_wm(
+                             program_name = scene_stemi_data$program_name,
+                             wavg = scene_stemi_data$total_wm_scene_stemi,
+                             rate_overall= scene_stemi_data$overall_scene_stemi,
+                             num = sum(scene_stemi_data$total_stemi_cases),
+                             reordering="decreasing",
+                             qlabel="Weighted average* time in minutes"
+                             )
+metric.table$main = "Average scene time for STEMI activation patients"
+metric.table
+
+@
+
+
+<<r ecg_stemi, include=TRUE,  fig.path="figures/",  fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="ecg_accurate_interpret",
+               den="ecg_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of transport patient contacts with accurately
+interpreted 12-lead ECG evaluations",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing"
+                             )
+metric.table$plot
+@
+
+
+<<r ecg_stemi_table, results='asis', include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+STEMI <-
+    monthly_data %>%
+    select(month, program_name, num=ecg_accurate_interpret, den=ecg_cases) %>%
+    filter(!is.na(num),
+           !is.na(den),
+            den > 0,
+            den >= num)
+
+#kable(plotData)
+@
+
+<<r htn_hem_stroke, include=TRUE,  fig.path="figures/", fig.height=8, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="hem_stroke_bp_managed",
+               den="hem_stroke_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of transport patient contacts with
+hemorrhagic stroke and appropriate blood pressure management",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+\newpage
+
+<<r hem_shock_managed, include=TRUE,  fig.path="figures/", fig.height=8, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="hem_shock_managed",
+               den="hem_shock_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of patient transport contacts with
+hemorrhagic shock appropriately managed",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+\newpage
+
+<<r bp_aortic, include=TRUE,  fig.path="figures/", fig.height=8, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="aortic_dissect_managed",
+               den="aortic_dissect_cases"
+               )
+
+metric.table <- plot_metrics(
+    "Percent of patient transport contacts with known or suspected
+    aortic dissection receiving indicated blood pressure and heart rate therapies.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+metric.table$plot
+@
+
+
+
+
+<<r patient_injuries, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="patient_injuries",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "Patient injuries
+    per 10,000 patient transport contacts.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 10000",
+                             qlabel = "Estimated cases per 10000"
+                             )
+metric.table$plot
+@
+
+
+<<r crew_injuries, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="crew_injuries",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "Crew injuries
+    per 10,000 patient transport contacts.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 10000",
+                             qlabel = "Estimated cases per 10000"
+                             )
+metric.table$plot
+@
+
+
+<<r med_equip_failure, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="med_equip_failure",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "Medical equipment failures
+    per 1000 patient transport contacts.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 1000",
+                             qlabel = "Estimated cases per 1000"
+                             )
+metric.table$plot
+@
+
+
+<<r device_dislogement, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="dislodgements",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "Unplanned dislodgements of therapeutic devices
+    per 1000 patient transport contacts",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 1000",
+                             qlabel = "Estimated cases per 1000"
+                             )
+metric.table$plot
+@
+
+<<r med_error, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="medication_errors",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "(Rolling 12 month) medication error rate
+    per 10,000 patient transport contacts.",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 10000",
+                             qlabel = "Estimated cases per 10000"
+                             )
+metric.table$plot
+@
+
+
+<<r sre, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="sre",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "(Rolling 12 month) SRE rate
+    per 10,000 patient transport contacts",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 10000",
+                             qlabel = "Estimated cases per 10000"
+                             )
+metric.table$plot
+@
+
+<<r nearmiss, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="near_miss",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "(Rolling 12 month) transport-related patient mishap rate
+    per 10,000 patient transport contacts",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 10000",
+                             qlabel = "Estimated cases per 10000"
+                             )
+
+metric.table$plot
+@
+
+<<r ade, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE>>=
+
+plotData <- pd(dag=dag, operator = operator,
+               num="ade",
+               den="total_patients"
+               )
+
+metric.table <- plot_metrics(
+    "Adverse drug events
+    per 10,000 patient transport contacts",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "decreasing",
+                             rate = "per 10000",
+                             qlabel = "Estimated cases per 10000"
+                             )
+
+metric.table$plot
+
+@
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
