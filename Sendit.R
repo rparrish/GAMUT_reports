@@ -9,6 +9,8 @@
 #'
 
 library(rjson)
+library(httr)
+library(RCurl)
 
 source(".REDCap_config.R") ## sendit username & password
 
@@ -33,6 +35,7 @@ reports_data_AEL <-
 
 reports_data_second <-
     reports_data_all %>%
+    semi_join(monthly_data, by = "redcap_data_access_group") %>%
     filter(dm_email != "") %>%
     filter(!grepl("AIM|AEL", redcap_data_access_group))
 
@@ -43,7 +46,7 @@ no_data <-
     mutate("months submitted" = ifelse(is.na(n), 0, n))
 
 
-sendit_data <- reports_data#_second
+sendit_data <- reports_data
 
 sendit_data$file = gsub(" ", "_", sendit_data$redcap_data_access_group)
 
@@ -64,6 +67,8 @@ for (row in 1:length(sendit_data$dm_email)) {
 }
 
 sendit_log_AIM <- as.data.frame(do.call(rbind, log))
+sendit_log_AEL <- as.data.frame(do.call(rbind, log))
 sendit_log_second <- as.data.frame(do.call(rbind, log))
+sendit_log_FFL <- as.data.frame(do.call(rbind, log))
 
-
+sendit_log <- rbind(sendit_log_AEL, sendit_log_second, sendit_log_FFL)
