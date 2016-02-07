@@ -1,20 +1,16 @@
 ---
 title: "Untitled"
-author: 
- - "Rollie Parrish"
- - "<rollie.parrish@providence.org>"
-date: "`r format(Sys.Date(), '%B %d, %Y')`"
-abstract: this is the abstract
-output: 
-    pdf_document:
-      includes:
-        in_header: header.tex
-      highlight: tango
-    fontsize: 11pt
-    geometry: margin=.75in
-bibliography: Bibliography.bib
-csl: apa.csl
-nocite: "@maisel_atrial_2001, @fenner2012a"
+author:
+- Rollie Parrish
+- <rollie.parrish@providence.org>
+output:
+  html_document: default
+  geometry: margin=.75in
+  fontsize: 11pt
+  pdf_document:
+    highlight: tango
+    includes:
+      in_header: header.tex
 ---
 
 
