@@ -11,3 +11,5 @@ data/
 *.png
 *.tex
 .REDCap_config.R
+!testing/header.tex
+
