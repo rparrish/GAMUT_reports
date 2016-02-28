@@ -1,21 +1,21 @@
 ---
 title: "GAMUT 2015 Summary Report"
-date:  '`r paste(params$dag)`'
-author: ""
-params:
-  dag: Akron Childrens
-  end_date: "2016-01-01"
-  operator: ""
-  program_name: Akron Childrens
-  start_date: "2014-01-01"
+author: ''
+date: '`r paste(params$dag)`'
 output:
+  html_document: null
+  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
-    toc: TRUE
-  html_document: 
-  fontsize: 11pt
+    toc: yes
+params:
+  dag: Akron Childrens
+  end_date: '2016-01-01'
+  operator: ''
+  program_name: Akron Childrens
+  start_date: '2014-01-01'
 ---
 
 
@@ -32,7 +32,7 @@ library(beeswarm)
 options(scipen = 10)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment = "")
 
-source('~/AMPA/Projects/GAMUT/reports/2015 Q4/beeswarm_plot.R')
+#source('~/AMPA/Projects/GAMUT/reports/2015 Q4/beeswarm_plot.R')
 
 ```
 ```{r load_data}
@@ -116,7 +116,7 @@ Better performing programs are listed toward the bottom of each graph.  If your 
 
 In the example below, 88.9\% of 19,368 transports had a documented pain assessment during this 12-month period. Program A's performance is significantly lower than the overall GAMUT rate, while Program B's performance is significantly higher. Compared to other metrics, not all GAMUT participants are reporting data for this metric.
 
-![alt text](figures/example) 
+<!--![alt text](figures/example) -->
 
 
 
