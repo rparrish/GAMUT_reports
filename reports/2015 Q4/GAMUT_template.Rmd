@@ -32,7 +32,6 @@ library(beeswarm)
 options(scipen = 10)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment = "")
 
-source('~/AMPA/Projects/GAMUT/reports/2015 Q4/beeswarm_plot.R')
 
 ```
 ```{r load_data}
