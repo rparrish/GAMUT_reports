@@ -32,6 +32,8 @@ library(beeswarm)
 options(scipen = 10)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment = "")
 
+source('~/AMPA/Projects/GAMUT/reports/2015 Q4/beeswarm_plot.R')
+
 ```
 ```{r load_data}
 # Uncomment next line to get new data from REDCap
@@ -146,48 +148,22 @@ metric.table$plot
 
 ```{r 2vent_adv_airway, fig.path="figures/", fig.height = 3, include=TRUE, eval=TRUE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag, operator = operator,
-               num="adv_airway_ventilator",
-               den="adv_airway_cases"
-               )
+# plotData <- pd(dag=dag, operator = operator,
+#                #num="adv_airway_ventilator",
+#                num="neo_adv_airway_capno",
+#                #num="pain_scale_used",
+#                #num="hems_ed_discharge",
+#                #num="hems_ed_discharge",
+#                den="neo_adv_airway_cases"
+#                #den="adv_airway_cases"
+#                #den="total_patients"
+#                #den="hems_cases"
+#                )
 
-beeswarm(plotData$num/plotData$den, 
-         pch=1, horizontal = TRUE, 
-         xaxt = "n", 
-         bty = "n", 
-         main = "title",
-         method="hex" 
-         )
- 
-indiv_points <- 
-    plotData %>%
-    filter(program_name == params$program_name) %>%
-    with(., prop.test(num, den))
-
-arrows(x0 = indiv_points$conf.int[1], y0=1.3, 
-       x1 = indiv_points$conf.int[2], y1=1.3, 
-       code = 3, angle = 90, col = "blue", 
-       length =.1)
-points(y = 1.3,x=indiv_points$estimate, pch=19, cex = 1.2, col = "blue") # add mean
-
-overall_mean <- sum(plotData$num)/sum(plotData$den)
-
-# add mean
-segments(y0 = .6, x0=overall_mean, 
-         y1 = 1.4, x1 = overall_mean, 
-         pch=16, lty = "dashed", 
-         col = "darkgrey") 
-
-# add text labels
-text(x = indiv_points$estimate, y = 1.45, paste0("  ", round(indiv_points$estimate,3)*100,"%"), 
-     col = "blue")
-
-text(x = overall_mean, y = .55, paste0("Overall: ", round(overall_mean,3)*100,"%"))
-
-axis(1, at=pretty(plotData$num/plotData$den), 
-     lab=paste0(pretty(plotData$num/plotData$den) * 100, "%"), 
-     las=TRUE)
-
+beeswarm_plot(plotData, 
+"Percent of patient transport contacts with
+  an advanced airway supported by a mechanical ventilator"
+)
 ```
 
 
@@ -209,8 +185,15 @@ metric.table <- plot_metrics(
                              pch = plotData$mark
                              )
 metric.table$plot
-
 ```
+
+```{r waveform_capno2, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+beeswarm_plot(plotData, 
+    "Percent of patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used."
+               )
+```
+
 
 ```{r confirmed_tt, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
@@ -250,6 +233,14 @@ where all indicated elements of the program`s RSI protocol were completed.",
 metric.table$plot
 ```
 
+```{r RSI_compliance2, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+beeswarm_plot(plotData, 
+    "Percent of patient transport contacts undergoing RSI
+where all indicated elements of the program`s 
+RSI protocol were completed."
+               )
+```
+
 ```{r neo_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
@@ -267,6 +258,13 @@ metric.table <- plot_metrics(
                              pch = plotData$mark
                              )
 metric.table$plot
+```
+
+```{r neo_vent_adv_airway2, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+beeswarm_plot(plotData, 
+    "Percent of Neonatal patient transport contacts with
+    an advanced airway supported by a mechanical ventilator"
+               )
 ```
 
 ```{r neo_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -287,6 +285,16 @@ metric.table <- plot_metrics(
 )
 metric.table$plot
 ```
+
+
+```{r neo_waveform_capno2, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+beeswarm_plot(plotData, 
+    "Percent of Neonatal patient transport contacts 
+with advanced airways in whom 
+continuous waveform capnography was used."
+               )
+```
+
 
 ```{r first_attempt_success_neo,  eval=FALSE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
