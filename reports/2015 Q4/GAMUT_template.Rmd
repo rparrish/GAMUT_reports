@@ -69,7 +69,7 @@ operator <- params$operator
 
 \end{center}  
 
-
+<!--
 ## Introduction   
 
 Dear Colleagues,  
@@ -130,40 +130,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="adv_airway_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of patient transport contacts with
-  an advanced airway supported by a mechanical ventilator",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
-
-```
-
-
-
-
-```{r 2vent_adv_airway, fig.path="figures/", fig.height = 3, include=TRUE, eval=TRUE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
-
-# plotData <- pd(dag=dag, operator = operator,
-#                #num="adv_airway_ventilator",
-#                num="neo_adv_airway_capno",
-#                #num="pain_scale_used",
-#                #num="hems_ed_discharge",
-#                #num="hems_ed_discharge",
-#                den="neo_adv_airway_cases"
-#                #den="adv_airway_cases"
-#                #den="total_patients"
-#                #den="hems_cases"
-#                )
-
-beeswarm_plot(plotData, 
-"Percent of patient transport contacts with
   an advanced airway supported by a mechanical ventilator"
 )
+
 ```
 
 
@@ -175,23 +146,10 @@ plotData <- pd(dag=dag, operator = operator,
                den="adv_airway_cases"
                )
 
-metric.table <- plot_metrics(
-    "Percent of patient transport contacts with advanced airways
- in whom continuous waveform capnography was used.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
-```
-
-```{r waveform_capno2, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-beeswarm_plot(plotData, 
+beeswarm_plot(plotData,
     "Percent of patient transport contacts with advanced airways
  in whom continuous waveform capnography was used."
-               )
+)
 ```
 
 
@@ -202,16 +160,10 @@ plotData <- pd(dag=dag, operator = operator,
                den="adv_airway_tt_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of intubated patient transport contacts
-with documentation of confirmed tracheal tube placement.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+with documentation of confirmed tracheal tube placement."
+)
 ```
 
 ```{r RSI_compliance, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -221,25 +173,12 @@ plotData <- pd(dag=dag, operator = operator,
                den="intub_rsi_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of patient transport contacts undergoing RSI
-where all indicated elements of the program`s RSI protocol were completed.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+where all indicated elements of the program`s RSI protocol were completed."
+)
 ```
 
-```{r RSI_compliance2, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-beeswarm_plot(plotData, 
-    "Percent of patient transport contacts undergoing RSI
-where all indicated elements of the program`s 
-RSI protocol were completed."
-               )
-```
 
 ```{r neo_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
@@ -248,24 +187,13 @@ plotData <- pd(dag=dag, operator = operator,
                den="neo_adv_airway_cases"
                )
 
-metric.table <- plot_metrics(
-    "Percent of Neonatal patient transport contacts with
-    an advanced airway supported by a mechanical ventilator",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
-```
-
-```{r neo_vent_adv_airway2, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-beeswarm_plot(plotData, 
+beeswarm_plot(plotData,
     "Percent of Neonatal patient transport contacts with
     an advanced airway supported by a mechanical ventilator"
-               )
+)
+
 ```
+
 
 ```{r neo_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
@@ -274,45 +202,27 @@ plotData <- pd(dag=dag, operator = operator,
                den="neo_adv_airway_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of Neonatal patient transport contacts with advanced airways
- in whom continuous waveform capnography was used.",
-    program_name = plotData$label,
-    num = plotData$num,
-    den = plotData$den,
-    reordering = "increasing",
-    pch = plotData$mark
+ in whom continuous waveform capnography was used."
 )
-metric.table$plot
+
 ```
 
 
-```{r neo_waveform_capno2, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-beeswarm_plot(plotData, 
-    "Percent of Neonatal patient transport contacts 
-with advanced airways in whom 
-continuous waveform capnography was used."
-               )
-```
 
 
-```{r first_attempt_success_neo,  eval=FALSE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r first_attempt_success_neo,  eval=TRUE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_neo_first_success",
                den="intub_neo_attempts"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Neonatal - Percent of patient transport contacts successfully intubated
-    on the 1st attempt by the transport team",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    on the 1st attempt by the transport team"
+)
 
 ```
 
@@ -323,16 +233,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="intub_neo_attempts"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Neonatal - Percent of patients with definitive airway during the 1st attempt
-    by the transport team without suffering hypoxia or hypotension",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    by the transport team without suffering hypoxia or hypotension"
+)
+
 ```
 
 
@@ -343,16 +248,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="ped_adv_airway_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of Pediatric patient transport contacts with
-    an advanced airway supported by a mechanical ventilator",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    an advanced airway supported by a mechanical ventilator"
+)
+
 ```
 
 ```{r ped_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -362,35 +262,27 @@ plotData <- pd(dag=dag, operator = operator,
                den="ped_adv_airway_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of Pediatric patient transport contacts with advanced airways
- in whom continuous waveform capnography was used.",
-    program_name = plotData$label,
-    num = plotData$num,
-    den = plotData$den,
-    reordering = "increasing",
-    pch = plotData$mark
+ in whom continuous waveform capnography was used"
 )
-metric.table$plot
+
+
 ```
 
-```{r first_attempt_success_ped, eval=FALSE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+```{r first_attempt_success_ped, eval=TRUE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_ped_first_success",
                den="intub_ped_attempts"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Pediatric - Percent of patient transport contacts successfully intubated
-    on the 1st attempt by the transport team",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    on the 1st attempt by the transport team"
+)
+
 ```
 
 ```{r DASH1A_ped, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -400,16 +292,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="intub_ped_attempts"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Pediatric - Percent of patients with definitive airway during the 1st attempt
-    by the transport team without suffering hypoxia or hypotension",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    by the transport team without suffering hypoxia or hypotension"
+)
+
 
 ```
 
@@ -424,17 +311,13 @@ plotData <- pd(dag=dag, operator = operator,
 #plotData <- plotData[plotData$den >= 50,]
 
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of Adult patient transport contacts with
-    an advanced airway supported by a mechanical ventilator",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    an advanced airway supported by a mechanical ventilator"
+)
+
 ```
+
 
 ```{r adult_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
@@ -443,37 +326,27 @@ plotData <- pd(dag=dag, operator = operator,
                den="adult_adv_airway_cases"
                )
 
-#plotData <- plotData[plotData$den >= 50,]
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of Adult patient transport contacts with advanced airways
- in whom continuous waveform capnography was used.",
-    program_name = plotData$label,
-    num = plotData$num,
-    den = plotData$den,
-    reordering = "increasing",
-    pch = plotData$mark
+ in whom continuous waveform capnography was used"
 )
-metric.table$plot
+
 ```
 
-```{r first_attempt_success_adult, eval=FALSE, fig.path="figures/",  fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+```{r first_attempt_success_adult, eval=TRUE, fig.path="figures/",  fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_adult_first_success",
                den="intub_adult_attempts"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Adult - Percent of patient transport contacts successfully intubated
-    on the 1st attempt by the transport team",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    on the 1st attempt by the transport team"
+)
+
 ```
 
 ```{r DASH1A_adult, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -483,16 +356,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="intub_adult_attempts"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Adult - Percent of patients with definitive airway during the 1st attempt
-    by the transport team without suffering hypoxia or hypotension",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    by the transport team without suffering hypoxia or hypotension"
+)
+
 ```
 
 
@@ -503,16 +371,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of patient transport contacts with a
-documented pain assessment.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+documented pain assessment."
+)
+
 ```
 
 
@@ -523,16 +386,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="hems_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of the HEMS patient transport contacts
-discharged without hospital admission",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+discharged without hospital admission"
+)
+
 ```
 
 
@@ -559,17 +417,10 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
-    "Rolling 12 month CPR rate per 10,000 transports",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 10000",
-                             qlabel = "Estimated cases per 10000",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+beeswarm_plot(plotData,
+    "Rolling 12 month CPR rate per 10,000 transports"
+)
+
 ```
 
 
@@ -580,15 +431,10 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
-    "Percent of cases involving a standardized patient care hand-off",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+beeswarm_plot(plotData,
+    "Percent of cases involving a standardized patient care hand-off"
+)
+
 ```
 
 
@@ -602,14 +448,9 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_neo_patients"
                )
 
-metric.table <- plot_metrics("Percent of neonates found \nhypothermic upon admission",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+beeswarm_plot(plotData,"Percent of neonates found \nhypothermic upon admission"
+)
+
 ```
 
 ```{r bg_check, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -619,16 +460,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="alt_ment_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of patient transport contacts with altered mental status
-    or focal neurologic deficit with a documented blood glucose check.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    or focal neurologic deficit with a documented blood glucose check"
+)
+
 ```
 
 ```{r bedside_stemi, fig.path="figures/", fig.height=8, eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -704,15 +540,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="ecg_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of transport patient contacts with accurately
-interpreted 12-lead ECG evaluations",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing"
-                             )
-metric.table$plot
+interpreted 12-lead ECG evaluations"
+)
+
 ```
 
 
@@ -736,16 +568,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="hem_stroke_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of transport patient contacts with
-hemorrhagic stroke and appropriate blood pressure management",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+hemorrhagic stroke and appropriate blood pressure management"
+)
+
 ```
 
 \newpage
@@ -757,16 +584,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="hem_shock_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of patient transport contacts with
-hemorrhagic shock appropriately managed",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+hemorrhagic shock appropriately managed"
+)
+
 ```
 
 \newpage
@@ -778,16 +600,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="aortic_dissect_cases"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Percent of patient transport contacts with known or suspected
-    aortic dissection receiving indicated blood pressure and heart rate therapies.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-metric.table$plot
+    aortic dissection receiving indicated blood pressure and heart rate therapies"
+)
+
 ```
 
 
@@ -800,17 +617,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Patient injuries
-    per 10,000 patient transport contacts.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 10000",
-                             qlabel = "Estimated cases per 10000"
-                             )
-metric.table$plot
+    per 10,000 patient transport contacts."
+)
+
 ```
 
 
@@ -821,17 +632,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Crew injuries
-    per 10,000 patient transport contacts.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 10000",
-                             qlabel = "Estimated cases per 10000"
-                             )
-metric.table$plot
+    per 10,000 patient transport contacts."
+)
+
 ```
 
 
@@ -842,17 +647,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Medical equipment failures
-    per 1000 patient transport contacts.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 1000",
-                             qlabel = "Estimated cases per 1000"
-                             )
-metric.table$plot
+    per 1000 patient transport contacts."
+)
+
 ```
 
 
@@ -863,17 +662,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Unplanned dislodgements of therapeutic devices
-    per 1000 patient transport contacts",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 1000",
-                             qlabel = "Estimated cases per 1000"
-                             )
-metric.table$plot
+    per 1000 patient transport contacts"
+)
+
 ```
 
 ```{r med_error, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -883,17 +676,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "(Rolling 12 month) medication error rate
-    per 10,000 patient transport contacts.",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 10000",
-                             qlabel = "Estimated cases per 10000"
-                             )
-metric.table$plot
+    per 10,000 patient transport contacts."
+)
+
 ```
 
 
@@ -904,17 +691,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "(Rolling 12 month) SRE rate
-    per 10,000 patient transport contacts",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 10000",
-                             qlabel = "Estimated cases per 10000"
-                             )
-metric.table$plot
+    per 10,000 patient transport contacts"
+)
+
 ```
 
 ```{r nearmiss, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -924,18 +705,11 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "(Rolling 12 month) transport-related patient mishap rate
-    per 10,000 patient transport contacts",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 10000",
-                             qlabel = "Estimated cases per 10000"
-                             )
+    per 10,000 patient transport contacts"
+)
 
-metric.table$plot
 ```
 
 ```{r ade, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -945,18 +719,9 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-metric.table <- plot_metrics(
+beeswarm_plot(plotData,
     "Adverse drug events
-    per 10,000 patient transport contacts",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "decreasing",
-                             rate = "per 10000",
-                             qlabel = "Estimated cases per 10000"
-                             )
-
-metric.table$plot
+    per 10,000 patient transport contacts"
+)
 
 ```
--->
