@@ -116,7 +116,7 @@ Better performing programs are listed toward the bottom of each graph.  If your 
 
 In the example below, 88.9\% of 19,368 transports had a documented pain assessment during this 12-month period. Program A's performance is significantly lower than the overall GAMUT rate, while Program B's performance is significantly higher. Compared to other metrics, not all GAMUT participants are reporting data for this metric.
 
-![alt text](figures/example) 
+<!--![alt text](figures/example) -->
 
 
 
