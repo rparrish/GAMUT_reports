@@ -3,7 +3,8 @@ title: "GAMUT 2015 Summary Report"
 author: ''
 date: '`r paste(params$dag)`'
 output:
-  html_document: null
+  html_document: 
+    toc: TRUE
   fontsize: 11pt
   pdf_document:
     highlight: tango
@@ -11,11 +12,11 @@ output:
       in_header: header.tex
     toc: yes
 params:
-  dag: Akron Childrens
+  dag: AEL 
   end_date: '2016-01-01'
-  operator: ''
-  program_name: Akron Childrens
-  start_date: '2014-01-01'
+  operator: AEL
+  program_name: 'AEL KY'
+  start_date: '2015-01-01'
 ---
 
 
@@ -23,6 +24,7 @@ params:
 library(REDCapR)
 library(knitr)
 library(dplyr)
+library(plyr)
 library(magrittr)
 library(GAMUT)
 library(zoo)
@@ -69,7 +71,6 @@ operator <- params$operator
 
 \end{center}  
 
-<!--
 ## Introduction   
 
 Dear Colleagues,  
@@ -121,9 +122,10 @@ In the example below, 88.9\% of 19,368 transports had a documented pain assessme
 
 
 
+# Advanced Airway Metrics
+## Ventilator utilization
 
-
-```{r vent_adv_airway, fig.path="figures/", fig.height=10, include=TRUE, eval=TRUE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
+```{r vent_adv_airway, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="adv_airway_ventilator",
@@ -138,49 +140,7 @@ beeswarm_plot(plotData,
 ```
 
 
-
-
-```{r waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-plotData <- pd(dag=dag, operator = operator,
-               num="adv_airway_wave_capno",
-               den="adv_airway_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of patient transport contacts with advanced airways
- in whom continuous waveform capnography was used."
-)
-```
-
-
-```{r confirmed_tt, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="adv_airway_tt_confirmed",
-               den="adv_airway_tt_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of intubated patient transport contacts
-with documentation of confirmed tracheal tube placement."
-)
-```
-
-```{r RSI_compliance, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="intub_rsi_compliant",
-               den="intub_rsi_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of patient transport contacts undergoing RSI
-where all indicated elements of the program`s RSI protocol were completed."
-)
-```
-
-
-```{r neo_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r neo_vent_adv_airway, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="neo_adv_airway_vent",
@@ -195,53 +155,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r neo_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="neo_adv_airway_capno",
-               den="neo_adv_airway_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of Neonatal patient transport contacts with advanced airways
- in whom continuous waveform capnography was used."
-)
-
-```
-
-
-
-
-```{r first_attempt_success_neo,  eval=TRUE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="intub_neo_first_success",
-               den="intub_neo_attempts"
-               )
-
-beeswarm_plot(plotData,
-    "Neonatal - Percent of patient transport contacts successfully intubated
-    on the 1st attempt by the transport team"
-)
-
-```
-
-```{r DASH1A_neo, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="intub_neo_no_hypoxia",
-               den="intub_neo_attempts"
-               )
-
-beeswarm_plot(plotData,
-    "Neonatal - Percent of patients with definitive airway during the 1st attempt
-    by the transport team without suffering hypoxia or hypotension"
-)
-
-```
-
-
-```{r ped_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r ped_vent_adv_airway, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="ped_adv_airway_vent",
@@ -255,54 +169,7 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r ped_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="ped_adv_airway_capno",
-               den="ped_adv_airway_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of Pediatric patient transport contacts with advanced airways
- in whom continuous waveform capnography was used"
-)
-
-
-```
-
-
-```{r first_attempt_success_ped, eval=TRUE, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="intub_ped_first_success",
-               den="intub_ped_attempts"
-               )
-
-beeswarm_plot(plotData,
-    "Pediatric - Percent of patient transport contacts successfully intubated
-    on the 1st attempt by the transport team"
-)
-
-```
-
-```{r DASH1A_ped, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="intub_ped_no_hypoxia",
-               den="intub_ped_attempts"
-               )
-
-beeswarm_plot(plotData,
-    "Pediatric - Percent of patients with definitive airway during the 1st attempt
-    by the transport team without suffering hypoxia or hypotension"
-)
-
-
-```
-
-
-
-```{r adult_vent_adv_airway, fig.path="figures/", include=TRUE, fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r adult_vent_adv_airway, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="adult_adv_airway_vent",
@@ -318,8 +185,52 @@ beeswarm_plot(plotData,
 
 ```
 
+## Waveform capnography
+```{r waveform_capno, include=TRUE,  fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plotData <- pd(dag=dag, operator = operator,
+               num="adv_airway_wave_capno",
+               den="adv_airway_cases"
+               )
 
-```{r adult_waveform_capno, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+beeswarm_plot(plotData,
+    "Percent of patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used."
+)
+```
+
+
+```{r neo_waveform_capno, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, operator = operator,
+               num="neo_adv_airway_capno",
+               den="neo_adv_airway_cases"
+               )
+
+beeswarm_plot(plotData,
+    "Percent of Neonatal patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used."
+)
+
+```
+
+
+```{r ped_waveform_capno, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, operator = operator,
+               num="ped_adv_airway_capno",
+               den="ped_adv_airway_cases"
+               )
+
+beeswarm_plot(plotData,
+    "Percent of Pediatric patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used"
+)
+
+
+```
+
+
+```{r adult_waveform_capno, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="adult_adv_airway_capno",
@@ -334,8 +245,55 @@ beeswarm_plot(plotData,
 
 ```
 
+## Tracheal tube confirmation
+```{r confirmed_tt, include=TRUE,  fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-```{r first_attempt_success_adult, eval=TRUE, fig.path="figures/",  fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+plotData <- pd(dag=dag, operator = operator,
+               num="adv_airway_tt_confirmed",
+               den="adv_airway_tt_cases"
+               )
+
+beeswarm_plot(plotData,
+    "Percent of intubated patient transport contacts
+with documentation of confirmed tracheal tube placement."
+)
+```
+
+
+# Intubation Metrics
+## First Attempt Success
+
+```{r first_attempt_success_neo,  eval=TRUE, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_neo_first_success",
+               den="intub_neo_attempts"
+               )
+
+beeswarm_plot(plotData,
+    "Neonatal - Percent of patient transport contacts successfully intubated
+    on the 1st attempt by the transport team"
+)
+
+```
+
+
+```{r first_attempt_success_ped, eval=TRUE, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_ped_first_success",
+               den="intub_ped_attempts"
+               )
+
+beeswarm_plot(plotData,
+    "Pediatric - Percent of patient transport contacts successfully intubated
+    on the 1st attempt by the transport team"
+)
+
+```
+
+
+```{r first_attempt_success_adult, eval=TRUE, fig.path="figures/",  eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_adult_first_success",
@@ -349,7 +307,39 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r DASH1A_adult, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## DASH1A 
+
+```{r DASH1A_neo, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_neo_no_hypoxia",
+               den="intub_neo_attempts"
+               )
+
+beeswarm_plot(plotData,
+    "Neonatal - Percent of patients with definitive airway during the 1st attempt
+    by the transport team without suffering hypoxia or hypotension"
+)
+
+```
+
+```{r DASH1A_ped, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_ped_no_hypoxia",
+               den="intub_ped_attempts"
+               )
+
+beeswarm_plot(plotData,
+    "Pediatric - Percent of patients with definitive airway during the 1st attempt
+    by the transport team without suffering hypoxia or hypotension"
+)
+
+
+```
+
+
+```{r DASH1A_adult, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_adult_no_hypoxia",
@@ -364,7 +354,29 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r pain_assessment, include=TRUE,  fig.path="figures/", fig.height=6, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## RSI Protocol Compliance  
+
+```{r RSI_compliance, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_rsi_compliant",
+               den="intub_rsi_cases"
+               )
+
+beeswarm_plot(plotData,
+    "Percent of patient transport contacts undergoing RSI
+where all indicated elements of the program`s RSI protocol were completed."
+)
+```
+
+
+
+
+
+
+# General Transport Metrics
+
+```{r pain_assessment, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="pain_scale_used",
@@ -379,7 +391,7 @@ documented pain assessment."
 ```
 
 
-```{r hems_over_triage, include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r hems_over_triage, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="hems_ed_discharge",
@@ -394,7 +406,7 @@ discharged without hospital admission"
 ```
 
 
-```{r hems_over_triage_table, results='asis', include=TRUE,  fig.path="figures/", fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r hems_over_triage_table, results='asis', include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 HEMS <-
     monthly_data %>%
@@ -410,7 +422,7 @@ HEMS <-
 
 
 
-```{r cpr, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r cpr, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="cpr_cases",
@@ -424,7 +436,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r handoff_tool, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r handoff_tool, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="standardized_handoffs",
@@ -441,7 +453,7 @@ beeswarm_plot(plotData,
 
 
 
-```{r neonatal_hypothermia,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r neonatal_hypothermia,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="unintended_hypothermia",
@@ -453,7 +465,8 @@ beeswarm_plot(plotData,"Percent of neonates found \nhypothermic upon admission"
 
 ```
 
-```{r bg_check, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+# Specific Clinical Metrics
+```{r bg_check, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="alt_ment_bg_checks",
@@ -533,7 +546,7 @@ metric.table
 ```
 
 
-```{r ecg_stemi, include=TRUE,  fig.path="figures/",  fig.height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r ecg_stemi, include=TRUE,  fig.path="figures/",  height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="ecg_accurate_interpret",
@@ -561,7 +574,7 @@ STEMI <-
 #kable(plotData)
 ```
 
-```{r htn_hem_stroke, include=TRUE,  fig.path="figures/", fig.height=8, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r htn_hem_stroke, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="hem_stroke_bp_managed",
@@ -577,7 +590,7 @@ hemorrhagic stroke and appropriate blood pressure management"
 
 \newpage
 
-```{r hem_shock_managed, include=TRUE,  fig.path="figures/", fig.height=8, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r hem_shock_managed, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="hem_shock_managed",
@@ -593,7 +606,7 @@ hemorrhagic shock appropriately managed"
 
 \newpage
 
-```{r bp_aortic, include=TRUE,  fig.path="figures/", fig.height=8, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r bp_aortic, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="aortic_dissect_managed",
@@ -610,7 +623,9 @@ beeswarm_plot(plotData,
 
 
 
-```{r patient_injuries, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+# Safety Event Metrics
+
+```{r patient_injuries, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="patient_injuries",
@@ -625,7 +640,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r crew_injuries, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r crew_injuries, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="crew_injuries",
@@ -640,7 +655,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r med_equip_failure, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r med_equip_failure, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="med_equip_failure",
@@ -655,7 +670,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r device_dislogement, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r device_dislogement, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="dislodgements",
@@ -669,7 +684,7 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r med_error, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r med_error, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="medication_errors",
@@ -684,7 +699,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r sre, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r sre, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="sre",
@@ -698,7 +713,7 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r nearmiss, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r nearmiss, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="near_miss",
@@ -712,7 +727,7 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r ade, include=TRUE,  fig.path="figures/", fig.height=10, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r ade, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="ade",
