@@ -1,7 +1,7 @@
 ---
 title: "GAMUT 2015 Summary Report"
 author: ''
-date: '`r paste(params$dag)`'
+date: '`r paste(params$program_name)`'
 output:
   html_document: 
     toc: TRUE
@@ -12,10 +12,10 @@ output:
       in_header: header.tex
     toc: yes
 params:
-  dag: AEL 
+  dag: ''
   end_date: '2016-01-01'
-  operator: AEL
-  program_name: 'AEL KY'
+  operator: 
+  program_name: 'Akron Chldrens'
   start_date: '2015-01-01'
 ---
 
@@ -34,7 +34,7 @@ library(beeswarm)
 options(scipen = 10)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment = "")
 
-#source('~/AMPA/Projects/GAMUT/reports/2015 Q4/beeswarm_plot.R')
+source('beeswarm_plot.R')
 
 ```
 ```{r load_data}
@@ -210,6 +210,18 @@ beeswarm_plot(plotData,
     "Percent of Neonatal patient transport contacts with advanced airways
  in whom continuous waveform capnography was used."
 )
+
+metric.table <- plot_metrics(
+    "Percent of Neonatal patient transport contacts with advanced airways
+ in whom continuous waveform capnography was used",
+                             program_name = plotData$label,
+                             num = plotData$num,
+                             den = plotData$den,
+                             reordering = "increasing",
+                             pch = plotData$mark
+                             )
+
+metric.table$plot
 
 ```
 
