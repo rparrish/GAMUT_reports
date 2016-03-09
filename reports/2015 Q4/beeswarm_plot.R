@@ -10,19 +10,27 @@
 #' @export
 
 
-beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title")  {
+beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
+    beeswarm_data <- filter(data, den >=5)
+
+    par(mar = c(5.1,2,2,2.1))
 
     p <- {
-    beeswarm(data$num/data$den,
+    beeswarm(beeswarm_data$num/beeswarm_data$den,
              pch=1, horizontal = TRUE,
              xaxt = "n",
              bty = "n",
+             xlim = 0:1,
+             #corral = "random",
+             #corralWidth = .25,
              main = paste0(title),
              xlab = paste0("\nGAMUT Overall: ",
                            round(sum(data$num)/sum(data$den)*100,1),
                            "%", " (",
                            sum(data$num), "/",
-                           sum(data$den), ")"),method="hex"
+                           sum(data$den), ")"),
+             method="hex",
+             ...
     )
 
     indiv_points <-
@@ -30,11 +38,13 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title")  {
         filter(program_name == params$program_name) %>%
         with(., prop.test(num, den))
 
-    arrows(x0 = indiv_points$conf.int[1], y0=1.3,
-           x1 = indiv_points$conf.int[2], y1=1.3,
+    arrows(x0 = indiv_points$conf.int[1], y0=1.1, #1.3,
+           x1 = indiv_points$conf.int[2], y1=1.1, #1.3,
            code = 3, angle = 90, col = "blue",
+           lwd = 2,
            length =.1)
-    points(y = 1.3,x=indiv_points$estimate, pch=19, cex = 1.2, col = "blue") # add mean
+    points(y = 1.1, #1.3,
+           x=indiv_points$estimate, pch=19, cex = 1.2, col = "blue") # add mean
 
     overall_mean <- sum(data$num)/sum(data$den)
 
@@ -52,6 +62,7 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title")  {
 
     axis(1, at=pretty(data$num/data$den),
          lab=paste0(pretty(data$num/data$den) * 100, "%"),
+         xlim = 0:1,
 
          las=TRUE)
     }
