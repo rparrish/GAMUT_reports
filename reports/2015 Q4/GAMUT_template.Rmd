@@ -3,19 +3,19 @@ title: "GAMUT 2015 Summary Report"
 author: ''
 date: '`r paste(params$program_name)`'
 output:
-  html_document: 
-    toc: TRUE
-  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
     toc: yes
+  html_document:
+    toc: yes
+  fontsize: 11pt
 params:
-  dag: ''
+  dag: Akron Childrens
   end_date: '2016-01-01'
-  operator: 
-  program_name: 'Akron Chldrens'
+  operator: ''
+  program_name: Akron Childrens
   start_date: '2015-01-01'
 ---
 
@@ -23,8 +23,8 @@ params:
 ```{r initial_setup, echo=FALSE, message=FALSE, warning=FALSE}
 library(REDCapR)
 library(knitr)
-library(dplyr)
 library(plyr)
+library(dplyr)
 library(magrittr)
 library(GAMUT)
 library(zoo)
@@ -117,15 +117,15 @@ Better performing programs are listed toward the bottom of each graph.  If your 
 
 In the example below, 88.9\% of 19,368 transports had a documented pain assessment during this 12-month period. Program A's performance is significantly lower than the overall GAMUT rate, while Program B's performance is significantly higher. Compared to other metrics, not all GAMUT participants are reporting data for this metric.
 
-<!--![alt text](figures/example) -->
+![alt text](figures/example.png) 
 
 
-
+\newpage  
 
 # Advanced Airway Metrics
 ## Ventilator utilization
 
-```{r vent_adv_airway, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
+```{r vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="adv_airway_ventilator",
@@ -140,7 +140,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r neo_vent_adv_airway, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r neo_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="neo_adv_airway_vent",
@@ -155,7 +155,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r ped_vent_adv_airway, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r ped_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="ped_adv_airway_vent",
@@ -169,7 +169,7 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r adult_vent_adv_airway, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r adult_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="adult_adv_airway_vent",
@@ -184,9 +184,10 @@ beeswarm_plot(plotData,
 )
 
 ```
+\newpage  
 
 ## Waveform capnography
-```{r waveform_capno, include=TRUE,  fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r waveform_capno, include=TRUE, fig.height=3, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 plotData <- pd(dag=dag, operator = operator,
                num="adv_airway_wave_capno",
                den="adv_airway_cases"
@@ -199,7 +200,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r neo_waveform_capno, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r neo_waveform_capno, include=TRUE, fig.height=2.5, out.height ="6in", fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="neo_adv_airway_capno",
@@ -221,12 +222,12 @@ metric.table <- plot_metrics(
                              pch = plotData$mark
                              )
 
-metric.table$plot
+#metric.table$plot
 
 ```
 
 
-```{r ped_waveform_capno, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r ped_waveform_capno, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.height = 2.5, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="ped_adv_airway_capno",
@@ -242,7 +243,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r adult_waveform_capno, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r adult_waveform_capno, include=TRUE,  fig.height = 2.5,fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="adult_adv_airway_capno",
@@ -257,8 +258,10 @@ beeswarm_plot(plotData,
 
 ```
 
+\newpage  
+
 ## Tracheal tube confirmation
-```{r confirmed_tt, include=TRUE,  fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r confirmed_tt, include=TRUE, fig.height = 2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="adv_airway_tt_confirmed",
@@ -272,10 +275,29 @@ with documentation of confirmed tracheal tube placement."
 ```
 
 
+## RSI Protocol Compliance  
+
+```{r RSI_compliance, include=TRUE, fig.height=2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, operator = operator,
+               num="intub_rsi_compliant",
+               den="intub_rsi_cases"
+               )
+
+beeswarm_plot(plotData,
+    "Percent of patient transport contacts undergoing RSI
+where all indicated elements of the program`s RSI protocol were completed."
+)
+```
+
+
+
+\newpage  
+
 # Intubation Metrics
 ## First Attempt Success
 
-```{r first_attempt_success_neo,  eval=TRUE, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r first_attempt_success_neo,  eval=TRUE, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_neo_first_success",
@@ -290,7 +312,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r first_attempt_success_ped, eval=TRUE, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r first_attempt_success_ped, eval=TRUE, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_ped_first_success",
@@ -305,7 +327,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r first_attempt_success_adult, eval=TRUE, fig.path="figures/",  eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r first_attempt_success_adult, eval=TRUE, fig.height = 2.5, fig.path="figures/",  eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_adult_first_success",
@@ -319,9 +341,11 @@ beeswarm_plot(plotData,
 
 ```
 
+\newpage  
+
 ## DASH1A 
 
-```{r DASH1A_neo, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r DASH1A_neo, include=TRUE, fig.height = 2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_neo_no_hypoxia",
@@ -335,7 +359,7 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r DASH1A_ped, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r DASH1A_ped, include=TRUE, fig.height = 2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_ped_no_hypoxia",
@@ -351,7 +375,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r DASH1A_adult, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r DASH1A_adult, include=TRUE, fig.height = 2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="intub_adult_no_hypoxia",
@@ -366,29 +390,12 @@ beeswarm_plot(plotData,
 ```
 
 
-## RSI Protocol Compliance  
 
-```{r RSI_compliance, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, operator = operator,
-               num="intub_rsi_compliant",
-               den="intub_rsi_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of patient transport contacts undergoing RSI
-where all indicated elements of the program`s RSI protocol were completed."
-)
-```
-
-
-
-
-
+\newpage  
 
 # General Transport Metrics
-
-```{r pain_assessment, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+### Pain Assessment
+```{r pain_assessment, include=TRUE, fig.height=2.2, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="pain_scale_used",
@@ -402,8 +409,8 @@ documented pain assessment."
 
 ```
 
-
-```{r hems_over_triage, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+### HEMS Over-triage
+```{r hems_over_triage, include=TRUE, fig.height=2.2, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="hems_ed_discharge",
@@ -418,7 +425,7 @@ discharged without hospital admission"
 ```
 
 
-```{r hems_over_triage_table, results='asis', include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r hems_over_triage_table, results='asis', include=TRUE, fig.height=2.2, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 HEMS <-
     monthly_data %>%
@@ -431,10 +438,8 @@ HEMS <-
 # kable(HEMS)
 ```
 
-
-
-
-```{r cpr, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+### CPR During transport
+```{r cpr, include=TRUE, fig.height=2.2, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="cpr_cases",
@@ -448,7 +453,8 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r handoff_tool, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Standardized handoffs
+```{r handoff_tool, include=TRUE,fig.height=2.5,   fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="standardized_handoffs",
@@ -463,9 +469,9 @@ beeswarm_plot(plotData,
 
 
 
+## Neonatal Hypothermia
 
-
-```{r neonatal_hypothermia,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r neonatal_hypothermia, fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="unintended_hypothermia",
@@ -477,8 +483,12 @@ beeswarm_plot(plotData,"Percent of neonates found \nhypothermic upon admission"
 
 ```
 
+\newpage  
+
 # Specific Clinical Metrics
-```{r bg_check, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+## Blood glucose checks with altered mentation
+```{r bg_check, include=TRUE, fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="alt_ment_bg_checks",
@@ -491,6 +501,7 @@ beeswarm_plot(plotData,
 )
 
 ```
+
 
 ```{r bedside_stemi, fig.path="figures/", fig.height=8, eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
@@ -558,7 +569,7 @@ metric.table
 ```
 
 
-```{r ecg_stemi, include=TRUE,  fig.path="figures/",  height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r ecg_stemi, include=TRUE,fig.height=2.5,   fig.path="figures/",  height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="ecg_accurate_interpret",
@@ -586,7 +597,9 @@ STEMI <-
 #kable(plotData)
 ```
 
-```{r htn_hem_stroke, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+## Hemorrhagic Stroke
+```{r htn_hem_stroke, include=TRUE, fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="hem_stroke_bp_managed",
@@ -600,9 +613,8 @@ hemorrhagic stroke and appropriate blood pressure management"
 
 ```
 
-\newpage
-
-```{r hem_shock_managed, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Hemorrhagic Shock
+```{r hem_shock_managed, include=TRUE,fig.height=2.5,   fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="hem_shock_managed",
@@ -616,9 +628,8 @@ hemorrhagic shock appropriately managed"
 
 ```
 
-\newpage
-
-```{r bp_aortic, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Aortic Dissection
+```{r bp_aortic, include=TRUE, fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="aortic_dissect_managed",
@@ -634,10 +645,11 @@ beeswarm_plot(plotData,
 
 
 
+\newpage  
 
 # Safety Event Metrics
-
-```{r patient_injuries, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Patient injuries
+```{r patient_injuries, include=TRUE, fig.height=2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="patient_injuries",
@@ -652,7 +664,8 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r crew_injuries, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Crew injuries
+```{r crew_injuries, include=TRUE, fig.height=2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="crew_injuries",
@@ -667,7 +680,8 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r med_equip_failure, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Medical equipment failures
+```{r med_equip_failure, include=TRUE,fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="med_equip_failure",
@@ -682,7 +696,8 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r device_dislogement, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Device dislodgement
+```{r device_dislogement, include=TRUE,fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="dislodgements",
@@ -696,7 +711,8 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r med_error, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Medication errors
+```{r med_error, include=TRUE,  fig.height=2.5,fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="medication_errors",
@@ -710,8 +726,8 @@ beeswarm_plot(plotData,
 
 ```
 
-
-```{r sre, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Serious Reportable Events
+```{r sre, include=TRUE, fig.height = 2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="sre",
@@ -725,7 +741,8 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r nearmiss, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+## Transport-related patient mishaps
+```{r nearmiss, include=TRUE, fig.height = 2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="near_miss",
@@ -739,7 +756,9 @@ beeswarm_plot(plotData,
 
 ```
 
-```{r ade, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+## Adverse Drug Events
+```{r ade, include=TRUE, fig.height=2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag=dag, operator = operator,
                num="ade",
