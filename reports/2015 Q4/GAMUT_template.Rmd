@@ -3,14 +3,14 @@ title: "GAMUT 2015 Summary Report"
 author: ''
 date: '`r paste(params$program_name)`'
 output:
+  html_document:
+    toc: yes
+  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
     toc: yes
-  html_document:
-    toc: yes
-  fontsize: 11pt
 params:
   dag: Akron Childrens
   end_date: '2016-01-01'
@@ -111,14 +111,16 @@ On behalf of the GAMUT database oversight committee,
 
 ## Interpreting the graphs
 
-In each of the graphs that follow, your program name is displayed on your report only, while the other participants are de-identified with a unique ID number. The vertical line shows the overall combined rate across all GAMUT participants. The dots reflect the estimated rate for each program and the horizontal bars indicate the 95\% confidence interval. When the horizontal bar crosses the vertical line, this indicates that program's rate is not significantly higher or lower than the overall rate. Wide horizontal bars (confidence intervals) indicate lower volumes, while narrow horizontal bars indicate higher volumes.  
+The graphs in this report have been modified due to an increase in the number of participants that are submitting data. Each graph shows the rate for your program, the overall GAMUT rate and the distribution of the other participants. 
 
-Better performing programs are listed toward the bottom of each graph.  If your program(s) are not listed in a metric, that is because valid data was not submitted. Invalid data would include months with a higher numerator than the denominator for a given metric.  
+The blue dot and horizontal bar represents your program rate and the 95\% confidence interval. The vertical dashed line shows the overall combined rate across all GAMUT participants. When the blue horizontal bar crosses the vertical line, this indicates that your program rate is not significantly different than the overall rate. The black dots indicate the estimated rate for each program that submitted data. Only programs that submitted a total of at least 5 cases in the metric denominator for the year are included in the graphs.
 
-In the example below, 88.9\% of 19,368 transports had a documented pain assessment during this 12-month period. Program A's performance is significantly lower than the overall GAMUT rate, while Program B's performance is significantly higher. Compared to other metrics, not all GAMUT participants are reporting data for this metric.
+In the example below, waveform capnography is shown for the three age groups. In the first graph, the program is significantly lower than the overall GAMUT rate and there is great variation among programs. In the second graph, the program is not significantly different from the overall GAMUT rate and most programs are clustered between 90 - 100\%. In the third graph, the program did not submit at least 5 cases in the denominator for the year and most participants are clustered even closer to 100\%. 
 
+
+<!--
 ![alt text](figures/example.png) 
-
+-->
 
 \newpage  
 
