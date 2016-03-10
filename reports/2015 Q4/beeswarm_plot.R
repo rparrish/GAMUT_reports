@@ -13,30 +13,48 @@
 beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
     beeswarm_data <- filter(data, den >=5)
 
-    par(mar = c(5.1,2,2,2.1))
+    indiv_data <-
+        beeswarm_data %>%
+        filter(program_name == params$program_name)
+
+    program_rate_title <- " insufficient data"
+
+    if(nrow(indiv_data) > 0) {
+        indiv_points <-
+            indiv_data %>%
+            with(., prop.test(num, den))
+
+        program_rate_title <-
+            paste0(round(indiv_points$estimate,3)*100,
+                   "% (", indiv_data$num, "/", indiv_data$den, ")")
+    }
+
+    par(mar = c(5.1,2,2.0,3.1))
+    par(oma = c(0,0,0,0))
+
 
     p <- {
+        #plot(1, type="n", xlab="", ylab="", xlim=c(0, 1), xts = "", yts = "" )
+
     beeswarm(beeswarm_data$num/beeswarm_data$den,
-             pch=1, horizontal = TRUE,
+             pch=16, horizontal = TRUE,
              xaxt = "n",
              bty = "n",
-             xlim = 0:1,
+             dlim = c(0,1),
              #corral = "random",
              #corralWidth = .25,
-             main = paste0(title),
+             main = "",
              xlab = paste0("\nGAMUT Overall: ",
                            round(sum(data$num)/sum(data$den)*100,1),
                            "%", " (",
                            sum(data$num), "/",
-                           sum(data$den), ")"),
+                           sum(data$den), ")",
+                           "\nProgram rate: ", program_rate_title),
              method="hex",
              ...
     )
 
-    indiv_points <-
-        data %>%
-        filter(program_name == params$program_name) %>%
-        with(., prop.test(num, den))
+    if(nrow(indiv_data) > 0) {
 
     arrows(x0 = indiv_points$conf.int[1], y0=1.1, #1.3,
            x1 = indiv_points$conf.int[2], y1=1.1, #1.3,
@@ -46,6 +64,11 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
     points(y = 1.1, #1.3,
            x=indiv_points$estimate, pch=19, cex = 1.2, col = "blue") # add mean
 
+    # add text labels
+    text(x = indiv_points$estimate, y = 1.30, paste0("  ", round(indiv_points$estimate,3)*100,"%"),
+         col = "blue")
+ }
+
     overall_mean <- sum(data$num)/sum(data$den)
 
     # add mean
@@ -54,19 +77,17 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
              pch=16, lty = "dashed",
              col = "darkgrey")
 
-    # add text labels
-    text(x = indiv_points$estimate, y = 1.45, paste0("  ", round(indiv_points$estimate,3)*100,"%"),
-         col = "blue")
 
-    #text(x = overall_mean, y = .55, paste0("Overall: ", round(overall_mean,3)*100,"%"))
 
-    axis(1, at=pretty(data$num/data$den),
-         lab=paste0(pretty(data$num/data$den) * 100, "%"),
-         xlim = 0:1,
+    axis(1, at=pretty(c(0, data$num/data$den, 1)),
+         lab=paste0(pretty(c(0, data$num/data$den,1)) * 100, "%"),
+         xlim = c(0,1),
 
          las=TRUE)
     }
 
+    title(main = list(paste(title), cex = 1,
+                      col = "red", font = 3))
     #print(p)
     invisible(p)
 }
