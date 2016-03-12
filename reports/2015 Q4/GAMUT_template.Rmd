@@ -3,14 +3,14 @@ title: "GAMUT 2015 Summary Report"
 author: ''
 date: '`r paste(params$program_name)`'
 output:
-  html_document:
-    toc: yes
-  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
     toc: yes
+  html_document:
+    toc: yes
+  fontsize: 11pt
 params:
   dag: Akron Childrens
   end_date: '2016-01-01'
@@ -35,6 +35,27 @@ options(scipen = 10)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment = "")
 
 source('beeswarm_plot.R')
+source('beeswarm_plot_1k.R')
+source('beeswarm_plot_10k.R')
+
+
+# Shadowtest: adds white around text label
+# http://stackoverflow.com/questions/25631216/r-is-there-any-way-to-put-border-shadow-or-buffer-around-text-labels-en-r-plot
+
+shadowtext <- function(x, y=NULL, labels, col='white', bg='black', 
+                       theta= seq(0, 2*pi, length.out=50), r=0.1, ... ) {
+
+    xy <- xy.coords(x,y)
+    xo <- r*strwidth('A')
+    yo <- r*strheight('A')
+
+    # draw background text with small shift in x and y in background colour
+    for (i in theta) {
+        text( xy$x + cos(i)*xo, xy$y + sin(i)*yo, labels, col=bg, ... )
+    }
+    # draw actual text in exact xy position in foreground colour
+    text(xy$x, xy$y, labels, col=col, ... )
+}
 
 ```
 ```{r load_data}
@@ -117,10 +138,8 @@ The blue dot and horizontal bar represents your program rate and the 95\% confid
 
 In the example below, waveform capnography is shown for the three age groups. In the first graph, the program is significantly lower than the overall GAMUT rate and there is great variation among programs. In the second graph, the program is not significantly different from the overall GAMUT rate and most programs are clustered between 90 - 100\%. In the third graph, the program did not submit at least 5 cases in the denominator for the year and most participants are clustered even closer to 100\%. 
 
-
-<!--
 ![alt text](figures/example.png) 
--->
+
 
 \newpage  
 
@@ -419,9 +438,9 @@ plotData <- pd(dag=dag, operator = operator,
                den="hems_cases"
                )
 
-beeswarm_plot(plotData,
-    "Percent of the HEMS patient transport contacts
-discharged without hospital admission"
+beeswarm_plot1k(plotData,
+    "Number of HEMS patient transport contacts
+discharged without hospital admission per 1000 HEMS transports"
 )
 
 ```
@@ -448,7 +467,7 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
+beeswarm_plot10k(plotData,
     "Rolling 12 month CPR rate per 10,000 transports"
 )
 
@@ -658,7 +677,7 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
+beeswarm_plot10k(plotData,
     "Patient injuries
     per 10,000 patient transport contacts."
 )
@@ -674,7 +693,7 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
+beeswarm_plot10k(plotData,
     "Crew injuries
     per 10,000 patient transport contacts."
 )
@@ -690,7 +709,7 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
+beeswarm_plot1k(plotData,
     "Medical equipment failures
     per 1000 patient transport contacts."
 )
@@ -706,9 +725,10 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
+beeswarm_plot1k(plotData,
     "Unplanned dislodgements of therapeutic devices
-    per 1000 patient transport contacts"
+    per 1000 patient transport contacts", 
+    plot_scale = 1000
 )
 
 ```
@@ -721,7 +741,7 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
+beeswarm_plot10k(plotData,
     "(Rolling 12 month) medication error rate
     per 10,000 patient transport contacts."
 )
@@ -736,8 +756,8 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
-    "(Rolling 12 month) SRE rate
+beeswarm_plot10k(plotData,
+    "SRE rate
     per 10,000 patient transport contacts"
 )
 
@@ -751,8 +771,8 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
-    "(Rolling 12 month) transport-related patient mishap rate
+beeswarm_plot10k(plotData,
+    "Transport-related patient mishap rate
     per 10,000 patient transport contacts"
 )
 
@@ -767,7 +787,7 @@ plotData <- pd(dag=dag, operator = operator,
                den="total_patients"
                )
 
-beeswarm_plot(plotData,
+beeswarm_plot10k(plotData,
     "Adverse drug events
     per 10,000 patient transport contacts"
 )
