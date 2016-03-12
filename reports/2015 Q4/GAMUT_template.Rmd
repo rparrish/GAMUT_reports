@@ -94,54 +94,14 @@ operator <- params$operator
 
 \end{center}  
 
-## Introduction   
-
-Dear Colleagues,  
-
-It is an exciting time for the field of critical care transport and for the GAMUT (Ground and Air Medical qUality in Transport) Database.  Most of you are aware that the GAMUT Database was born out of the commitment by the American Academy of Peditatrics - Section on Transport Medicine (AAP-SOTM) and the Air Medical Physician Association (AMPA) to continually improve the quality of transport care for infants, children, and adults.  
-
-Some of you may also know that the GAMUT Database has just celebrated its 1st birthday.  During that year, the GAMUT Database has seen over 100 transport programs register and over 100,000 patient contacts cataloged.  Not dissimilar from a baby learning to crawl and eventually walk around its 1st birthday, the GAMUT database is developing and maturing after turning one.  
-
-We've developed a GAMUT database oversight committee - consisting of AMPA, AAP-SOTM, and other stakeholders.  That group will help guide the project as it grows -- and more importantly as strides are made around quality improvement projects.  We've begun to embark on a number of projects leveraging the data to drive improvement: one project focusing on neonatal and pediatric waveform capnography and another focusing on pediatric pain assessment.  We are exploring opportunities for leveraging improvement work for Maintenance of Certification requirements amongst some subspecialty boards.  We are initiating the steps in gaining National Quality Foundation endorsement for the quality metrics.  
-
-Most importantly, we've identified two priorities for 2015-16.  First, the GAMUT database oversight committee wants to focus on the product delivered to you -- the database participants.  We want to ensure accurate, timely, and useful data returned to transport programs to permit programs to benchmark against their industry peers.  We're exploring dashboard and run chart software options -- though those won`t be immediately ready.  Second, the oversight committee is focusing on funding opportunities to ensure sustainability and infrastructure to support the quality improvement work that will develop once we gain awareness of our performance around these consensus quality metrics.  
-
-In reviewing your program's performance on the attached data, please consider how your program`s performance compares to other programs.  Please gather your questions, use the Data Managers Google Group for additional thoughts, and mark your calendars for a GAMUT users webinar on April 20 at 10:30 AM Eastern (7:30 AM Pacific).  Details will be distributed via the Google Group.  
-
-On behalf of the GAMUT database oversight committee,  
-
-
-
-   Michael T. Bigham, MD, FAAP, FCCM  
-   
-   Pediatric Intensivist, Division of Critical Care Medicine  
-   Medical Director, Transport Services  
-   Assistant Patient Safety Officer  
-   Clinical Assistant Professor, NEOMED  
-   mbigham@chmca.org  
-   
-
-
- Hamilton P. Schwartz, MD, MEd, FAAP, FACEP
- 
- EMS Medical Director, Cincinnati Children's  
- Medical Director, Cincinnati Children's Transport Team  
- Associate Professor, UC Department of Pediatrics  
- hamilton.schwartz@cchmc.org  
+```{r introduction, child='introduction.Rmd'}
+```
 
 
 \newpage  
 
-## Interpreting the graphs
-
-The graphs in this report have been modified due to an increase in the number of participants that are submitting data. Each graph shows the rate for your program, the overall GAMUT rate and the distribution of the other participants. 
-
-The blue dot and horizontal bar represents your program rate and the 95\% confidence interval. The vertical dashed line shows the overall combined rate across all GAMUT participants. When the blue horizontal bar crosses the vertical line, this indicates that your program rate is not significantly different than the overall rate. The black dots indicate the estimated rate for each program that submitted data. Only programs that submitted a total of at least 5 cases in the metric denominator for the year are included in the graphs.
-
-In the example below, waveform capnography is shown for the three age groups. In the first graph, the program is significantly lower than the overall GAMUT rate and there is great variation among programs. In the second graph, the program is not significantly different from the overall GAMUT rate and most programs are clustered between 90 - 100\%. In the third graph, the program did not submit at least 5 cases in the denominator for the year and most participants are clustered even closer to 100\%. 
-
-![alt text](figures/example.png) 
-
+```{r interpreting graphs, child='interpreting.Rmd'}
+```
 
 \newpage  
 
