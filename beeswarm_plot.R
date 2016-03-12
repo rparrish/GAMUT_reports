@@ -3,86 +3,56 @@
 #'
 #' build a horizontal beeswarm plot with error bars for individual program
 #'
-#' @param x dataframe
-#' @param myTheme default values for pch and col (todo)
-#' @param qlabel text for axis label
-#' @param add.text.to.qlabel additional text for axis label
-#' @param type.bar default is "CI"
-#' @param conf.level default is .95
-#' @param end.length default is .05
-#' @param reorder.groups default is TRUE
-#' @param reordering order of sorting when reorder.groups is TRUE
-#' @param label.define (todo)
-#' @param reference.line value for the reference line. default is null
-#' @param bar.color default is 1
-#' @param horizontal layout of the dotplot. default is TRUE
-#' @param ... further arguments passed to or from other methods.
+#' @param x dataframe from get_CI() function
 #' @author Rollie Parrish
 #' @export
 
 
-beeswarm_plot <- function(x, myTheme = simpleTheme(pch = 19, col = 1),
-                           qlabel = "Estimated rate", add.text.to.qlabel = "", type.bar = "CI",
-                           conf.level = .95, end.length = .05, reorder.groups = TRUE,
-                           reordering = "decreasing", label.define = list(), reference.line = NULL,
-                           bar.color = 1, horizontal = TRUE, ...)
+beeswarm_plot <- function(x, metric = metric, ...)
 {
-  o <- c(which(colnames(x) == "group"), which(colnames(x) == "lower"),
-         which(colnames(x) == "est"), which(colnames(x) == "upper"))
-  if (length(o) != 4) stop("Error: Incorrect data frame")
-  x <- x[, o]
-  x$group <- factor(x$group)
-  if (horizontal == T) hor <- 1 else hor <- -1
-  if (reordering == "decreasing")
-    FUN.to.reorder <- function(x) mean(x) * hor
-  else FUN.to.reorder <- function(x) -mean(x) * hor
-  if (reorder.groups) x$group <-
-    with(x, reorder(group, est, FUN = FUN.to.reorder))
 
-   if (reorder.groups) {
-     if (reordering == "increasing") {
-       x$group = factor(x$group, levels=x$group[order(-x$est, -x$lower, -x$upper, -x$group)], ordered=TRUE)
-     } else {
-       x$group = factor(x$group, levels=x$group[order(x$est, x$lower, x$upper, x$group)], ordered=TRUE)
-     }
-   }
 
-  if (type.bar == "CI") xlab <- substitute(lab %+-% CL,
-                                           list(lab = qlabel, CL = paste(" ", as.character(conf.level * 100),
-                                                                         "% CI", add.text.to.qlabel, sep = ""))) else
-                                                                           if (type.bar == "SE")
-                                                                             xlab <- substitute(lab %+-% " SE" ~ ~ AT,
-                                                                                                list(lab = qlabel, AT = add.text.to.qlabel)) else
-                                                                                                  xlab <- substitute(lab %+-% Type.bar ~ ~ AT,
-                                                                                                                     list(lab = qlabel, Type.bar = type.bar, AT = add.text.to.qlabel))
-  if (horizontal == T)
-    p <- stripplot(group ~ est, data = x,
-                   lower = x$lower, upper = x$upper,
-                   xlim = range(x[,2:4])+c(-.04,.04)*diff(range(x[,2:4])),
-                   xlab = c(list(xlab), label.define),
-                   par.settings = myTheme,
-                   panel = function(x, y, lower, upper, ..., subscripts) {
-                     if (is.null(reference.line) == F)
-                       panel.abline(v = reference.line, col = "grey")
-                     panel.abline(h = y, col = "grey", lty = "dashed")
-                     panel.arrows(x0 = lower[subscripts], y0 = y,
-                                  x1 = upper[subscripts], y1 = y, angle = 90, code = 3,
-                                  length = end.length, col = bar.color)
-                     panel.stripplot(x, y, ...) }, ...) else
-                       p <- stripplot(est ~ group, data = x, lower = x$lower, upper = x$upper,
-                                      ylim = range(x[,2:4])+c(-.04,.04)*diff(range(x[,2:4])),
-                                      ylab = c(list(xlab), label.define),
-                                      par.settings = myTheme,
-                                      panel = function(x, y, lower, upper, ..., subscripts) {
-                                        if (is.null(reference.line) == F)
-                                          panel.abline(h = reference.line, col = "grey")
-                                        panel.abline(v = x, col = "grey", lty = "dashed")
-                                        panel.arrows(y0 = lower[subscripts], x0 = x,
-                                                     y1 = upper[subscripts], x1 = x, angle = 90, code = 3,
-                                                     length = end.length, col = bar.color)
-                                        panel.stripplot(x, y, ...) }, ...)
-  #print(p)
-  return(p)
+
+
+             beeswarm(x$est,
+                      pch=1,
+                      horizontal = TRUE,
+                      xaxt = "n",
+                      bty = "n",
+                      main = metric,
+                      method="hex"
+                      )
+
+
+
+indiv_points <-
+    x %>%
+    filter(group == params$program_name)
+
+arrows(x0 = indiv_points$lower, y0=1.3,
+       x1 = indiv_points$upper, y1=1.3,
+       code = 3, angle = 90, col = "blue",
+       length =.1)
+points(y = 1.3,x=indiv_points$est, pch=19, cex = 1.2, col = "blue") # add mean
+
+overall_mean <- sum(x$k)/sum(x$n)*100
+
+# add mean
+segments(y0 = .0, x0=overall_mean,
+         y1 = 1.4, x1 = overall_mean,
+         pch=16, lty = "dashed",
+         col = "darkgrey")
+
+# add text labels
+text(x = indiv_points$est, y = 1.45, paste0("  ", round(indiv_points$est,3),"%"),
+     col = "blue")
+
+#text(x = overall_mean - 12, y = .55, paste0("Overall: ", round(overall_mean,1),"%"))
+mtext(paste0("Overall: ", round(overall_mean,1),"%"), side = 1, line = 3)
+axis(1, at=pretty(x$est),
+     lab=paste0(pretty(x$est), "%"),
+     las=TRUE)
+
 
   #invisible(p)
 }
