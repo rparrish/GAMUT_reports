@@ -470,7 +470,7 @@ plotData <- pd(dag=dag, operator = operator,
                )
 
 beeswarm_plot10k(plotData,
-    "Rolling 12 month CPR rate per 10,000 transports"
+    "CPR rate per 10,000 transports"
 )
 
 ```
@@ -744,7 +744,7 @@ plotData <- pd(dag=dag, operator = operator,
                )
 
 beeswarm_plot10k(plotData,
-    "(Rolling 12 month) medication error rate
+    "Medication error rate
     per 10,000 patient transport contacts."
 )
 
