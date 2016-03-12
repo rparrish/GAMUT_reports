@@ -83,7 +83,7 @@ beeswarm_plot10k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
     segments(y0 = .6, x0=overall_mean,
              y1 = 1.4, x1 = overall_mean,
              pch=16, lty = "dashed",
-             col = "darkgrey")
+             col = "grey20")
 
 
 
