@@ -116,4 +116,8 @@ main = "Average scene time for STEMI activation patients"
 
 ```
 
-## Response Times
+## Mobilization Times
+
+main = "Average Mobilization Time of the transport team"
+
+
