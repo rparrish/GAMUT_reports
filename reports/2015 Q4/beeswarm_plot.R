@@ -77,8 +77,6 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale 
          r = 0.4)
  }
 
-       # shadowtext(5/6, 5/6, "Test 4", col="black", bg="white", cex=4, r=0.2)
-
     overall_mean <- sum(data$num)/sum(data$den)
 
     # add mean
@@ -86,14 +84,9 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale 
              y1 = 1.4, x1 = overall_mean,
              pch=16, lty = "dashed",
              col = "grey20")
+    }
 
-
-
-
-     }
-
-
-       axis(1,
+    axis(1,
             labels = paste0(pretty(c(0, data$num/data$den*100)), "%"),
             at     = pretty(c(0, data$num/data$den, 1)),
             xlim   = c(0,1),

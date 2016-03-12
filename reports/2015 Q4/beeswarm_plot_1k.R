@@ -21,7 +21,6 @@ beeswarm_plot1k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
 
     scale_text <- ""
 
-
     if(nrow(indiv_data) > 0) {
         indiv_points <-
             indiv_data %>%
@@ -34,7 +33,6 @@ beeswarm_plot1k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
 
     par(mar = c(5.1,2,2.0,3.1))
     par(oma = c(0,0,0,0))
-
 
     p <- {
         #plot(1, type="n", xlab="", ylab="", xlim=c(0, 1), xts = "", yts = "" )
@@ -85,18 +83,7 @@ beeswarm_plot1k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
              pch=16, lty = "dashed",
              col = "grey20")
 
-
-
-
-     }
-
-
-    # axis(1,
-    #      at =  pretty(c(0, data$num/data$den*10000, 1)),
-    #      labels =  paste0(pretty(c(0, data$num/data$den*10000, 1)), "%"),
-    #      xlim = c(0,1),
-    #      las=TRUE
-    # )
+    }
 
     title(main = list(paste(title), cex = 1,
                       col = "red", font = 3))
