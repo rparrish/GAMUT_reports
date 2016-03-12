@@ -3,19 +3,19 @@ title: "GAMUT 2015 Summary Report"
 author: ''
 date: '`r paste(params$program_name)`'
 output:
+  html_document:
+    toc: no
+  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
     toc: no
-  html_document:
-    toc: no
-  fontsize: 11pt
 params:
   dag: Akron Childrens
   end_date: '2016-01-01'
   operator: ''
-  program_name: Akron Childrens
+  program_name: Childrens Hospital Philadelphia
   start_date: '2015-01-01'
 ---
 
@@ -29,34 +29,11 @@ library(magrittr)
 library(GAMUT)
 library(zoo)
 library(beeswarm)
+library(qicharts)
 
 
 options(scipen = 10)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment = "")
-
-
-source('beeswarm_plot.R')
-source('beeswarm_plot_1k.R')
-source('beeswarm_plot_10k.R')
-
-
-# Shadowtest: adds white around text label
-# http://stackoverflow.com/questions/25631216/r-is-there-any-way-to-put-border-shadow-or-buffer-around-text-labels-en-r-plot
-
-shadowtext <- function(x, y=NULL, labels, col='white', bg='black', 
-                       theta= seq(0, 2*pi, length.out=50), r=0.1, ... ) {
-
-    xy <- xy.coords(x,y)
-    xo <- r*strwidth('A')
-    yo <- r*strheight('A')
-
-    # draw background text with small shift in x and y in background colour
-    for (i in theta) {
-        text( xy$x + cos(i)*xo, xy$y + sin(i)*yo, labels, col=bg, ... )
-    }
-    # draw actual text in exact xy position in foreground colour
-    text(xy$x, xy$y, labels, col=col, ... )
-}
 
 
 ```
@@ -101,9 +78,19 @@ operator <- params$operator
 # Time-based Metrics
 
 
+```{r time data,  eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+time_data <- 
+        monthly_data %>%
+        select(program_name, month, total_patients, mean_mobilization, stemi_cases,
+               mean_bedside_stemi, mean_scene_stemi)
+
+```
+
+
 ## STEMI Times
 
-```{r bedside_stemi, fig.path="figures/", fig.height=8, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r bedside_stemi, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 
 main = "Average bedside time for STEMI activation patients"
@@ -117,7 +104,35 @@ main = "Average scene time for STEMI activation patients"
 ```
 
 ## Mobilization Times
+```{r mobilization, fig.cap="",  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-main = "Average Mobilization Time of the transport team"
+time_data <- filter(time_data, !is.na(time_data$mean_mobilization)) %>%
+        droplevels()
+
+progs <- levels(as.factor(time_data$program_name)) 
+
+for(i in progs) {
+        
+mobilization_data <- 
+        time_data %>%
+        filter(!is.na(mean_mobilization)) %>%
+        filter(program_name == i)
+        #filter(program_name == params$program_name)
+
+qic(y = mean_mobilization,
+    x = month,
+    data = mobilization_data,
+    chart = "run",
+    main = paste0(i, 
+                  ": Average Mobilization Time of the transport team" ),
+    ylab = "Avg minutes",
+    xlab = ""
+    
+)
+
+}
+
+```
+
 
 
