@@ -19,17 +19,15 @@ beeswarm_plot1k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
 
     program_rate_title <- " insufficient data"
 
-    scale_text <- " per 10000 "
-    x_labels <- paste0(pretty(c(0, data$num/data$den*10000, 1)), "%")
-    x_at <- pretty(c(0, data$num/data$den*10000, 1))
-    x_lim <- c(0,1)
+    scale_text <- " per 1000 "
+
 
     if(nrow(indiv_data) > 0) {
         indiv_points <-
             indiv_data %>%
             with(., prop.test(num, den))
 
-        program_rate_title <- paste0(round(indiv_points$estimate*10000,1),
+        program_rate_title <- paste0(round(indiv_points$estimate*1000,1),
                                 scale_text,
                                 " (", indiv_data$num, "/", indiv_data$den, ")")
     }
@@ -41,15 +39,15 @@ beeswarm_plot1k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
     p <- {
         #plot(1, type="n", xlab="", ylab="", xlim=c(0, 1), xts = "", yts = "" )
 
-    beeswarm(beeswarm_data$num/beeswarm_data$den*10000,
+    beeswarm(beeswarm_data$num/beeswarm_data$den*1000,
              pch=16, horizontal = TRUE,
-             xaxt = "n",
+             #xaxt = "n",
              bty = "n",
              #corral = "random",
              #corralWidth = .25,
              main = "",
              xlab = paste0("\nGAMUT Overall: ",
-                           round(sum(data$num)/sum(data$den)*10000,1),
+                           round(sum(data$num)/sum(data$den)*1000,1),
                            scale_text, " (",
                            sum(data$num), "/",
                            sum(data$den), ")",
@@ -60,22 +58,24 @@ beeswarm_plot1k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
 
     if(nrow(indiv_data) > 0) {
 
-    arrows(x0 = indiv_points$conf.int[1], y0=1.1, #1.3,
-           x1 = indiv_points$conf.int[2], y1=1.1, #1.3,
-           code = 3, angle = 90, col = "blue",
-           lwd = 2,
-           length =.1)
+     arrows(x0 = indiv_points$conf.int[1]*1000, y0=1.1, #1.3,
+            x1 = indiv_points$conf.int[2]*1000, y1=1.1, #1.3,
+            code = 3, angle = 90, col = "blue",
+            lwd = 2,
+            length =.1)
+
     points(y = 1.1, #1.3,
-           x=indiv_points$estimate*10000, pch=19, cex = 1.2, col = "blue") # add mean
+           x=indiv_points$estimate*1000, pch=19, cex = 1.2, col = "blue") # add mean
 
     # add text labels
-    text(x = indiv_points$estimate*10000,
+    text(x = indiv_points$estimate*1000,
          y = 1.30,
-         paste0("  ", round(indiv_points$estimate*10000,1),scale_text),
+         paste0(round(indiv_points$estimate*1000,1)),
+         #paste0("  ", round(indiv_points$estimate*10000,1),scale_text),
          col = "blue")
  }
 
-    overall_mean <- sum(data$num)/sum(data$den)*10000
+    overall_mean <- sum(data$num)/sum(data$den)*1000
 
     # add mean
     segments(y0 = .6, x0=overall_mean,
@@ -89,7 +89,12 @@ beeswarm_plot1k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
      }
 
 
-       #axis(1, at =  x_at, labels = x_labels, xlim = c(0,1),  las=TRUE)
+    # axis(1,
+    #      at =  pretty(c(0, data$num/data$den*10000, 1)),
+    #      labels =  paste0(pretty(c(0, data$num/data$den*10000, 1)), "%"),
+    #      xlim = c(0,1),
+    #      las=TRUE
+    # )
 
     title(main = list(paste(title), cex = 1,
                       col = "red", font = 3))

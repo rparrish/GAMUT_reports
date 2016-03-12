@@ -19,24 +19,7 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale 
 
     program_rate_title <- " insufficient data"
 
-    scale_text <- mosaic::derivedFactor(
-        "% "        = plot_scale == 100,
-        " per 1000 " = plot_scale == 1000,
-        " per 10000 " = plot_scale == 10000,
-        .default = " "
-    )
-
-    if(plot_scale == 100) {
-        x_labels <- paste0(pretty(c(0, data$num/data$den*100, 1)), "%")
-        x_at <- pretty(c(0, data$num/data$den, 1))
-        x_lim <- c(0,1)
-    }
-
-    if(plot_scale == 99) {
-            x_labels <- paste0(pretty(c(0, data$num/data$den*plot_scale)))
-            x_at <- pretty(c(0, data$num/data$den*plot_scale, plot_scale))
-            #x_lim <- NULL
-    }
+    scale_text <-  "% "
 
     if(nrow(indiv_data) > 0) {
         indiv_points <-
@@ -60,12 +43,12 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale 
              pch=16, horizontal = TRUE,
              xaxt = "n",
              bty = "n",
-             if(x_lim) {xlim = x_lim},
+             xlim = c(0,1),
              #corral = "random",
              #corralWidth = .25,
              main = "",
              xlab = paste0("\nGAMUT Overall: ",
-                           round(sum(data$num)/sum(data$den)*plot_scale,1),
+                           round(sum(data$num)/sum(data$den)*100,1),
                            scale_text, " (",
                            sum(data$num), "/",
                            sum(data$den), ")",
@@ -85,11 +68,16 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale 
            x=indiv_points$estimate, pch=19, cex = 1.2, col = "blue") # add mean
 
     # add text labels
-    text(x = indiv_points$estimate,
+    shadowtext(x = indiv_points$estimate,
          y = 1.30,
-         paste0("  ", round(indiv_points$estimate*plot_scale,1),scale_text),
-         col = "blue")
+         paste0("  ", round(indiv_points$estimate*100,1),scale_text),
+         col = "blue",
+         bg = "white",
+         cex = 1,
+         r = 0.2)
  }
+
+       # shadowtext(5/6, 5/6, "Test 4", col="black", bg="white", cex=4, r=0.2)
 
     overall_mean <- sum(data$num)/sum(data$den)
 
@@ -106,11 +94,10 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale 
 
 
        axis(1,
-            at = if(!is.na(x_at)) x_at,
-            labels = x_labels,
-           xlim = c(0,1),
-
-            las=TRUE)
+            labels = paste0(pretty(c(0, data$num/data$den*100)), "%"),
+            at     = pretty(c(0, data$num/data$den, 1)),
+            xlim   = c(0,1),
+            las    = TRUE)
 
     title(main = list(paste(title), cex = 1,
                       col = "red", font = 3))
