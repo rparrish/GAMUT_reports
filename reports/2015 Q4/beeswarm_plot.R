@@ -10,7 +10,7 @@
 #' @export
 
 
-beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
+beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale = 100, ...)  {
     beeswarm_data <- filter(data, den >=5)
 
     indiv_data <-
@@ -19,14 +19,22 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
 
     program_rate_title <- " insufficient data"
 
+    scale_text <- mosaic::derivedFactor(
+        "% "        = plot_scale == 100,
+        " per 1000 " = plot_scale == 1000,
+        " per 10000 " = plot_scale == 10000,
+        .default = " "
+    )
+
     if(nrow(indiv_data) > 0) {
         indiv_points <-
             indiv_data %>%
             with(., prop.test(num, den))
 
-        program_rate_title <-
-            paste0(round(indiv_points$estimate,3)*100,
-                   "% (", indiv_data$num, "/", indiv_data$den, ")")
+        program_rate_title <- paste0(round(indiv_points$estimate*plot_scale,1),
+                                scale_text,
+                                " (", indiv_data$num, "/", indiv_data$den, ")")
+
     }
 
     par(mar = c(5.1,2,2.0,3.1))
@@ -38,15 +46,15 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
 
     beeswarm(beeswarm_data$num/beeswarm_data$den,
              pch=16, horizontal = TRUE,
-             xaxt = "n",
+             #xaxt = "n",
              bty = "n",
-             dlim = c(0,1),
+             #dlim = c(0,1),
              #corral = "random",
              #corralWidth = .25,
              main = "",
              xlab = paste0("\nGAMUT Overall: ",
-                           round(sum(data$num)/sum(data$den)*100,1),
-                           "%", " (",
+                           round(sum(data$num)/sum(data$den)*plot_scale,1),
+                           scale_text, " (",
                            sum(data$num), "/",
                            sum(data$den), ")",
                            "\nProgram rate: ", program_rate_title),
@@ -65,7 +73,9 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
            x=indiv_points$estimate, pch=19, cex = 1.2, col = "blue") # add mean
 
     # add text labels
-    text(x = indiv_points$estimate, y = 1.30, paste0("  ", round(indiv_points$estimate,3)*100,"%"),
+    text(x = indiv_points$estimate,
+         y = 1.30,
+         paste0("  ", round(indiv_points$estimate*plot_scale,1),scale_text),
          col = "blue")
  }
 
@@ -79,12 +89,13 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", ...)  {
 
 
 
-    axis(1, at=pretty(c(0, data$num/data$den, 1)),
-         lab=paste0(pretty(c(0, data$num/data$den,1)) * 100, "%"),
-         xlim = c(0,1),
-
-         las=TRUE)
-    }
+    # axis(1,
+    #      at=pretty(c(data$num/data$den)),
+    #      lab=paste0(pretty(c(data$num/data$den)),
+    #      #xlim = c(0,1),
+    #
+    #      las=TRUE)
+     }
 
     title(main = list(paste(title), cex = 1,
                       col = "red", font = 3))
