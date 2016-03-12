@@ -19,7 +19,7 @@ beeswarm_plot10k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
 
     program_rate_title <- " insufficient data"
 
-    scale_text <- " per 10000 "
+    scale_text <- ""
 
 
     if(nrow(indiv_data) > 0) {
@@ -68,9 +68,9 @@ beeswarm_plot10k <- function(data = NULL, title = "GAMUT Metric title", ...)  {
            x=indiv_points$estimate*10000, pch=19, cex = 1.2, col = "blue") # add mean
 
     # add text labels
-    shadowtext(x = indiv_points$estimate,
+    shadowtext(x = indiv_points$estimate*10000,
          y = 1.30,
-         paste0("  ", round(indiv_points$estimate*100,1),scale_text),
+         paste0("  ", round(indiv_points$estimate*10000,1),scale_text),
          col = "blue",
          bg = "white",
          cex = 1,

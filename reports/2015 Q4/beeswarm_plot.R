@@ -74,7 +74,7 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale 
          col = "blue",
          bg = "white",
          cex = 1,
-         r = 0.2)
+         r = 0.4)
  }
 
        # shadowtext(5/6, 5/6, "Test 4", col="black", bg="white", cex=4, r=0.2)
