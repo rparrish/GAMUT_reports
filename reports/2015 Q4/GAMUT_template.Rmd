@@ -3,14 +3,14 @@ title: "GAMUT 2015 Summary Report"
 author: ''
 date: '`r paste(params$program_name)`'
 output:
-  html_document:
-    toc: yes
-  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
     toc: yes
+  html_document:
+    toc: yes
+  fontsize: 11pt
 params:
   dag: Akron Childrens
   end_date: '2016-01-01'
