@@ -105,6 +105,12 @@ operator <- params$operator
 ```{r interpreting graphs, child='interpreting.Rmd'}
 ```
 
+\newpage 
+
+```{r overview, child='overview.Rmd'}
+```
+
+
 \newpage  
 
 # Advanced Airway Metrics
