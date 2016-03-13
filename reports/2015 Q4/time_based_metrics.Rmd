@@ -5,14 +5,7 @@
 
 # Time-based Metrics
 
-```{r time data,  eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-time_data <- 
-        monthly_data %>%
-        select(program_name, month, total_patients, mean_mobilization, stemi_cases,
-               mean_bedside_stemi, mean_scene_stemi)
-
-```
 
 ```{r bedside_stemi, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
@@ -82,16 +75,7 @@ qic(y = mean_scene_stemi,
 ```
 
 ## Mobilization Times
-```{r mobilization, fig.cap="",  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-time_data <- 
-        monthly_data %>%
-        select(program_name, month, total_patients, mean_mobilization, stemi_cases,
-               mean_bedside_stemi, mean_scene_stemi)
-
-
-time_data <- filter(time_data, !is.na(time_data$mean_mobilization)) %>%
-        droplevels()
+```{r mobilization, fig.height = 3, fig.cap="",  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 #progs <- levels(as.factor(time_data$program_name)) 
 
@@ -100,6 +84,7 @@ time_data <- filter(time_data, !is.na(time_data$mean_mobilization)) %>%
 mobilization_data <- 
         time_data %>%
         filter(!is.na(mean_mobilization)) %>%
+        droplevels() %>%
         #filter(program_name == i)
         filter(program_name == params$program_name)
 

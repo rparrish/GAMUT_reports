@@ -58,14 +58,16 @@ overview$total_contacts <-
 
 ```
 
-## Overview
+# Overview
 
 - `r overview$enrolled` Total programs enrolled
 - `r overview$partial` New programs (partial data during past 12 months)
 - `r overview$full` Established programs (data for all 12 months)
 - `r overview$total_contacts` Total patient contacts (12 months)
+- Data as of:  `r GAMUT_date_loaded`
 
-```{r participant months}
+
+```{r participant months, out.height = "2in"}
 
 participant_months <- 
         monthly_data %>%

@@ -8,12 +8,21 @@ output: pdf_document
 
 ## Interpreting the graphs
 
-The graphs in this report have been modified due to an increase in the number of participants that are submitting data. Each graph shows the rate for your program, the overall GAMUT rate and the distribution of the other participants. 
+The graphs in this report have been modified due to an increase in the number of participants that are submitting data. There are two styles of graphs:  
+
+ - __Benchmark graphs__  Each graph shows the rate for your program, the overall GAMUT rate and the distribution of the other participants. 
+ - __Run charts__ Each graph shows the reported metric data by month. Used in the 'Mobilization Time' metric and will be used for all metrics in future versions of the GAMUT summary report.
+
+### Benchmark Graphs  
+
+![alt text](figures/example.png) 
 
 The blue dot and horizontal bar represents your program rate and the 95\% confidence interval. The vertical dashed line shows the overall combined rate across all GAMUT participants. When the blue horizontal bar crosses the vertical line, this indicates that your program rate is not significantly different than the overall rate. The black dots indicate the estimated rate for each program that submitted data. Only programs that submitted a total of at least 5 cases in the metric denominator for the year are included in the graphs.
 
 In the example below, waveform capnography is shown for the three age groups. In the first graph, the program is significantly lower than the overall GAMUT rate and there is great variation among programs. In the second graph, the program is not significantly different from the overall GAMUT rate and most programs are clustered between 90 - 100\%. In the third graph, the program did not submit at least 5 cases in the denominator for the year and most participants are clustered even closer to 100\%. 
 
-![alt text](figures/example.png) 
 
+### Run Charts
+
+![alt text](figures/example_runchart.png)  ![alt text](figures/example_runchart2.png)   
 

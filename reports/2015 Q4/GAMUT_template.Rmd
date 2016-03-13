@@ -3,19 +3,19 @@ title: "GAMUT 2015 Summary Report"
 author: ''
 date: '`r paste(params$program_name)`'
 output:
-  html_document:
-    toc: yes
-  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
     toc: yes
+  html_document:
+    toc: yes
+  fontsize: 11pt
 params:
   dag: Akron Childrens
   end_date: '2016-01-01'
   operator: ''
-  program_name: Akron Childrens
+  program_name: Childrens Hospital Philadelphia
   start_date: '2015-01-01'
 ---
 
@@ -48,7 +48,14 @@ source('shadowtext.R')
 #GAMUT_data("GAMUT.Rdata")
 load("GAMUT.Rdata")
 
-# Filter 
+## time data
+time_data <- 
+        monthly_data %>%
+        select(program_name, month, total_patients, mean_mobilization, stemi_cases,
+               mean_bedside_stemi, mean_scene_stemi) %>%
+    filter(month < params$end_date)
+
+# Filter past 12 months 
 monthly_data <- filter(monthly_data,
                        month >= params$start_date & 
                        month < params$end_date)
@@ -78,16 +85,17 @@ operator <- params$operator
 \end{center}  
 
 
-```{r introduction, child='introduction.Rmd', eval = FALSE}
+```{r introduction, child='introduction.Rmd', eval = TRUE}
 ```
 
 
 \newpage  
 
-```{r interpreting graphs, child='interpreting.Rmd', eval=FALSE}
+```{r interpreting graphs, child='interpreting.Rmd', eval=TRUE}
 ```
 
 \newpage 
+
 
 ```{r overview, child='overview.Rmd'}
 ```
@@ -683,7 +691,7 @@ beeswarm_plot10k(plotData,
 
 \newpage  
 
-```{r introduction, child='time_based_metrics.Rmd'}
+```{r time_based, child='time_based_metrics.Rmd'}
 ```
 
 
