@@ -2,26 +2,40 @@
 title: "introduction"
 author: "Rollie Parrish"
 date: "March 12, 2016"
-output: pdf_document
+output: html_document
 ---
 
 
 ## Introduction   
 
-Dear Colleagues,  
+Dear Colleagues,
 
-It is an exciting time for the field of critical care transport and for the GAMUT (Ground and Air Medical qUality in Transport) Database.  Most of you are aware that the GAMUT Database was born out of the commitment by the American Academy of Peditatrics - Section on Transport Medicine (AAP-SOTM) and the Air Medical Physician Association (AMPA) to continually improve the quality of transport care for infants, children, and adults.  
+It’s been six months since our last summary report of GAMUT (Ground and Air Medical qUality in Transport) Collaborative data and GAMUT Database users group meeting – and the energy around GAMUT and the quality improvement that GAMUT has spawned has been remarkable.  
 
-Some of you may also know that the GAMUT Database has just celebrated its 1st birthday.  During that year, the GAMUT Database has seen over 100 transport programs register and over 100,000 patient contacts cataloged.  Not dissimilar from a baby learning to crawl and eventually walk around its 1st birthday, the GAMUT database is developing and maturing after turning one.  
+For some, this will be the first GAMUT report you’ll receive on behalf of your transport program.  For others, this will be the 3rd or 4th summary report.  Whether you’re new to the GAMUT family or a longtime partner, we welcome you and thank you for your commitment to measuring and reporting the quality of care delivered to your patients.
 
-We've developed a GAMUT database oversight committee - consisting of AMPA, AAP-SOTM, and other stakeholders.  That group will help guide the project as it grows -- and more importantly as strides are made around quality improvement projects.  We've begun to embark on a number of projects leveraging the data to drive improvement: one project focusing on neonatal and pediatric waveform capnography and another focusing on pediatric pain assessment.  We are exploring opportunities for leveraging improvement work for Maintenance of Certification requirements amongst some subspecialty boards.  We are initiating the steps in gaining National Quality Foundation endorsement for the quality metrics.  
+Most of you are aware that the GAMUT Database was born out of the commitment by the
+American Academy of Pediatrics - Section on Transport Medicine (AAP-SOTM) and the Air Medical Physician Association (AMPA) continually to improve the quality of transport care for infants, children, and adults.  The key simple tenants of the GAMUT Collaborative are as follows:  measure, report, and improve.  
 
-Most importantly, we've identified two priorities for 2015-16.  First, the GAMUT database oversight committee wants to focus on the product delivered to you -- the database participants.  We want to ensure accurate, timely, and useful data returned to transport programs to permit programs to benchmark against their industry peers.  We're exploring dashboard and run chart software options -- though those won`t be immediately ready.  Second, the oversight committee is focusing on funding opportunities to ensure sustainability and infrastructure to support the quality improvement work that will develop once we gain awareness of our performance around these consensus quality metrics.  
+The growth of the GAMUT Database has been steady – with now over `r pi + 3` programs enrolled and over `r pi` patient contacts cataloged.  The GAMUT QI Collaborative oversight committee - consisting of AMPA, AAP-SOTM, and other stakeholders, has been actively guiding growth of the Database and QI Collaborative. This group has helped facilitate new studies using the database, discussions around data protection, and metric re-evaluation and improvement.  
 
-In reviewing your program's performance on the attached data, please consider how your program`s performance compares to other programs.  Please gather your questions, use the Data Managers Google Group for additional thoughts, and mark your calendars for a GAMUT users webinar on April 20 at 10:30 AM Eastern (7:30 AM Pacific).  Details will be distributed via the Google Group.  
+Excitedly, we and many others have begun to embark on a number of projects leveraging the data to drive improvement.  We’ve become aware of numerous local and large scale improvement initiatives to address the following topics: neonatal and pediatric waveform capnography, pain assessment, neonatal hypothermia, out-the-door times, unplanned dislodgement of therapeutic devices, improved use of mechanical ventilation in patients with advanced airways, and improved verification of blood glucose in patients with altered mental status.   We have been able to gain endorsement of the improvement work around waveform capnography with its approval by the AAP for Maintenance of Certification Credit for Pediatric and Pediatric subspecialty board certification.
 
-On behalf of the GAMUT database oversight committee,  
+We identified two priorities for the GAMUT Collaborative in 2015-16.  First, you’ll recall, the GAMUT QI Collaborative oversight committee was acutely focused on the quality of the product delivered to you. We continue to be focused on the accuracy, timeliness, and usefulness of data returned to transport programs to allow programs to benchmark against their industry peers.  You’ll hopefully see from this report – and updates at the upcoming user group meeting, that we’ve made progress.  The report included here addresses a more visually appealing view, and has eliminated those participants with fewer than 5 patient contacts reported in any one category.  This should streamline your view, and keep programs reporting only a few patient contacts in a certain category from grossly skewing results.  
 
+<img style="float: right;" src="figures/example.png">
+Second, specifically addressing the desire for run charts to help measure improvement over time – I’ve included a sample of the progress that’s been made possible through extramural funding to help us evolve into a web-based, user-friendly dashboard.  I’m cautious to overstate a goal, but it’s very possible that by this fall we’ll be up and running with this type of dashboard.
+
+
+The GAMUT QI Collaborative oversight committee prioritized the need for funding to ensure sustainability and infrastructure to support the quality improvement work ahead.  I’m happy to report that there have been several generous grants received that have helped solidify the GAMUT QI Collaborative’s work.  Akron Children’s Hospital Foundation, Cincinnati Children’s Division of Emergency Medicine, Laerdal Foundation for Acute Medicine, and the MedEvac Foundation. This will continue to improve the timeliness and accuracy of the product the QI Collaborative uses for improvement activities. It will also improve the infrastructure to facilitate initiating improvement projects across the collaborative.  This growth is exciting and moves us closer to the goal of improved care for our patients.  
+
+In closing, your program’s performance is outlined in a slightly new format on the attached pages.  Please consider how your program’s performance compares to other programs. 
+
+Please also gather your questions for discussion.  As always, the Data Managers Google Group is a useful venue for discussion.  Also, on the morning of April 11, 2016 – we’ll be hosting an in-person and virtual user’s group meeting for the GAMUT QI Collaborative – tentatively set for 1030 AM (EST).  Webex call-in specifics and room-assignment will follow in a separate communication.
+
+Lastly, this report cannot be concluded without a very special thanks to Rollie Parrish.  If not for Rollie’s technical and quality improvement expertise, combined with his passion for transport, this project wouldn’t be where it is today.  Thank you Rollie.
+
+Respectfully submitted on behalf of the GAMUT Database and QI Collaborative oversight committee,
 
 
    Michael T. Bigham, MD, FAAP, FCCM  

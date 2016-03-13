@@ -95,6 +95,7 @@ operator <- params$operator
 
 \end{center}  
 
+
 ```{r introduction, child='introduction.Rmd'}
 ```
 
