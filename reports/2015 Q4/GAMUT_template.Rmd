@@ -41,7 +41,7 @@ source('beeswarm_plot_1k.R')
 source('beeswarm_plot_10k.R')
 
 
-# Shadowtest: adds white around text label
+# Shadowtext: adds white around text label
 # http://stackoverflow.com/questions/25631216/r-is-there-any-way-to-put-border-shadow-or-buffer-around-text-labels-en-r-plot
 
 shadowtext <- function(x, y=NULL, labels, col='white', bg='black', 
