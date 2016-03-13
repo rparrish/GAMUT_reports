@@ -3,14 +3,14 @@ title: "GAMUT 2015 Summary Report"
 author: ''
 date: '`r paste(params$program_name)`'
 output:
+  html_document:
+    toc: yes
+  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
     toc: yes
-  html_document:
-    toc: yes
-  fontsize: 11pt
 params:
   dag: Akron Childrens
   end_date: '2016-01-01'
@@ -29,6 +29,7 @@ library(magrittr)
 library(GAMUT)
 library(zoo)
 library(beeswarm)
+library(qicharts)
 
 
 options(scipen = 10)
@@ -486,71 +487,6 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r bedside_stemi, fig.path="figures/", fig.height=8, eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-bedside_stemi_data <-
-    bedside_monthly_data %>%
-    #filter(stemi_cases > 0 & mean_bedside_stemi > 0) %>%
-    mutate(overall_bedside_stemi = weighted.mean(mean_bedside_stemi, stemi_cases, na.rm = TRUE)) %>%
-    mutate(overall_scene_stemi = weighted.mean(mean_scene_stemi, stemi_cases, na.rm = TRUE)) %>%
-    group_by(program_name) %>%
-    mutate(wm_bedside_stemi = weighted.mean(mean_bedside_stemi, stemi_cases, na.rm = TRUE)) %>%
-    mutate(wm_scene_stemi = weighted.mean(mean_scene_stemi, stemi_cases, na.rm = TRUE)) %>%
-    group_by(program_name, ID) %>%
-    summarize(total_stemi_cases = sum(stemi_cases),
-              total_wm_bedside_stemi = round(mean(wm_bedside_stemi),2),
-              total_wm_scene_stemi = round(mean(wm_scene_stemi),2),
-              overall_bedside_stemi = round(mean(overall_bedside_stemi),2),
-              overall_scene_stemi = round(mean(overall_scene_stemi),2)) %>%
-    select(program_name:ID, total_stemi_cases, total_wm_bedside_stemi, overall_bedside_stemi,
-           total_wm_scene_stemi, overall_scene_stemi)
-
-
-metric.table <- plot_metrics_wm(
-                             program_name = bedside_stemi_data$program_name,
-                             wavg = bedside_stemi_data$total_wm_bedside_stemi,
-                             rate_overall= bedside_stemi_data$overall_bedside_stemi,
-                             num = sum(bedside_stemi_data$total_stemi_cases),
-                             reordering="decreasing",
-                             qlabel="Weighted average* time in minutes"
-                             )
-metric.table$main = "Average bedside time for STEMI activation patients"
-metric.table
-
-```
-
-```{r scene_stemi, fig.cap="",  fig.path="figures/", fig.height=10, eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-scene_stemi_data <-
-    monthly_data %>%
-    filter(stemi_cases > 0 & mean_scene_stemi > 0) %>%
-    mutate(overall_bedside_stemi = weighted.mean(mean_bedside_stemi, stemi_cases, na.rm = TRUE)) %>%
-    mutate(overall_scene_stemi = weighted.mean(mean_scene_stemi, stemi_cases, na.rm = TRUE)) %>%
-    group_by(program_name) %>%
-    mutate(wm_bedside_stemi = weighted.mean(mean_bedside_stemi, stemi_cases, na.rm = TRUE)) %>%
-    mutate(wm_scene_stemi = weighted.mean(mean_scene_stemi, stemi_cases, na.rm = TRUE)) %>%
-    group_by(program_name, ID) %>%
-    summarize(total_stemi_cases = sum(stemi_cases),
-              total_wm_bedside_stemi = round(mean(wm_bedside_stemi),2),
-              total_wm_scene_stemi = round(mean(wm_scene_stemi),2),
-              overall_bedside_stemi = round(mean(overall_bedside_stemi),2),
-              overall_scene_stemi = round(mean(overall_scene_stemi),2)) %>%
-    select(program_name:ID, total_stemi_cases, total_wm_bedside_stemi, overall_bedside_stemi,
-           total_wm_scene_stemi, overall_scene_stemi)
-
-metric.table <- plot_metrics_wm(
-                             program_name = scene_stemi_data$program_name,
-                             wavg = scene_stemi_data$total_wm_scene_stemi,
-                             rate_overall= scene_stemi_data$overall_scene_stemi,
-                             num = sum(scene_stemi_data$total_stemi_cases),
-                             reordering="decreasing",
-                             qlabel="Weighted average* time in minutes"
-                             )
-metric.table$main = "Average scene time for STEMI activation patients"
-metric.table
-
-```
-
 
 ```{r ecg_stemi, include=TRUE,fig.height=2.5,   fig.path="figures/",  height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
@@ -755,3 +691,10 @@ beeswarm_plot10k(plotData,
 )
 
 ```
+
+\newpage  
+
+```{r introduction, child='time_based_metrics.Rmd'}
+```
+
+

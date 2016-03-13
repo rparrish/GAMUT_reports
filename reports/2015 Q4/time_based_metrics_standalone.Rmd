@@ -1,9 +1,82 @@
 ---
-
+title: "GAMUT 2015 Summary Report"
+author: ''
+date: '`r paste(params$program_name)`'
+output:
+  html_document:
+    toc: no
+  fontsize: 11pt
+  pdf_document:
+    highlight: tango
+    includes:
+      in_header: header.tex
+    toc: no
+params:
+  dag: Akron Childrens
+  end_date: '2016-01-01'
+  operator: ''
+  program_name: Childrens Hospital Philadelphia
+  start_date: '2015-01-01'
 ---
 
 
+```{r initial_setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(REDCapR)
+library(knitr)
+library(plyr)
+library(dplyr)
+library(magrittr)
+library(GAMUT)
+library(zoo)
+library(beeswarm)
+library(qicharts)
+
+
+options(scipen = 10)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, comment = "")
+
+
+```
+```{r load_data}
+# Uncomment next line to get new data from REDCap
+#GAMUT_data("GAMUT.Rdata")
+load("GAMUT.Rdata")
+
+# Filter 
+monthly_data <- filter(monthly_data,
+                       month >= params$start_date & 
+                       month < params$end_date)
+
+dag <- params$dag
+operator <- params$operator
+
+```
+
+\pagestyle{fancy}
+\fancyheadoffset{0cm}
+\rhead{}
+\lhead{`r dag`}
+\chead{GAMUT 2015 Summary Report}
+\cfoot{Confidential report for quality improvement purposes}
+\fancyfoot[LE,RO]{\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\thispagestyle{empty}
+\begin{center}
+%\Large{`r paste(dag, ifelse(operator == "AIM", "Air Methods", ""))`}
+\vfill
+`r paste("Report generated on ", Sys.Date())`
+
+\end{center}  
+
+
+
+\newpage  
+
 # Time-based Metrics
+
 
 ```{r time data,  eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
@@ -13,6 +86,9 @@ time_data <-
                mean_bedside_stemi, mean_scene_stemi)
 
 ```
+
+
+## STEMI Times
 
 ```{r bedside_stemi, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
