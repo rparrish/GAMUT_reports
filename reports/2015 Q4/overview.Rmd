@@ -2,29 +2,84 @@
 title: "overview"
 author: "Rollie Parrish"
 date: "March 12, 2016"
-output: pdf_document
+output: html_document
+params:
+  dag: Akron Childrens
+  end_date: '2016-01-01'
+  operator: ''
+  program_name: Akron Childrens
+  start_date: '2015-01-01'
+
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(GAMUT)
+
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+```{r overview data}
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+load("GAMUT.Rdata")
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Filter 
+monthly_data <- filter(monthly_data,
+                       month >= params$start_date & 
+                       month < params$end_date)
 
-```{r cars}
-summary(cars)
+overview <- list()
+
+overview$enrolled <- 
+        redcap_data %>%
+        with(., levels(as.factor(program_name))) %>%
+        length()
+
+overview$partial <- 
+        monthly_data %>%
+        group_by(program_name, month) %>%
+        group_by(program_name) %>%
+        dplyr::summarise(n = n()) %>%
+        filter(n < 12) %>%
+        nrow()
+
+overview$full <- 
+        monthly_data %>%
+        group_by(program_name, month) %>%
+        group_by(program_name) %>%
+        dplyr::summarise(n = n()) %>%
+        filter(n == 12) %>%
+        nrow()
+
+overview$total_contacts <- 
+        monthly_data %>%
+        with(., sum(total_patients))
+
+
 ```
 
-## Including Plots
+## Overview
 
-You can also embed plots, for example:
+- `r overview$enrolled` Total programs enrolled
+- `r overview$partial` New programs (partial data during past 12 months)
+- `r overview$full` Established programs (data for all 12 months)
+- `r overview$total_contacts` Total patient contacts (12 months)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r participant months}
+
+participant_months <- 
+        monthly_data %>%
+        group_by(program_name, month) %>%
+        group_by(program_name) %>%
+        dplyr::summarise(n = n()) 
+
+par(mar=c(5,6,4,2))
+hist(participant_months$n, 
+     xlab = "Number of months with data",
+     ylab = "count of programs",
+     main = "Distribution of programs \nby number of months with data",
+     
+     las = 1)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
