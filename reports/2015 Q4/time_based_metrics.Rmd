@@ -74,7 +74,6 @@ qic(y = mean_scene_stemi,
 
 ```
 
-## Mobilization Times
 ```{r mobilization, fig.height = 3, fig.cap="",  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 #progs <- levels(as.factor(time_data$program_name)) 
@@ -86,8 +85,21 @@ mobilization_data <-
         filter(!is.na(mean_mobilization)) %>%
         droplevels() %>%
         #filter(program_name == i)
-        filter(program_name == params$program_name)
+        filter(program_name == program)
+        
+```
 
+## Mobilization Times  
+
+_`r if(nrow(mobilization_data) < 10) 'insufficient data'`_
+
+```{r mobilization runchart}
+
+
+## build chart if at least 10 data points
+if(nrow(mobilization_data) >= 10) {
+        
+        
 qic(y = mean_mobilization,
     x = month,
     data = mobilization_data,
@@ -97,6 +109,8 @@ qic(y = mean_mobilization,
     xlab = ""
     
 )
+
+}
 
 #}
 
