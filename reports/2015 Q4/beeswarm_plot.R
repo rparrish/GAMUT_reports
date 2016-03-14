@@ -10,12 +10,12 @@
 #' @export
 
 
-beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", plot_scale = 100, ...)  {
+beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", program = program_name, plot_scale = 100, ...)  {
     beeswarm_data <- filter(data, den >=5)
 
     indiv_data <-
         beeswarm_data %>%
-        filter(program_name == params$program_name)
+        filter(program_name == program)
 
     program_rate_title <- " insufficient data"
 

@@ -1,17 +1,22 @@
 ---
 title: "GAMUT 2015 Summary Report"
 author: ''
-date: '`r paste(params$program_name)`'
+date: '`r paste(program_name)`'
 output:
+  html_document:
+    toc: yes
+  fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
     toc: yes
-  html_document:
-    toc: yes
-  fontsize: 11pt
-
+params:
+  program_name: ""
+  start_date: ""
+  end_date: ""
+  dag: ""
+  operator: ""
 ---
 
 
@@ -38,7 +43,7 @@ source('shadowtext.R')
 
 
 ```
-```{r load_data}
+```{r load_data, eval = FALSE}
 # Uncomment next line to get new data from REDCap
 #GAMUT_data("GAMUT.Rdata")
 load("GAMUT.Rdata")
@@ -55,15 +60,16 @@ monthly_data <- filter(monthly_data,
                        month >= params$start_date & 
                        month < params$end_date)
 
-dag <- params$dag
+dag <- program_name
 operator <- params$operator
+program_name <- params$program_name
 
 ```
 
 \pagestyle{fancy}
 \fancyheadoffset{0cm}
 \rhead{}
-\lhead{`r dag`}
+\lhead{`r program_name`}
 \chead{GAMUT 2015 Summary Report}
 \cfoot{Confidential report for quality improvement purposes}
 \fancyfoot[LE,RO]{\thepage}
@@ -101,8 +107,7 @@ operator <- params$operator
 # Advanced Airway Metrics
 ## Ventilator utilization
 
-```{r vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
-
+```{r vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
 plotData <- pd(dag=dag, 
                num="adv_airway_ventilator",
                den="adv_airway_cases"
@@ -116,9 +121,9 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r neo_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r neo_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag, 
+plotData <- pd(dag = dag,
                num="neo_adv_airway_vent",
                den="neo_adv_airway_cases"
                )
@@ -133,7 +138,7 @@ beeswarm_plot(plotData,
 
 ```{r ped_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag, 
+plotData <- pd(dag=dag,
                num="ped_adv_airway_vent",
                den="ped_adv_airway_cases"
                )

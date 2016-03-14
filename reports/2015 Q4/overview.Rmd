@@ -3,12 +3,6 @@ title: "overview"
 author: "Rollie Parrish"
 date: "March 12, 2016"
 output: html_document
-params:
-  dag: Akron Childrens
-  end_date: '2016-01-01'
-  operator: ''
-  program_name: Akron Childrens
-  start_date: '2015-01-01'
 
 ---
 
@@ -19,14 +13,14 @@ library(GAMUT)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r overview data}
+```{r overview data, eval = TRUE}
 
-load("GAMUT.Rdata")
+#load("GAMUT.Rdata")
 
 # Filter 
-monthly_data <- filter(monthly_data,
-                       month >= params$start_date & 
-                       month < params$end_date)
+ # monthly_data <- filter(monthly_data,
+ #                        month >= params$start_date & 
+ #                        month < params$end_date)
 
 overview <- list()
 
