@@ -118,7 +118,7 @@ program_name <- params$program_name
 # Advanced Airway Metrics
 ## Ventilator utilization
 
-```{r vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
+```{r vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
 plotData <- pd(dag=dag, 
                num="adv_airway_ventilator",
                den="adv_airway_cases"
@@ -132,7 +132,7 @@ beeswarm_plot(plotData,
 ```
 
 
-```{r neo_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r neo_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 plotData <- pd(dag = dag,
                num="neo_adv_airway_vent",
