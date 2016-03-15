@@ -61,7 +61,7 @@ overview$total_contacts <-
 - Data as of:  `r GAMUT_date_loaded`
 
 
-```{r participant months, out.height = "3in"}
+```{r participant months, out.height = "3in", fig.align="center"}
 
 participant_months <- 
         monthly_data %>%
