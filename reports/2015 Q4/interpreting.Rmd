@@ -24,11 +24,13 @@ In the examples above, waveform capnography is shown for the three age groups wi
 
 ### Run Charts
 
-![alt text](figures/examples/example_runchart.png)  ![alt text](figures/examples/example_runchart2.png)   
+\centering
+![alt text](figures/examples/example_runchart.png)    
+\raggedright
 
 The blue dots represent the monthly average times for that metric. The center line (CL) is the median of the monthly averages, so half of the data points are above the median and half are below. A dashed yellow line indicates that there is non-random pattern, which may be due to improvement initiatives or degredation of the process. Non-random patterns include 6 or more points on either side of the median, or fewer crossings of the median line than expected. Ideally, there should be at least 12 points in a run chart to be useful. 
 
-In the example above, transport team mobilization times are shown for two different programs. On the left, the program has a non-random decrease in mobilization times, which may be the result of an improvement initiative or some other cause. On the right, there may be a seasonal pattern. 
+In the example above, there is a decrease in mobilization times, which may be the result of an improvement initiative or some other cause. 
 
 The Quality Improvement Hub by NHS Scotland is a great resource with additional details on how to interpret Run Charts:
 

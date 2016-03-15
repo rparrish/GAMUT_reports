@@ -25,8 +25,11 @@ We identified two priorities for the GAMUT Collaborative in 2015-16.  First, you
 
 Second, specifically addressing the desire for run charts to help measure improvement over time - I've included a sample of the progress that's been made possible through extramural funding to help us evolve into a web-based, user-friendly dashboard.  I'm cautious to overstate a goal, but it's very possible that by this fall we'll be up and running with this type of dashboard.
 
-![alt text](figures/examples/example_dashboard.png)  ![alt text](figures/examples/example_dashboard2.png) 
+\centering
 
+![alt text](figures/examples/example_dashboard.png)  
+
+\raggedright
 
 The GAMUT QI Collaborative oversight committee prioritized the need for funding to ensure sustainability and infrastructure to support the quality improvement work ahead.  I'm happy to report that there have been several generous grants received that have helped solidify the GAMUT QI Collaborative's work.  Akron Children's Hospital Foundation, Cincinnati Children's Division of Emergency Medicine, Laerdal Foundation for Acute Medicine, and the MedEvac Foundation. This will continue to improve the timeliness and accuracy of the product the QI Collaborative uses for improvement activities. It will also improve the infrastructure to facilitate initiating improvement projects across the collaborative.  This growth is exciting and moves us closer to the goal of improved care for our patients.  
 
@@ -47,7 +50,6 @@ Respectfully submitted on behalf of the GAMUT Database and QI Collaborative over
    Medical Director, Transport Services  
    Assistant Patient Safety Officer  
    Clinical Assistant Professor, NEOMED  
-
    mbigham@chmca.org  
    
 
