@@ -7,7 +7,7 @@
 
 
 
-```{r bedside_stemi, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+```{r bedside_stemi, fig.height = 3, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
 time_data <- filter(time_data, !is.na(time_data$mean_bedside_stemi)) %>%
         droplevels()
@@ -93,7 +93,7 @@ mobilization_data <-
 
 _`r if(nrow(mobilization_data) < 10) 'insufficient data'`_
 
-```{r mobilization runchart}
+```{r mobilization runchart, fig.height = 3}
 
 
 ## build chart if at least 10 data points
