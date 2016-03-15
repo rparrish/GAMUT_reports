@@ -83,9 +83,8 @@ program_name <- params$program_name
 \begin{center}
 %\Large{`r #paste(dag, ifelse(operator == "AIM", "Air Methods", ""))`}
 \vfill
-`r paste("Report generated on ", Sys.Date())`
+`r paste("Report produced on ", Sys.Date()), "\n with support from")`
 
-with support from 
 \end{center}  
 
 \centering
