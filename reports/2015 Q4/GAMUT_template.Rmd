@@ -69,7 +69,7 @@ program_name <- params$program_name
 
 \pagestyle{fancy}
 \fancyheadoffset{0cm}
-\
+
 \rhead{}
 \lhead{`r program_name`}
 \chead{GAMUT 2015 Summary Report}
@@ -89,7 +89,7 @@ with support from
 \end{center}  
 
 \centering
-![](figures/examples/example_runchart.png)
+![](sponsors.png)
 
 \raggedright
 
