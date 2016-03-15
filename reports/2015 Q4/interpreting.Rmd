@@ -10,8 +10,8 @@ output: pdf_document
 
 The graphs in this report have been modified due to an increase in the number of participants that are submitting data. There are two styles of graphs:  
 
- - __Benchmark graphs__  Each graph shows the rate for your program, the overall GAMUT rate and the distribution of the other participants. 
- - __Run charts__ Each graph shows a line graph of the reported metric data by month. Used in the 'Mobilization Time' metric and will be used for all metrics in future versions of the GAMUT summary report.
+ - __Benchmark graphs__  Each graph shows the rolling 12 month average rate for your program, the overall GAMUT rate and the distribution of the other participants. 
+ - __Run charts__ Each graph shows a line graph of the reported metric data by month. Used in the 'Mobilization Time' metric and will be used for all metrics in future versions of the GAMUT summary report. Only generated if there are at least 10 data points. 
 
 ### Benchmark Graphs  
 
