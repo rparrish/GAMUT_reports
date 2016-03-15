@@ -26,6 +26,7 @@ In the examples above, waveform capnography is shown for the three age groups wi
 
 \centering
 ![alt text](figures/examples/example_runchart.png)    
+
 \raggedright
 
 The blue dots represent the monthly average times for that metric. The center line (CL) is the median of the monthly averages, so half of the data points are above the median and half are below. A dashed yellow line indicates that there is non-random pattern, which may be due to improvement initiatives or degredation of the process. Non-random patterns include 6 or more points on either side of the median, or fewer crossings of the median line than expected. Ideally, there should be at least 12 points in a run chart to be useful. 
