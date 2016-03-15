@@ -5,12 +5,13 @@ date: '`r paste(program_name)`'
 output:
   html_document:
     toc: yes
+    theme: united
   fontsize: 11pt
   pdf_document:
     highlight: tango
     includes:
       in_header: header.tex
-    toc: yes
+    toc: no
 params:
   program_name: ""
   start_date: ""
@@ -68,6 +69,7 @@ program_name <- params$program_name
 
 \pagestyle{fancy}
 \fancyheadoffset{0cm}
+\
 \rhead{}
 \lhead{`r program_name`}
 \chead{GAMUT 2015 Summary Report}
@@ -83,8 +85,18 @@ program_name <- params$program_name
 \vfill
 `r paste("Report generated on ", Sys.Date())`
 
+with support from 
 \end{center}  
 
+\centering
+![](figures/examples/example_runchart.png)
+
+\raggedright
+
+\newpage  
+
+\setcounter{tocdepth}{2}
+\tableofcontents  
 
 ```{r introduction, child='introduction.Rmd', eval = TRUE}
 ```
@@ -192,18 +204,6 @@ beeswarm_plot(plotData,
     "Percent of Neonatal patient transport contacts with advanced airways
  in whom continuous waveform capnography was used."
 )
-
-metric.table <- plot_metrics(
-    "Percent of Neonatal patient transport contacts with advanced airways
- in whom continuous waveform capnography was used",
-                             program_name = plotData$label,
-                             num = plotData$num,
-                             den = plotData$den,
-                             reordering = "increasing",
-                             pch = plotData$mark
-                             )
-
-#metric.table$plot
 
 ```
 
