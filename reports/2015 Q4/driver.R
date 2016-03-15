@@ -7,6 +7,9 @@
 
 library(knitr)
 library(GAMUT)
+library(REDCapR)
+library(zoo)
+library(dplyr)
 
 ## set default parameters
 
@@ -16,8 +19,8 @@ end_date <- as.Date("2016-01-01")
 #' Testing
 reports_data <- data.frame(
     #redcap_data_access_group = low_volume$redcap_data_access_group,
-    program_name = c("Flight For Life CO",  "Cincinnati Childrens"),
-    dm_email = c("rparrish@flightweb.com", "rollie.parrish@ampa.org")
+    program_name = c("Flight For Life CO",  "Cincinnati Childrens", "Akron Childrens"),
+    dm_email = c("rparrish@flightweb.com", "rollie.parrish@ampa.org", "rparrish@flightweb.com")
     )
 
 #' send to larger group
@@ -48,14 +51,43 @@ monthly_data <- filter(monthly_data,
                        month >= start_date &
                        month < end_date)
 
+overview <- list()
+
+overview$enrolled <-
+    redcap_data %>%
+    with(., levels(as.factor(program_name))) %>%
+    length()
+
+overview$partial <-
+    monthly_data %>%
+    group_by(program_name, month) %>%
+    group_by(program_name) %>%
+    dplyr::summarise(n = n()) %>%
+    filter(n < 12) %>%
+    nrow()
+
+overview$full <-
+    monthly_data %>%
+    group_by(program_name, month) %>%
+    group_by(program_name) %>%
+    dplyr::summarise(n = n()) %>%
+    filter(n == 12) %>%
+    nrow()
+
+overview$total_contacts <-
+    monthly_data %>%
+    with(., sum(total_patients))
+
+
+
+
 ## Generate report for each program
 for (program_name in reports_data$program_name) {
         dag <- program_name
     filename <- gsub(" ", "_", program_name)
     print(filename)
 
-    GAMUT_render(program_name)
-    print(program_name)
+    GAMUT_render(format = "pdf_document")
 }
 
 
