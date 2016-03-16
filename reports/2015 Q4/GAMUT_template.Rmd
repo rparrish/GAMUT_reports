@@ -88,7 +88,7 @@ program_name <- params$program_name
 \end{center}  
 
 \centering
-![](sponsors.png)
+![](sponsors2.png)
 
 \raggedright
 
