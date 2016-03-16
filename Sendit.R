@@ -48,22 +48,22 @@ no_data <-
 
 sendit_data <- reports_data
 
-sendit_data$file = gsub(" ", "_", sendit_data$redcap_data_access_group)
+sendit_data$file = gsub(" ", "_", sendit_data$program_name)
 
 log <- list()
 for (row in 1:length(sendit_data$dm_email)) {
     response <-  sendit(username=username, password=password,
-                        subject=paste("GAMUT 2015 Mid-year Summary Report - ", sendit_data$redcap_data_access_group[row]),
+                        subject=paste("GAMUT 2015 Summary Report - ", sendit_data$program_name[row]),
                         message = message,
                         recipient =  sendit_data$dm_email[row],
                         expireDays = 15,
-                        file = paste0("GAMUT_2015Q2_", sendit_data$file[row], ".pdf"),
+                        file = paste0("GAMUT_2015Q4_", sendit_data$file[row], ".pdf"),
                         url = url
     )
     log[[row]] <- fromJSON(response)
-    cat(paste("Sent to:", sendit_data$dm_email[row]), "\n")
+    cat(paste("Sent", sendit_data$program_name[row], "to", sendit_data$dm_email[row]),
+        "at", as.character(Sys.time()),"\n")
     Sys.sleep(10)
-
 }
 
 sendit_log_AIM <- as.data.frame(do.call(rbind, log))
