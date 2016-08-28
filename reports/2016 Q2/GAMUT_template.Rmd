@@ -72,7 +72,7 @@ program_name <- params$program_name
 
 \rhead{}
 \lhead{`r program_name`}
-\chead{GAMUT 2015 Summary Report}
+\chead{GAMUT 2016 Q2 Summary Report}
 \cfoot{Confidential report for quality improvement purposes}
 \fancyfoot[LE,RO]{\thepage}
 
