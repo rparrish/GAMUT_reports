@@ -11,18 +11,19 @@ library(REDCapR)
 library(zoo)
 library(dplyr)
 
-source('~/AMPA/Projects/GAMUT/reports/2016 Q2/GAMUT_render.R')
+source('GAMUT_render.R')
+source('.REDCap_config.R')
 
 ## set default parameters
 
 start_date <- as.Date("2015-07-01")
-end_date <- as.Date("2016-06-01")
+end_date <- as.Date("2016-07-01")
 
 #' Testing
 reports_data <- data.frame(
     #redcap_data_access_group = low_volume$redcap_data_access_group,
-    program_name = c("Cleveland Clinic Adult"),
-    dm_email = c("browna23@ccf.org")
+    program_name = c("Akron Childrens"),
+    dm_email = c("rparrish@flightweb.com")
     )
 
 ## testing
@@ -32,7 +33,7 @@ reports_data <- data.frame(
 }
 
 # Uncomment next line to get new data from REDCap
-GAMUT_data("GAMUT.Rdata")
+#GAMUT_data("GAMUT.Rdata")
 load("GAMUT.Rdata")
 
 ## time data
@@ -40,7 +41,7 @@ time_data <-
         monthly_data %>%
         select(program_name, month, total_patients, mean_mobilization, stemi_cases,
                mean_bedside_stemi, mean_scene_stemi) %>%
-        filter(month < "2016-01-01")
+        filter(month < "2016-07-01")
 
 # Filter past 12 months
 monthly_data <- filter(monthly_data,
@@ -70,6 +71,9 @@ overview$full <-
     filter(n == 12) %>%
     nrow()
 
+overview$none <-
+    overview$enrolled - overview$partial - overview$full
+
 overview$total_contacts <-
     monthly_data %>%
     with(., sum(total_patients))
@@ -88,9 +92,10 @@ reports_data <-
     mutate(program_name = gsub("\\/", " ", program_name)) %>%
     unique()
 
-
+g <- function() {
 start_time <- proc.time()
 ## Generate report for each program
+
 for (program_name in reports_data$program_name) {
         dag <- program_name
     filename <- gsub(" ", "_", program_name)
@@ -99,6 +104,9 @@ for (program_name in reports_data$program_name) {
     GAMUT_render(format = "pdf_document")
 }
 elapsed <- proc.time() - start_time
+elapsed
+}
+
 
 ## Generate single report for Air Methods (operator = "AIM")
     dag = ""
