@@ -1,0 +1,120 @@
+---
+
+---
+
+
+# Time-based Metrics
+
+
+
+```{r bedside_stemi, fig.height = 3, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+time_data <- filter(time_data, !is.na(time_data$mean_bedside_stemi)) %>%
+        droplevels()
+
+progs <- levels(as.factor(time_data$program_name)) 
+
+for(i in progs) {
+        
+bedside_data <- 
+        time_data %>%
+        filter(!is.na(mean_bedside_stemi)) %>%
+        filter(program_name == i)
+        #filter(program_name == params$program_name)
+
+qic(y = mean_bedside_stemi,
+    x = month,
+    data = bedside_data,
+    chart = "run",
+    main = paste0(i, 
+                  "Average bedside time for STEMI activation patients"),
+    ylab = "Avg minutes",
+    xlab = ""
+    
+)
+
+}
+
+
+```
+
+```{r scene_stemi, fig.cap="",  fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+time_data <- 
+        monthly_data %>%
+        select(program_name, month, total_patients, mean_mobilization, stemi_cases,
+               mean_bedside_stemi, mean_scene_stemi)
+
+time_data <- filter(time_data, !is.na(time_data$mean_scene_stemi)) %>%
+        droplevels()
+
+progs <- levels(as.factor(time_data$program_name)) 
+
+for(i in progs) {
+        
+scene_data <- 
+        time_data %>%
+        filter(!is.na(mean_scene_stemi)) %>%
+        filter(program_name == i)
+        #filter(program_name == params$program_name)
+
+qic(y = mean_scene_stemi,
+    x = month,
+    data = scene_data,
+    chart = "run",
+    main = paste0(i, "Average scene time for STEMI activation patients"),
+    ylab = "Avg minutes",
+    xlab = ""
+    
+)
+
+
+
+}
+
+```
+
+```{r mobilization, fig.height = 3, fig.cap="",  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+#progs <- levels(as.factor(time_data$program_name)) 
+
+#for(i in progs) {
+        
+mobilization_data <- 
+        time_data %>%
+        filter(!is.na(mean_mobilization)) %>%
+        droplevels() %>%
+        #filter(program_name == i)
+        filter(program_name == program)
+        
+```
+
+## Mobilization Times  
+
+_`r if(nrow(mobilization_data) < 10) 'insufficient data'`_
+
+```{r mobilization runchart, fig.height = 3}
+
+
+## build chart if at least 10 data points
+if(nrow(mobilization_data) >= 10) {
+        
+        
+qic(y = mean_mobilization,
+    x = month,
+    data = mobilization_data,
+    chart = "run",
+    main = paste0("Average Mobilization Time of the transport team" ),
+    ylab = "Avg minutes",
+    xlab = ""
+    
+)
+
+}
+
+#}
+
+```
+
+
+
