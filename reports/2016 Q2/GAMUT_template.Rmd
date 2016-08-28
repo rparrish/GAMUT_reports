@@ -18,6 +18,7 @@ params:
   end_date: ""
   dag: ""
   operator: ""
+  show_plotData: TRUE
 ---
 
 
@@ -41,7 +42,7 @@ source('beeswarm_plot.R')
 source('beeswarm_plot_1k.R')
 source('beeswarm_plot_10k.R')
 source('shadowtext.R')
-
+source('show_plotData.R')
 
 ```
 ```{r load_data, eval = FALSE}
@@ -119,6 +120,7 @@ program_name <- params$program_name
 ## Ventilator utilization
 
 ```{r vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
+
 plotData <- pd(dag=dag, 
                num="adv_airway_ventilator",
                den="adv_airway_cases"
@@ -129,112 +131,61 @@ beeswarm_plot(plotData,
   an advanced airway supported by a mechanical ventilator"
 )
 
-```
-
-
-```{r neo_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag = dag,
-               num="neo_adv_airway_vent",
-               den="neo_adv_airway_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of Neonatal patient transport contacts with
-    an advanced airway supported by a mechanical ventilator"
-)
+metric_results(measure = "AA-1a")
 
 ```
 
+```{r neo_vent_adv_airway, fig.height = 3, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-1b")
+
+```
+
+\newpage  
 
 ```{r ped_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag,
-               num="ped_adv_airway_vent",
-               den="ped_adv_airway_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of Pediatric patient transport contacts with
-    an advanced airway supported by a mechanical ventilator"
-)
+metric_results(measure = "AA-1c")
 
 ```
+
+\newpage  
 
 ```{r adult_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag, 
-               num="adult_adv_airway_vent",
-               den="adult_adv_airway_cases"
-               )
-#plotData <- plotData[plotData$den >= 50,]
-
-
-beeswarm_plot(plotData,
-    "Percent of Adult patient transport contacts with
-    an advanced airway supported by a mechanical ventilator"
-)
+metric_results(measure = "AA-1d")
 
 ```
+
 \newpage  
 
 ## Waveform capnography
 ```{r waveform_capno, include=TRUE, fig.height=3, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-plotData <- pd(dag=dag, 
-               num="adv_airway_wave_capno",
-               den="adv_airway_cases"
-               )
 
-beeswarm_plot(plotData,
-    "Percent of patient transport contacts with advanced airways
- in whom continuous waveform capnography was used."
-)
+metric_results(measure = "AA-1d")
+
 ```
 
 
 ```{r neo_waveform_capno, include=TRUE, fig.height=2.5, out.height ="6in", fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag, 
-               num="neo_adv_airway_capno",
-               den="neo_adv_airway_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of Neonatal patient transport contacts with advanced airways
- in whom continuous waveform capnography was used."
-)
+metric_results(measure = "AA-2b")
 
 ```
 
+\newpage  
 
 ```{r ped_waveform_capno, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, fig.height = 2.5, error=FALSE}
 
-plotData <- pd(dag=dag, 
-               num="ped_adv_airway_capno",
-               den="ped_adv_airway_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of Pediatric patient transport contacts with advanced airways
- in whom continuous waveform capnography was used"
-)
-
+metric_results(measure = "AA-2c")
 
 ```
 
+\newpage  
 
 ```{r adult_waveform_capno, include=TRUE,  fig.height = 2.5,fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag, 
-               num="adult_adv_airway_capno",
-               den="adult_adv_airway_cases"
-               )
-
-
-beeswarm_plot(plotData,
-    "Percent of Adult patient transport contacts with advanced airways
- in whom continuous waveform capnography was used"
-)
+metric_results(measure = "AA-2d")
 
 ```
 
@@ -243,31 +194,8 @@ beeswarm_plot(plotData,
 ## Tracheal tube confirmation
 ```{r confirmed_tt, include=TRUE, fig.height = 2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag, 
-               num="adv_airway_tt_confirmed",
-               den="adv_airway_tt_cases"
-               )
+metric_results(measure = "AA-3a")
 
-beeswarm_plot(plotData,
-    "Percent of intubated patient transport contacts
-with documentation of confirmed tracheal tube placement."
-)
-```
-
-
-## RSI Protocol Compliance  
-
-```{r RSI_compliance, include=TRUE, fig.height=2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
-
-plotData <- pd(dag=dag, 
-               num="intub_rsi_compliant",
-               den="intub_rsi_cases"
-               )
-
-beeswarm_plot(plotData,
-    "Percent of patient transport contacts undergoing RSI
-where all indicated elements of the program`s RSI protocol were completed."
-)
 ```
 
 
@@ -369,6 +297,16 @@ beeswarm_plot(plotData,
 
 ```
 
+\newpage  
+
+## RSI Protocol Compliance  
+
+```{r RSI_compliance, include=TRUE, fig.height=2.5, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "IN-3")
+
+```
+
 
 
 \newpage  
@@ -448,18 +386,13 @@ beeswarm_plot(plotData,
 ```
 
 
+\newpage  
 
 ## Neonatal Hypothermia
 
 ```{r neonatal_hypothermia, fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-plotData <- pd(dag=dag, 
-               num="unintended_hypothermia",
-               den="total_neo_patients"
-               )
-
-beeswarm_plot(plotData,"Percent of neonates found \nhypothermic upon admission"
-)
+metric_results(measure = "HT-1")
 
 ```
 
@@ -608,6 +541,14 @@ beeswarm_plot1k(plotData,
     per 1000 patient transport contacts."
 )
 
+
+if(params$show_plotData) { 
+    monthly_data %>%
+        filter(program_name == dag) %>%
+        select(program_name, month, med_equip_failure, total_patients) %>%
+        kable() }
+
+
 ```
 
 
@@ -625,6 +566,8 @@ beeswarm_plot1k(plotData,
     plot_scale = 1000
 )
 
+if(params$show_plotData) { kable(plotData) }
+
 ```
 
 ## Medication errors
@@ -639,6 +582,8 @@ beeswarm_plot10k(plotData,
     "Medication error rate
     per 10,000 patient transport contacts."
 )
+
+if(params$show_plotData) { kable(plotData) }
 
 ```
 
@@ -655,6 +600,8 @@ beeswarm_plot10k(plotData,
     per 10,000 patient transport contacts"
 )
 
+if(params$show_plotData) { kable(plotData) }
+
 ```
 
 ## Transport-related patient mishaps
@@ -669,6 +616,8 @@ beeswarm_plot10k(plotData,
     "Transport-related patient mishap rate
     per 10,000 patient transport contacts"
 )
+
+if(params$show_plotData) { kable(plotData) }
 
 ```
 
@@ -686,11 +635,16 @@ beeswarm_plot10k(plotData,
     per 10,000 patient transport contacts"
 )
 
+if(params$show_plotData) { 
+    kable(plotData) 
+    }
+
+
 ```
 
 \newpage  
 
-```{r time_based, child='time_based_metrics.Rmd'}
+```{r time_based, child='time_based_metrics.Rmd', eval = FALSE}
 ```
 
 
