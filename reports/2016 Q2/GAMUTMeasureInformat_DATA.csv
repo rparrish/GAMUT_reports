@@ -1,0 +1,18 @@
+measure_id,redcap_data_access_group,full_name,short_name,numerator_field,denominator_field,direction_higher,measure_information_complete
+AA-1a,,"Percent of all patient transport contacts with an advanced airway supported by a mechanical ventilator'","Mech. vent - Overall",adv_airway_ventilator,adv_airway_cases,1,2
+AA-1b,,"Percent of Neonatal patient transport contacts with     an advanced airway supported by a mechanical ventilator","Mech. vent - Neo",neo_adv_airway_vent,neo_adv_airway_cases,1,2
+AA-1c,,"Percent of Pediatric patient transport contacts with     an advanced airway supported by a mechanical ventilator","Mech. vent - Ped",ped_adv_airway_vent,ped_adv_airway_cases,1,2
+AA-1d,,"Percent of Adult patient transport contacts with     an advanced airway supported by a mechanical ventilator'","Mech. vent - Adult",adult_adv_airway_vent,adult_adv_airway_cases,1,2
+AA-2a,,"Percent of patient transport contacts with advanced airways  in whom continuous waveform capnography was used.","Capnography - Overall",adv_airway_wave_capno,adv_airway_cases,1,2
+AA-2b,,"Percent of Neonatal patient transport contacts with advanced airways  in whom continuous waveform capnography was used.","Capnography - Neo",neo_adv_airway_capno,neo_adv_airway_cases,1,2
+AA-2c,,"Percent of Pediatric patient transport contacts with advanced airways  in whom continuous waveform capnography was used","Capnography - Peds",ped_adv_airway_capno,ped_adv_airway_cases,1,2
+AA-2d,,"Percent of Adult patient transport contacts with advanced airways  in whom continuous waveform capnography was used","Capnography - Adult",adult_adv_airway_capno,adult_adv_airway_cases,1,2
+AA-3a,,"Percent of intubated patient transport contacts with documentation of confirmed tracheal tube placement.","Intubated patients with confirmation",adv_airway_tt_confirmed,adv_airway_tt_cases,1,2
+HT-1,,"Percent of neonates found hypothermic upon admission","Neonatal Hypothermia",unintended_hypothermia,total_neo_patients,0,1
+IN-1a,,"First Intubation Success Rate - Neonatal","1st Intubation Success - Neo",intub_neo_first_success,intub_neo_attempts,,0
+IN-1b,,"1st Intubation Success - Ped","1st Intubation Success - Ped",intub_ped_first_success,intub_ped_attempts,,1
+IN-1c,,"1st Intubation Success - Adult","1st Intubation Success - Adult",intub_adult_first_success,intub_adult_attempts,,1
+IN-2a,,"1st Intubation DASH-1a - Neonatal","1st Intubation DASH 1a - Neo",intub_neo_no_hypoxia,intub_neo_attempts,,1
+IN-2b,,"1st Intubation DASH-1a - Pediatric","1st Intubation DASH 1a - Ped",intub_ped_no_hypoxia,intub_ped_attempts,,1
+IN-2c,,"1st Intubation DASH-1a - Adult","1st Intubation DASH 1a - Adult",intub_adult_no_hypoxia,intub_adult_attempts,,1
+IN-3,,"Percent of patient transport contacts undergoing RSI where all indicated elements of the program`s RSI protocol were completed.","RSI protocol adherence",intub_rsi_compliant,intub_rsi_cases,1,2
