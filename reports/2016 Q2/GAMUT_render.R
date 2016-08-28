@@ -1,6 +1,6 @@
 
 
-GAMUT_render <- function(format = "pdf_document") {
+GAMUT_render <- function(format = "pdf_document", program_name) {
         program <- program_name
         filename <- gsub(" ", "_", program_name)
         dag <- program_name
