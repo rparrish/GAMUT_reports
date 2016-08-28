@@ -32,7 +32,7 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", program = p
 
     }
 
-    par(mar = c(5.1,2,2.0,3.1))
+    par(mar = c(5.1,2,2.5,3.1))
     par(oma = c(0,0,0,0))
 
 
@@ -92,7 +92,7 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", program = p
             xlim   = c(0,1),
             las    = TRUE)
 
-    title(main = list(paste(title), cex = 1,
+    title(main = list(paste(strwrap(title), collapse = "\n"), cex = 1,
                       col = "red", font = 3))
     #print(p)
     invisible(p)
