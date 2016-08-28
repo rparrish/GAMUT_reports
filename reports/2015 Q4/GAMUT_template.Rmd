@@ -1,7 +1,7 @@
 ---
 title: "GAMUT 2015 Summary Report"
 author: ''
-date: '`r paste(program_name)`'
+date: '`r paste("program_name")`'
 output:
   html_document:
     toc: yes
@@ -13,9 +13,9 @@ output:
       in_header: header.tex
     toc: no
 params:
-  program_name: ""
-  start_date: ""
-  end_date: ""
+  program_name: Air St Lukes
+  start_date: 2015-01-01
+  end_date: 2016-01-01
   dag: ""
   operator: ""
 ---
@@ -44,7 +44,7 @@ source('shadowtext.R')
 
 
 ```
-```{r load_data, eval = FALSE}
+```{r load_data, eval = TRUE}
 # Uncomment next line to get new data from REDCap
 #GAMUT_data("GAMUT.Rdata")
 load("GAMUT.Rdata")
@@ -61,6 +61,7 @@ monthly_data <- filter(monthly_data,
                        month >= params$start_date & 
                        month < params$end_date)
 
+program_name <- "Air St Lukes"
 dag <- program_name
 operator <- params$operator
 program_name <- params$program_name
@@ -88,7 +89,6 @@ program_name <- params$program_name
 \end{center}  
 
 \centering
-![](sponsors2.png)
 
 \raggedright
 
@@ -97,19 +97,19 @@ program_name <- params$program_name
 \setcounter{tocdepth}{2}
 \tableofcontents  
 
-```{r introduction, child='introduction.Rmd', eval = TRUE}
+```{r introduction, child='introduction.Rmd', eval = FALSE}
 ```
 
 
 \newpage  
 
-```{r interpreting graphs, child='interpreting.Rmd', eval=TRUE}
+```{r interpreting graphs, child='interpreting.Rmd', eval=FALSE}
 ```
 
 \newpage 
 
 
-```{r overview, child='overview.Rmd'}
+```{r overview, child='overview.Rmd', eval=FALSE}
 ```
 
 
@@ -237,7 +237,7 @@ beeswarm_plot(plotData,
 )
 
 ```
-
+`r program_name`
 \newpage  
 
 ## Tracheal tube confirmation
@@ -512,6 +512,21 @@ STEMI <-
 #kable(plotData)
 ```
 
+## Hypoxic events during transport
+```{r hypoxic_events, include=FALSE, fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, 
+               num="hypoxia_events",
+               den="hypoxia_event_cases"
+               )
+
+beeswarm_plot(plotData,
+    "Percent of patient transport
+contacts experiencing transport-related hypoxia"
+)
+
+```
+
 
 ## Hemorrhagic Stroke
 ```{r htn_hem_stroke, include=TRUE, fig.height=2.5,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
@@ -690,7 +705,7 @@ beeswarm_plot10k(plotData,
 
 \newpage  
 
-```{r time_based, child='time_based_metrics.Rmd'}
+```{r time_based, child='time_based_metrics.Rmd', eval = FALSE}
 ```
 
 
