@@ -13,8 +13,8 @@ library(dplyr)
 
 ## set default parameters
 
-start_date <- as.Date("2015-01-01")
-end_date <- as.Date("2016-01-01")
+start_date <- as.Date("2015-07-01")
+end_date <- as.Date("2016-06-01")
 
 #' Testing
 reports_data <- data.frame(
