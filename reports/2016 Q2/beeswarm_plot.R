@@ -87,7 +87,7 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", program = p
     }
 
     axis(1,
-            labels = paste0(pretty(c(0, data$num/data$den*100)), "%"),
+            labels = paste0(pretty(c(0, data$num/data$den*100, 100)), "%"),
             at     = pretty(c(0, data$num/data$den, 1)),
             xlim   = c(0,1),
             las    = TRUE)
