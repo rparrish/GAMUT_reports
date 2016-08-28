@@ -94,7 +94,23 @@ runchart <-
 
 require(qcc)
 
-qcc(runchart$rate*100, sizes=runchart$den, type="p",
+qcc(runchart$num, sizes=runchart$den, type="p",
     add.stats=FALSE, xlab="month", ylab="percentage")
 
+whois <- function(program_id) {
+    results <-
+        monthly_data %>%
+        filter(ID == program_id) %>%
+        select(program_name) %>%
+        unique()
+    results
+}
+
+
+programs_with_total_patients <-
+    monthly_data %>%
+    group_by(redcap_data_access_group, program_name, ID) %>%
+    summarize(total_patients = sum(total_patients)) %>%
+    ungroup() %>%
+    arrange(total_patients)
 
