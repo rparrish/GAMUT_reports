@@ -1,7 +1,7 @@
 
-#' driver.R
+#' driver_2016Q2.R
 #'
-#' generates a GAMUT report for each data access group
+#' generates a 2016 Q2 GAMUT report for each data access group
 #'
 #' Rmarkdown version
 
@@ -10,6 +10,8 @@ library(GAMUT)
 library(REDCapR)
 library(zoo)
 library(dplyr)
+
+source('~/AMPA/Projects/GAMUT/reports/2016 Q2/GAMUT_render.R')
 
 ## set default parameters
 

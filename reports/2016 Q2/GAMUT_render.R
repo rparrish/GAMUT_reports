@@ -10,7 +10,7 @@ GAMUT_render <- function(format = "pdf_document") {
                           #intermediates_dir = "intermediate",
                           clean = TRUE,
                           envir = new.env(),
-                          output_file =paste0('GAMUT_2015Q4_', filename, '.pdf')
+                          output_file =paste0('GAMUT_2016Q2_', filename, '.pdf')
 
         )
         # remove figures
