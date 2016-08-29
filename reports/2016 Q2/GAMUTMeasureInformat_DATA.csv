@@ -1,18 +1,36 @@
 measure_id,redcap_data_access_group,full_name,short_name,numerator_field,denominator_field,direction_higher,measure_information_complete
-AA-1a,,"Percent of all patient transport contacts with an advanced airway supported by a mechanical ventilator'","Mech. vent - Overall",adv_airway_ventilator,adv_airway_cases,1,2
-AA-1b,,"Percent of Neonatal patient transport contacts with     an advanced airway supported by a mechanical ventilator","Mech. vent - Neo",neo_adv_airway_vent,neo_adv_airway_cases,1,2
-AA-1c,,"Percent of Pediatric patient transport contacts with     an advanced airway supported by a mechanical ventilator","Mech. vent - Ped",ped_adv_airway_vent,ped_adv_airway_cases,1,2
-AA-1d,,"Percent of Adult patient transport contacts with     an advanced airway supported by a mechanical ventilator'","Mech. vent - Adult",adult_adv_airway_vent,adult_adv_airway_cases,1,2
-AA-2a,,"Percent of patient transport contacts with advanced airways  in whom continuous waveform capnography was used.","Capnography - Overall",adv_airway_wave_capno,adv_airway_cases,1,2
-AA-2b,,"Percent of Neonatal patient transport contacts with advanced airways  in whom continuous waveform capnography was used.","Capnography - Neo",neo_adv_airway_capno,neo_adv_airway_cases,1,2
-AA-2c,,"Percent of Pediatric patient transport contacts with advanced airways  in whom continuous waveform capnography was used","Capnography - Peds",ped_adv_airway_capno,ped_adv_airway_cases,1,2
-AA-2d,,"Percent of Adult patient transport contacts with advanced airways  in whom continuous waveform capnography was used","Capnography - Adult",adult_adv_airway_capno,adult_adv_airway_cases,1,2
-AA-3a,,"Percent of intubated patient transport contacts with documentation of confirmed tracheal tube placement.","Intubated patients with confirmation",adv_airway_tt_confirmed,adv_airway_tt_cases,1,2
-HT-1,,"Percent of neonates found hypothermic upon admission","Neonatal Hypothermia",unintended_hypothermia,total_neo_patients,0,1
-IN-1a,,"First Intubation Success Rate - Neonatal","1st Intubation Success - Neo",intub_neo_first_success,intub_neo_attempts,,0
-IN-1b,,"1st Intubation Success - Ped","1st Intubation Success - Ped",intub_ped_first_success,intub_ped_attempts,,1
-IN-1c,,"1st Intubation Success - Adult","1st Intubation Success - Adult",intub_adult_first_success,intub_adult_attempts,,1
-IN-2a,,"1st Intubation DASH-1a - Neonatal","1st Intubation DASH 1a - Neo",intub_neo_no_hypoxia,intub_neo_attempts,,1
-IN-2b,,"1st Intubation DASH-1a - Pediatric","1st Intubation DASH 1a - Ped",intub_ped_no_hypoxia,intub_ped_attempts,,1
-IN-2c,,"1st Intubation DASH-1a - Adult","1st Intubation DASH 1a - Adult",intub_adult_no_hypoxia,intub_adult_attempts,,1
-IN-3,,"Percent of patient transport contacts undergoing RSI where all indicated elements of the program`s RSI protocol were completed.","RSI protocol adherence",intub_rsi_compliant,intub_rsi_cases,1,2
+AA-1a,,Percent of all patient transport contacts with an advanced airway supported by a mechanical ventilator',Mech. vent - Overall,adv_airway_ventilator,adv_airway_cases,1,2
+AA-1b,,Percent of Neonatal patient transport contacts with  an advanced airway supported by a mechanical ventilator,Mech. vent - Neo,neo_adv_airway_vent,neo_adv_airway_cases,1,2
+AA-1c,,Percent of Pediatric patient transport contacts with an advanced airway supported by a mechanical ventilator,Mech. vent - Ped,ped_adv_airway_vent,ped_adv_airway_cases,1,2
+AA-1d,,Percent of Adult patient transport contacts with an advanced airway supported by a mechanical ventilator',Mech. vent - Adult,adult_adv_airway_vent,adult_adv_airway_cases,1,2
+AA-2a,,Percent of patient transport contacts with advanced airways  in whom continuous waveform capnography was used.,Capnography - Overall,adv_airway_wave_capno,adv_airway_cases,1,2
+AA-2b,,Percent of Neonatal patient transport contacts with advanced airways  in whom continuous waveform capnography was used.,Capnography - Neo,neo_adv_airway_capno,neo_adv_airway_cases,1,2
+AA-2c,,Percent of Pediatric patient transport contacts with advanced airways  in whom continuous waveform capnography was used,Capnography - Peds,ped_adv_airway_capno,ped_adv_airway_cases,1,2
+AA-2d,,Percent of Adult patient transport contacts with advanced airways  in whom continuous waveform capnography was used,Capnography - Adult,adult_adv_airway_capno,adult_adv_airway_cases,1,2
+AA-3a,,Percent of intubated patient transport contacts with documentation of confirmed tracheal tube placement.,Intubated patients with confirmation,adv_airway_tt_confirmed,adv_airway_tt_cases,1,2
+IN-1a,,Percent of Neonatal transport contacts successfully intubated on the 1st attempt by the transport team,1st Intubation Success - Neo,intub_neo_first_success,intub_neo_attempts,1,2
+IN-1b,,Percent of Pediatric transport contacts successfully intubated on the 1st attempt by the transport team,1st Intubation Success - Ped,intub_ped_first_success,intub_ped_attempts,1,2
+IN-1c,,Percent of Adult transport contacts successfully intubated on the 1st attempt by the transport team,1st Intubation Success - Adult,intub_adult_first_success,intub_adult_attempts,1,2
+IN-2a,,Percent of Neonatal patients with definitive airway during the 1st attempt by the transport team without suffering hypoxia or hypotension,1st Intubation DASH 1a - Neo,intub_neo_no_hypoxia,intub_neo_attempts,1,2
+IN-2b,,Percent of Pediatric patients with definitive airway during the 1st attempt by the transport team without suffering hypoxia or hypotension,1st Intubation DASH 1a - Ped,intub_ped_no_hypoxia,intub_ped_attempts,1,2
+IN-2c,,Percent of Adult patients with definitive airway during the 1st attempt by the transport team without suffering hypoxia or hypotension,1st Intubation DASH 1a - Adult,intub_adult_no_hypoxia,intub_adult_attempts,1,2
+IN-3,,Percent of patient transport contacts undergoing RSI where all indicated elements of the program`s RSI protocol were completed.,RSI protocol adherence,intub_rsi_compliant,intub_rsi_cases,1,2
+GT-1,,Percent of neonates found hypothermic upon admission,Neonatal Hypothermia,unintended_hypothermia,total_neo_patients,0,2
+GT-2,,Percent of patient transport contacts with a documented pain assessment,Pain Assessment,pain_scale_used,total_patients,1,2
+GT-3,,Number of HEMS patient transport contacts discharged without hospital admission per 1000 HEMS transports,HEMS ED overtriage,hems_ed_discharge,hems_cases,0,2
+GT-4,,"CPR rate per 10,000 transports",CPR during transport,cpr_cases,total_patients,0,2
+GT-5,,Percent of cases involving a standardized patient care hand-off,Standardized Handoff,standardized_handoffs,total_patients,1,2
+SC-1,,"Percent of patient transport contacts with altered mental status or focal neurologic deficit with a documented blood glucose check""",Glucose check with altered mentation,alt_ment_bg_checks,alt_ment_cases,1,2
+SC-2,,Percent of transport patient contacts with accurately interpreted 12-lead ECG evaluations,Accurate 12-lead evaluation,ecg_accurate_interpret,ecg_cases,1,2
+SC-3,,Percent of transport patient contacts with hemorrhagic stroke and appropriate blood pressure management,Appropriate management of hemorrhagic stroke,hem_stroke_bp_managed,hem_stroke_cases,1,2
+SC-4,,Percent of patient transport contacts with hemorrhagic shock appropriately managed,Appropriate management of hemorrhagic shock,hem_shock_managed,hem_shock_cases,1,2
+SC-5,,Percent of patient transport contacts with known or suspected aortic dissection receiving indicated blood pressure and heart rate therapies,Appropriate management of aortic dissection,aortic_dissect_managed,aortic_dissect_cases,1,2
+SE-1,,"Patient injuries per 10,000 patient transport contacts.",Patient injuries,patient_injuries,total_patients,0,2
+SE-2,,"Crew injuries per 10,000 patient transport contacts.",Crew injuries,crew_injuries,total_patients,0,2
+SE-3,,Medical equipment failures per 1000 patient transport contacts.,Medical equipment failures,med_equip_failure,total_patients,0,2
+SE-4,,Unplanned dislodgements of therapeutic devices per 1000 patient transport contacts,Device dislodgment,dislodgements,total_patients,0,2
+SE-5,,"Medication errors per 10,000 patient transport contacts.",Medication errors,medication_errors,total_patients,0,2
+SE-6,,"Serious Reportable Events per 10,000 patient transport contacts",Serious Reportable Events,sre,total_patients,0,2
+SE-7,,"Transport-related patient mishaps per 10,000 patient transport contacts",Near-miss Events,near_miss,total_patients,0,2
+SE-8,,"Adverse drug events per 10,000 patient transport contacts",Adverse Drug Events,ade,total_patients,0,2
+SE-9,,,,,,,
