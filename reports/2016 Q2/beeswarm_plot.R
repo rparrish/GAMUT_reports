@@ -10,7 +10,7 @@
 #' @export
 
 
-beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", program = program_name, plot_scale = 100, ...)  {
+beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", program = NULL, plot_scale = 100, ...)  {
     beeswarm_data <- filter(data, den >=5)
 
     indiv_data <-
