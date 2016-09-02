@@ -4,13 +4,13 @@
 #' @export
 #'
 
-show_plotData <- function(measure) {
+show_plotData <- function(measure, program) {
 
      metric <- metric_data[metric_data$measure_id == measure,]
 
     indiv_months <-
         monthly_data %>%
-        filter(program_name == dag) %>%
+        filter(program_name == program) %>%
         right_join(month_seq) %>%
         mutate(month = format(month, "%b %Y")) %>%
         select_("month", metric$numerator_field, metric$denominator_field)
