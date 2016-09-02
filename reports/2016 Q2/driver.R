@@ -9,6 +9,7 @@ library(knitr)
 library(GAMUT)
 library(REDCapR)
 library(zoo)
+library(plyr)
 library(dplyr)
 
 source('GAMUT_render.R')
@@ -17,7 +18,8 @@ source('.REDCap_config.R')
 ## set default parameters
 
 start_date <- as.Date("2015-07-01")
-end_date <- as.Date("2016-07-01")
+end_date <- as.Date("2016-06-01")
+month_seq <- data.frame(month = seq(start_date, end_date, by = "month"))
 
 #' Testing
 reports_data <- data.frame(
@@ -46,7 +48,7 @@ time_data <-
 # Filter past 12 months
 monthly_data <- filter(monthly_data,
                        month >= start_date &
-                       month < end_date)
+                       month <= end_date)
 
 overview <- list()
 
@@ -92,21 +94,23 @@ reports_data <-
     mutate(program_name = gsub("\\/", " ", program_name)) %>%
     unique()
 
+
 g <- function() {
 start_time <- proc.time()
 ## Generate report for each program
 
-for (program_name in reports_data$program_name) {
-        dag <- program_name
-    filename <- gsub(" ", "_", program_name)
+for (i in reports_data$program_name) {
+        dag <- i
+        program_name <- i
+
+    filename <- gsub(" ", "_", i)
     print(filename)
 
-    GAMUT_render(format = "pdf_document")
+    GAMUT_render(format = "pdf_document", program_name = i )
 }
 elapsed <- proc.time() - start_time
 elapsed
 }
-
 
 ## Generate single report for Air Methods (operator = "AIM")
     dag = ""
