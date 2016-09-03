@@ -24,8 +24,8 @@ month_seq <- data.frame(month = seq(start_date, end_date, by = "month"))
 #' Testing
 reports_data <- data.frame(
     #redcap_data_access_group = low_volume$redcap_data_access_group,
-    program_name = c("Akron Childrens"),
-    dm_email = c("rparrish@flightweb.com")
+    program_name = c( "AEL AL"),
+    dm_email = c("none@nospam.com")
     )
 
 ## testing
@@ -44,6 +44,9 @@ time_data <-
         select(program_name, month, total_patients, mean_mobilization, stemi_cases,
                mean_bedside_stemi, mean_scene_stemi) %>%
         filter(month < "2016-07-01")
+
+runchart_data <-
+    monthly_data
 
 # Filter past 12 months
 monthly_data <- filter(monthly_data,
@@ -101,12 +104,12 @@ start_time <- proc.time()
 
 for (i in reports_data$program_name) {
         dag <- i
-        program_name <- i
+        program <- i
 
     filename <- gsub(" ", "_", i)
     print(filename)
 
-    GAMUT_render(format = "pdf_document", program_name = i )
+    GAMUT_render(format = "pdf_document", program_name = program )
 }
 elapsed <- proc.time() - start_time
 elapsed
