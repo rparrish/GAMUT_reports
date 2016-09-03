@@ -1,0 +1,34 @@
+---
+title: "Summary"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(GAMUT)
+library(knitr)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r summary data}
+load("GAMUT.Rdata")
+
+program <- "Akron Childrens"
+
+measure_overview <- data.frame()
+
+for(i in metric_data$measure_id) {
+        
+        mydata <- 
+                measure_summary(i, program) %>% data.frame()
+        
+        measure_overview <- bind_rows(measure_overview, mydata)
+}
+
+kable(measure_overview)
+
+
+```
+
