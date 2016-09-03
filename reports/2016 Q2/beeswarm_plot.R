@@ -94,6 +94,5 @@ beeswarm_plot <- function(data = NULL, title = "GAMUT Metric title", program = N
 
     title(main = list(paste(strwrap(title), collapse = "\n"), cex = 1,
                       col = "red", font = 3))
-    #print(p)
     invisible(p)
 }
