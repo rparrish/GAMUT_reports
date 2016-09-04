@@ -59,7 +59,9 @@ runchart_data <-
 # Filter past 12 months 
 monthly_data <- filter(monthly_data,
                        month >= params$start_date & 
-                       month < params$end_date)
+                       month <= params$end_date)
+month_seq <- data.frame(month = seq(as.Date(params$start_date), 
+                                    as.Date(params$end_date), by = "month"))
 
 #dag <- program_name
 #operator <- params$operator
@@ -71,7 +73,7 @@ program_name <- params$program_name
 
 ```{r neo_vent_adv_airway, fig.height = 4, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
 
-metric_results(measure = "AA-1d", program = program_name)
+metric_results(measure = "AA-1b", program = program_name)
 
 
 ```
