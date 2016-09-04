@@ -6,33 +6,34 @@ output: pdf_document
 ---
 
 
-## Interpreting the graphs
+## Interpreting the metrics
 
-The graphs in this report have been modified due to an increase in the number of participants that are submitting data. There are two styles of graphs:  
+There are three sections for each metric:
 
- - __Benchmark graphs__  Each graph shows the rolling 12 month average rate for your program, the overall GAMUT rate and the distribution of the other participants. 
- - __Run charts__ Each graph shows a line graph of the reported metric data by month. Used in the 'Mobilization Time' metric and will be used for all metrics in future versions of the GAMUT summary report. Only generated if there are at least 10 data points. 
+ - __Benchmark plot__  Each plot shows the rolling 12 month average rate for your program, the overall GAMUT rate and the distribution of the other participants. 
+ - __Run chart__ Each plot shows a line graph of the reported metric data by month. Only generated if there are at least 6 data points. 
+ - __Data table__ Monthly raw data used to calculate the benchmark plots and run charts.
 
-### Benchmark Graphs  
+![Benchmark plot](figures/examples/example_bench.png)    
 
-![alt text](figures/examples/example.png) 
-
-The blue dot and horizontal bar represents your program rate and the 95\% confidence interval. The vertical dashed line shows the overall combined rate across all GAMUT participants. When the blue horizontal bar crosses the vertical line, this indicates that your program rate is not significantly different than the overall rate. The black dots indicate the estimated rate for each program that submitted data. Only programs that submitted a total of at least 5 cases in the metric denominator for the year are included in the graphs.
-
-In the examples above, waveform capnography is shown for the three age groups with the same program. In the first graph, the program is significantly lower than the overall GAMUT rate and there is great variation among programs. In the second graph, the program is not significantly different from the overall GAMUT rate and most programs are clustered between 90 - 100\%. In the third graph, the program did not submit at least 5 cases in the denominator for the year and most participants are clustered even closer to 100\%. 
+Benchmark plots show your program compared to other GAMUT participants.  The blue dot and horizontal bar represents your program rate and the 95\% confidence interval. The vertical dashed line shows the overall combined rate across all GAMUT participants. When the blue horizontal bar crosses the vertical line, this indicates that your program rate is not significantly different than the overall rate. The black dots indicate the estimated rate for each GAMUT participant that submitted data. Only programs that submitted a total of at least 5 cases in the metric denominator for the year are included in the graphs.
 
 
-### Run Charts
 
-\centering
-![alt text](figures/examples/example_runchart.png)    
+![Run chart](figures/examples/example_runchart.png)    
 
 \raggedright
 
-The blue dots represent the monthly average times for that metric. The center line (CL) is the median of the monthly averages, so half of the data points are above the median and half are below. A dashed yellow line indicates that there is non-random pattern, which may be due to improvement initiatives or degredation of the process. Non-random patterns include 6 or more points on either side of the median, or fewer crossings of the median line than expected. Ideally, there should be at least 12 points in a run chart to be useful. 
+Run charts include all data that has been submitted, which may be more than 12 months. The dots represent the monthly average values for that metric. The center line (CL) is the median of the values, so half of the data points are above the median and half are below. A dashed yellow line indicates that there is non-random pattern, which may be due to improvement initiatives or degredation of the process. Non-random patterns include 6 or more points on either side of the median, or fewer crossings of the median line than expected. Ideally, there should be at least 12 points in a run chart to be useful. 
 
-In the example above, there is a decrease in mobilization times, which may be the result of an improvement initiative or some other cause. 
+In the example above, there is a increase in the percentage, which may be the result of a process improvement initiative or some other cause. 
+
 
 The Quality Improvement Hub by NHS Scotland is a great resource with additional details on how to interpret Run Charts:
 
 http://www.qihub.scot.nhs.uk/knowledge-centre/quality-improvement-tools/run-chart.aspx
+
+
+![Data table](figures/examples/example_datatable.png) 
+
+Data tables show the individual numerators, denominators and calculated rates by month for the 12 month benchmark reporting period. Months with missing or invalid calculations are shown as 'NA' or 'NaN'. 
