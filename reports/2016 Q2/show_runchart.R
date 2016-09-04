@@ -7,6 +7,8 @@
 show_runchart <- function(measure, program_name) {
 
      metric <- metric_data[metric_data$measure_id == measure,]
+     direction <- ifelse(metric$direction_higher == "Higher", 1, 0)
+
      program <- program_name
      num=metric$numerator_field
      den=metric$denominator_field
@@ -25,6 +27,9 @@ show_runchart <- function(measure, program_name) {
 
     qd$metric = round(qd[, 3]/qd[, 4],2)
 
+    par(mar = c(5.1,4,2.5,3.1))
+    par(oma = c(0,0,0,0))
+
     if(nrow(qd) >= 6) {
         plot_result <-
             qic(
@@ -33,7 +38,7 @@ show_runchart <- function(measure, program_name) {
                 x = month,
                 x.format = "%b %Y",
                 main = paste(program_name, ": ", metric$short_name),
-                direction = 1,
+                direction = direction,
                 data = qd,
                 chart = "run",
                 multiply = 100,
