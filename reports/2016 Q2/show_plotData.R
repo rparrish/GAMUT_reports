@@ -23,5 +23,10 @@ show_plotData <- function(measure, program) {
         mutate(month = "Total") %>%
         select(month, everything())
 
-    kable(bind_rows(indiv_months, total_months))
+    plotData_table <-
+       bind_rows(indiv_months, total_months) %>%
+        mutate(rate = round(.[[2]]/.[[3]],3)) %>%
+        kable(caption = paste0(metric$short_name, " monthly data for 12 months"))
+
+    return(plotData_table)
 }
