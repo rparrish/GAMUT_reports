@@ -106,9 +106,10 @@ qic(y = mean_mobilization,
     
 )
 
+    show_timeData("TM-1", program)
+
 }
 
-show_timeData("TM-1", program)
 
 ```
 
@@ -144,10 +145,10 @@ qic(y = mean_bedside_stemi,
     xlab = ""
     
 )
+show_timeData("TM-2a", program)
 
 }
 
-show_timeData("TM-2a", program)
 
 
 ```
@@ -183,11 +184,11 @@ qic(y = mean_scene_stemi,
     xlab = ""
     
 )
+show_timeData("TM-2b", program)
 
 }
 
 
-show_timeData("TM-2b", program)
 
 ```
 
