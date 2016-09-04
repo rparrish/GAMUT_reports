@@ -2,6 +2,8 @@
 title: "GAMUT 2016 Q2 Summary Report"
 author: ''
 date: '`r paste(program_name)`'
+bibliography: Bibliography.bib
+nocite:  
 output:
   html_document:
     toc: yes
@@ -32,6 +34,7 @@ library(GAMUT)
 library(zoo)
 library(beeswarm)
 library(qicharts)
+library(rworldmap)
 
 
 options(scipen = 10)
@@ -111,7 +114,7 @@ program <- program_name
 
 \newpage  
 
-```{r interpreting graphs, child='interpreting.Rmd', eval=TRUE}
+```{r interpreting graphs, child='interpreting.Rmd', fig.width = 6, eval=TRUE}
 ```
 
 \newpage 
@@ -492,4 +495,7 @@ metric_results(measure = "SE-8", program = program_name)
 ```{r time_based, child='time_based_metrics.Rmd', eval = TRUE}
 ```
 
+\newpage  
 
+```{r references, child='references.Rmd', eval = TRUE}
+```

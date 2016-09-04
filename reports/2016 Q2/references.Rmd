@@ -1,0 +1,18 @@
+
+---
+title: "References"
+author: "Rollie Parrish"
+date: "March 12, 2016"
+output: pdf_document
+---
+
+
+# References
+
+GAMUT quality improvement data were collected and managed using REDCap electronic data capture tools hosted by [AMPA](https://www.AMPA.org). REDCap (Research Electronic Data Capture) is a secure, web-based application designed to support data capture for research studies and quality improvement projects, providing 1) an intuitive interface for validated data entry; 2) audit trails for tracking data manipulation and export procedures; 3) automated export procedures for seamless data downloads to common statistical packages; and 4) procedures for importing data from external sources [@harris_research_2009].
+
+The GAMUT summary report was produced using the `R` [@R] statistical programming language and `RStudio` [@RStudio] with the R packages `REDCapR` [@REDCapR], `knitr` [@knitr], `dplyr` [@dplyr], `rmarkdown` [@rmarkdown], `beeswarm` [@beeswarm], `qicharts` [@qicharts], and `rworldmap`  [@rworldmap].
+
+---
+
+
