@@ -4,6 +4,9 @@ output: html_document
 ---
 
 
+### Benchmark Summary 
+
+This table shows your program's rolling 12 month rate vs. the overall GAMUT rate for each metric. 
 
 ```{r summary data}
 
