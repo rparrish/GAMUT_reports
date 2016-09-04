@@ -58,10 +58,10 @@ overview$total_contacts <-
 - `r overview$partial` New programs (partial data during past 12 months)
 - `r overview$full` Established programs (data for all 12 months)
 - `r overview$total_contacts` Total patient contacts (12 months)
-- Data as of:  `r GAMUT_date_loaded`
+- Data refreshed:  `r GAMUT_date_loaded`
 
 
-```{r participant months, out.height = "3in", fig.align="center"}
+```{r participant months,  fig.align="center"}
 
 participant_months <- 
         monthly_data %>%
@@ -72,7 +72,7 @@ participant_months <-
 par(mar=c(5,6,4,2))
 hist(participant_months$n, 
      xlab = "Number of months with data",
-     ylab = "count of programs",
+     ylab = "count",
      main = "Distribution of programs \nby number of months with data",
      
      las = 1)
