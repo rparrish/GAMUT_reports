@@ -51,6 +51,7 @@ source('metric_results.R')
 source('show_runchart.R')
 source('measure_summary.R')
 source('show_timeData.R')
+source('map_gamut.R')
 
 ```
 ```{r load_data, eval = FALSE}
@@ -120,7 +121,7 @@ program <- program_name
 \newpage 
 
 
-```{r overview, child='overview.Rmd', fig.height = 4, fig.width = 6}
+```{r overview, child='overview.Rmd'}
 ```
 
 \newpage 
