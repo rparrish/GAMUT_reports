@@ -49,19 +49,21 @@ overview$total_contacts <-
         monthly_data %>%
         with(., sum(total_patients))
 
+overview$countries <- 6
+
 
 ```
 
 # Overview
 
-- `r overview$enrolled` Total programs enrolled
+- `r overview$enrolled` Total programs enrolled 
 - `r overview$partial` New programs (partial data during past 12 months)
 - `r overview$full` Established programs (data for all 12 months)
 - `r overview$total_contacts` Total patient contacts (12 months)
 - Data refreshed:  `r GAMUT_date_loaded`
 
 
-```{r participant months,  fig.align="center"}
+```{r participant months, fig.width = 4, fig.align="center"}
 
 participant_months <- 
         monthly_data %>%
@@ -71,11 +73,21 @@ participant_months <-
 
 par(mar=c(5,6,4,2))
 hist(participant_months$n, 
-     xlab = "Number of months with data",
+     main = "", 
+     #xlab = "Number of months with data",
      ylab = "count",
-     main = "Distribution of programs \nby number of months with data",
-     
+     xlab = "Distribution of programs \nby number of months with data",
+     cex.main  = .8, 
+     cex.axis  = .8,
+     cex.lab   = .8,
      las = 1)
+
+```
+
+
+```{r map gamut, fig.width = 10, fig.height = 6, fig.align = "center", eval = FALSE}
+#- `r overview$countries` Countries represented
+map_gamut()
 
 ```
 
