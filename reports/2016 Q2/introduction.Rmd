@@ -25,19 +25,12 @@ We identified two priorities for the GAMUT Collaborative in 2015-16.  First, you
 
 Second, specifically addressing the desire for run charts to help measure improvement over time - I've included a sample of the progress that's been made possible through extramural funding to help us evolve into a web-based, user-friendly dashboard.  I'm cautious to overstate a goal, but it's very possible that by this fall we'll be up and running with this type of dashboard.
 
-\centering
-
-![alt text](figures/examples/example_dashboard.png)  
-
-\raggedright
 
 The GAMUT QI Collaborative oversight committee prioritized the need for funding to ensure sustainability and infrastructure to support the quality improvement work ahead.  I'm happy to report that there have been several generous grants received that have helped solidify the GAMUT QI Collaborative's work.  Akron Children's Hospital Foundation, Cincinnati Children's Division of Emergency Medicine, Laerdal Foundation for Acute Medicine, and the MedEvac Foundation. This will continue to improve the timeliness and accuracy of the product the QI Collaborative uses for improvement activities. It will also improve the infrastructure to facilitate initiating improvement projects across the collaborative.  This growth is exciting and moves us closer to the goal of improved care for our patients.  
 
 In closing, your program's performance is outlined in a slightly new format on the attached pages.  Please consider how your program's performance compares to other programs. 
 
 Please also gather your questions for discussion.  As always, the Data Managers Google Group is a useful venue for discussion.  Also, on the morning of April 11, 2016 - we'll be hosting an in-person and virtual user's group meeting for the GAMUT QI Collaborative - tentatively set for 1030 AM (EST).  Webex call-in specifics and room-assignment will follow in a separate communication.
-
-Lastly, this report cannot be concluded without a very special thanks to Rollie Parrish.  If not for Rollie's technical and quality improvement expertise, combined with his passion for transport, this project wouldn't be where it is today.  Thank you Rollie.
 
 Respectfully submitted on behalf of the GAMUT Database and QI Collaborative oversight committee,
 
