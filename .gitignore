@@ -13,3 +13,4 @@ data/
 .REDCap_config.R
 !testing/header.tex
 
+*.Rdata
