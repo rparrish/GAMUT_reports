@@ -24,7 +24,7 @@ month_seq <- data.frame(month = seq(start_date, end_date, by = "month"))
 #' Testing
 reports_data <- data.frame(
     #redcap_data_access_group = low_volume$redcap_data_access_group,
-    program_name = c( "AEL AL"),
+    program_name = c( "Akron Childrens","Airlift Northwest", "AEL IL", "Flight For Life CO", "Boston MedFlight", "Mercy Life Line"),
     dm_email = c("none@nospam.com")
     )
 
@@ -35,7 +35,9 @@ reports_data <- data.frame(
 }
 
 # Uncomment next line to get new data from REDCap
-#GAMUT_data("GAMUT.Rdata")
+
+GAMUT_data("GAMUT.Rdata")
+
 load("GAMUT.Rdata")
 
 ## time data
@@ -83,6 +85,8 @@ overview$total_contacts <-
     monthly_data %>%
     with(., sum(total_patients))
 
+overview$countries <- 6
+
 programs_with_data <-
     monthly_data %>%
     select(program_name) %>%
@@ -105,11 +109,12 @@ start_time <- proc.time()
 for (i in reports_data$program_name) {
         dag <- i
         program <- i
+        program_name <- i
 
     filename <- gsub(" ", "_", i)
     print(filename)
 
-    GAMUT_render(format = "pdf_document", program_name = program )
+    GAMUT_render(format = "pdf_document", program_name = i )
 }
 elapsed <- proc.time() - start_time
 elapsed
