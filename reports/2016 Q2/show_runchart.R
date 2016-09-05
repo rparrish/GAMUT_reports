@@ -27,7 +27,7 @@ show_runchart <- function(measure, program_name) {
 
     qd$metric = round(qd[, 3]/qd[, 4],2)
 
-    par(mar = c(5.1,4,2.5,3.1))
+    par(mar = c(5.1,4,2.5,4))
     par(oma = c(0,0,0,0))
 
     if(nrow(qd) >= 6) {
@@ -48,7 +48,7 @@ show_runchart <- function(measure, program_name) {
                 ylab = "Percent",
                 #ylab = paste(total_count()$metric_ylab),
                 #ylim = c(0,100),
-                cex = 1.0,
+                cex = .8,
                 las = 2,
                 #nint = 3,
                 #freeze = 12,
@@ -61,7 +61,8 @@ show_runchart <- function(measure, program_name) {
                 #  http://stackoverflow.com/questions/19918985/r-plot-only-text
                 plot(c(0, 1), c(0, 1), ann = F, bty = 'n', type = 'n', xaxt = 'n', yaxt = 'n')
                 text(x = 0.5, y = 0.5, paste("Insufficient data for runchart"),
-                     cex = 1.6, col = "black")
+                     cex = 1, col = "black")
+                box(lty = '1373', col = 'red')
             }
 }
 
