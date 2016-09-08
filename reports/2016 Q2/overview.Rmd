@@ -60,6 +60,7 @@ overview$countries <- 6
 - `r overview$partial` New programs (partial data during past 12 months)
 - `r overview$full` Established programs (data for all 12 months)
 - `r overview$total_contacts` Total patient contacts (12 months)
+- Rolling 12 months from `r start_date` to `r end_date`
 - Data refreshed:  `r GAMUT_date_loaded`
 
 
