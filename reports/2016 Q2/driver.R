@@ -24,8 +24,8 @@ month_seq <- data.frame(month = seq(start_date, end_date, by = "month"))
 #' Testing
 reports_data <- data.frame(
     #redcap_data_access_group = low_volume$redcap_data_access_group,
-    program_name = c( "Akron Childrens","Airlift Northwest", "AEL IL", "Flight For Life CO", "Boston MedFlight", "Mercy Life Line"),
-    dm_email = c("none@nospam.com")
+    program_name = c( "Akron Childrens"),#,"Airlift Northwest", "AEL IL", "Flight For Life CO", "Boston MedFlight", "Mercy Life Line"),
+    dm_email = c("rollie.parrish@gmail.com")
     )
 
 ## testing
@@ -36,7 +36,7 @@ reports_data <- data.frame(
 
 # Uncomment next line to get new data from REDCap
 
-GAMUT_data("GAMUT.Rdata")
+#GAMUT_data("GAMUT.Rdata")
 
 load("GAMUT.Rdata")
 
@@ -85,7 +85,7 @@ overview$total_contacts <-
     monthly_data %>%
     with(., sum(total_patients))
 
-overview$countries <- 6
+#overview$countries <- 6
 
 programs_with_data <-
     monthly_data %>%
