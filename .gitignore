@@ -14,3 +14,4 @@ data/
 !testing/header.tex
 
 *.Rdata
+*.zip
