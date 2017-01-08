@@ -24,7 +24,7 @@ month_seq <- data.frame(month = seq(start_date, end_date, by = "month"))
 #' Testing
 reports_data <- data.frame(
     #redcap_data_access_group = low_volume$redcap_data_access_group,
-    program_name = c( "Akron Childrens"),#,"Airlift Northwest", "AEL IL", "Flight For Life CO", "Boston MedFlight", "Mercy Life Line"),
+    program_name = c( "AIM Native Air AZ-NM"),#,"Airlift Northwest", "AEL IL", "Flight For Life CO", "Boston MedFlight", "Mercy Life Line"),
     dm_email = c("rollie.parrish@gmail.com")
     )
 
@@ -40,6 +40,10 @@ reports_data <- data.frame(
 
 load("GAMUT.Rdata")
 
+# rename Native Air
+monthly_data <- mutate(monthly_data,
+                       program_name = ifelse(program_name == "AIM Native Air AZ/NM", "AIM Native Air AZ-NM", as.character(program_name))
+                       )
 ## time data
 time_data <-
         monthly_data %>%
@@ -120,15 +124,38 @@ elapsed <- proc.time() - start_time
 elapsed
 }
 
-## Generate single report for Air Methods (operator = "AIM")
-    dag = ""
-    operator = "AIM"
-    filename <- gsub(" ", "_", "Air_Methods")
+## Generate single report for organizations
+
+
+
+organizations <-
+    data.frame(
+        org = c("AIM", "AEL", "MTr", "PHI"),
+        org_name = c("Air Methods", "Air Evac Lifeteam", "MedTrans", "PHI"),
+        email = c("awolfe@airmethods.com", "noah.banister@air-evac.com",
+                  "kelly.cleary@med-trans.net", "lmeiner@phihelico.com")
+    )
+
+for(org in organizations$org) {
+
+    dag <- ""
+    filename <- org
     print(filename)
-    knit2pdf("GAMUT_Summary_2015_Q2.Rnw", output=paste0('GAMUT_2015Q2_', filename, '.tex'))
 
+    rmarkdown::render("GAMUT_DAG_template.Rmd",
+                      output_format = "pdf_document",
+                      #intermediates_dir = "intermediate",
+                      clean = TRUE,
+                      envir = new.env(),
+                      output_file =paste0('GAMUT_2016Q2_', filename, '_Org_Summary.pdf')
 
-### Send reports via Send-It
+    )
+    # remove figures
+    unlink("figures/*.pdf")#GAMUT_render(format = "pdf_document", program_name = i )
+
+}
+
+### Send Organizational reports via Send-It
 
 
 ## cleanup
