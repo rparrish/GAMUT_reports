@@ -22,10 +22,9 @@ message  <- "The GAMUT database report for Midyear 2016 Q2 is respectfully distr
 Thank you on behalf of the GAMUT database oversight committee."
 
 subject <- "GAMUT 2016 Q2 Summary Report"
+org_subject <- "GAMUT 2016 Q2 Organizational Summary Report"
 org_message <- "
-The GAMUT database reports for Midyear 2016 Q2 for your organization are respectfully distributed for your review. This report includes data for each of your programs between July 2015 to June 2016.
-
-We are still working on a new summary report for larger organizations with multiple programs that will show all of your programs on a single report. In the meantime, we are sending these standard individual program reports.
+The GAMUT database reports for Midyear 2016 Q2 for your organization are respectfully distributed for your review. This version shows the metric performance for each of your organization's programs on a single report.
 
 Thank you on behalf of the GAMUT database oversight committee.
 

@@ -1,0 +1,25 @@
+---
+title: "Interpreting graphs"
+author: "Rollie Parrish"
+date: "March 12, 2016"
+output: pdf_document
+---
+
+
+## Interpreting the metrics
+
+There are two sections for each metric:
+
+ - __Benchmark plot__  Each plot shows the rolling 12 month average rate for your organization, the overall GAMUT rate and each program in your organization. Plots include those programs with at least 5 cases in the denomintor. 
+ - __Data table__ Monthly raw data used to calculate the benchmark plots.
+
+
+Benchmark plots show your program compared to other GAMUT participants.  The black dots represent the rate and horizontal bars represent the 95\% confidence intervals. The vertical line shows the overall combined rate across all GAMUT participants, excluding your organization. When the horizontal bar crosses the vertical line, this indicates that your program rate is not significantly different than the GAMUT rate. Only programs that submitted a total of at least 5 cases in the metric denominator for the year are included in the graphs.
+
+![Example benchmark plot](figures/examples/example_bench_dag.png)    
+
+In the plot above, the first program at the top is significantly higher than the overall GAMUT rate and the organization's overall rate. The last program at the bottom is significantly lower than the overall GAMUT rate and the organization's overall rate.
+
+<!--![Example data table](figures/examples/example_datatable_dag.png) -->
+
+Data tables show the individual numerators, denominators and calculated rates by program for the 12 month benchmark reporting period. Programs with missing data or invalid calculations are not shown. 
