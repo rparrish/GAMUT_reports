@@ -1,0 +1,503 @@
+---
+title: "GAMUT 2016 Q4 Summary Report"
+author: ''
+date: '`r paste(program_name)`'
+bibliography: Bibliography.bib
+nocite:  
+output:
+  html_document:
+    toc: yes
+    theme: united
+  fontsize: 11pt
+  pdf_document:
+    highlight: tango
+    includes:
+      in_header: header.tex
+    toc: no
+params:
+  program_name: "`r program_name`"
+  start_date: ""
+  end_date: ""
+  dag: ""
+  operator: ""
+  show_plotData: TRUE
+---
+
+
+```{r initial_setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(REDCapR)
+library(knitr)
+library(plyr)
+library(dplyr)
+library(magrittr)
+library(GAMUT)
+library(zoo)
+library(beeswarm)
+library(qicharts)
+library(rworldmap)
+
+
+options(scipen = 10)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, 
+                      comment = "", dev = 'pdf',
+                      fig.height = 2.5)
+
+source('beeswarm_plot.R')
+source('beeswarm_plot_1k.R')
+source('beeswarm_plot_10k.R')
+source('shadowtext.R')
+source('show_plotData.R')
+source('metric_results.R')
+source('show_runchart.R')
+source('measure_summary.R')
+source('show_timeData.R')
+source('map_gamut.R')
+
+```
+```{r load_data, eval = FALSE}
+# Uncomment next line to get new data from REDCap
+#GAMUT_data("GAMUT.Rdata")
+load("GAMUT.Rdata")
+
+
+## time data
+#time_data <- 
+#        monthly_data %>%
+#        select(program_name, month, total_patients, mean_mobilization, stemi_cases,
+#               mean_bedside_stemi, mean_scene_stemi) %>%
+#    filter(month < params$end_date)
+
+# Filter past 12 months 
+monthly_data <- filter(monthly_data,
+                       month >= params$start_date & 
+                       month < params$end_date)
+
+#dag <- program_name
+#operator <- params$operator
+program <- program_name
+
+```
+
+\pagestyle{fancy}
+\fancyheadoffset{0cm}
+
+\rhead{}
+\lhead{`r program_name`}
+\chead{GAMUT 2016 Q4 Summary Report}
+\cfoot{Confidential report for quality improvement purposes}
+\fancyfoot[LE,RO]{\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\thispagestyle{empty}
+\begin{center}
+%\Large{`r #paste(dag, ifelse(operator == "AIM", "Air Methods", ""))`}
+\vfill
+`r paste("Report produced on ", Sys.Date(), "\n with support from")`
+
+\end{center}  
+
+\centering
+![](sponsors2.png)
+
+\raggedright
+
+\newpage  
+
+\setcounter{tocdepth}{2}
+\tableofcontents  
+
+\newpage  
+
+```{r introduction, child='introduction.Rmd', eval = FALSE}
+```
+
+
+\newpage  
+
+```{r interpreting graphs, child='interpreting.Rmd', fig.width = 6, eval=TRUE}
+```
+
+\newpage 
+
+
+```{r overview, child='overview.Rmd'}
+```
+
+\newpage 
+
+
+```{r summary, child='summary.Rmd'}
+```
+
+
+
+\newpage  
+
+# Advanced Airway Metrics
+
+```{r vent_adv_airway, fig.height = 4, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, 
+               num="adv_airway_ventilator",
+               den="adv_airway_cases"
+               )
+
+beeswarm_plot(plotData,
+    "Percent of patient transport contacts with
+  an advanced airway supported by a mechanical ventilator"
+)
+
+metric_results(measure = "AA-1")
+
+```
+## Ventilator utilization - Neonatal
+
+```{r neo_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-1a", program = program_name)
+
+```
+
+\newpage  
+
+## Ventilator utilization - Pediatric
+
+```{r ped_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-1b", program = program_name)
+
+```
+
+\newpage  
+
+## Ventilator utilization - Adult  
+
+```{r adult_vent_adv_airway, fig.height = 2.5, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-1c", program = program_name)
+
+```
+
+\newpage  
+
+
+```{r waveform_capno, include=TRUE, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-1d", program = program_name)
+
+```
+
+## Waveform capnography - Neonatal 
+
+```{r neo_waveform_capno, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-2a", program = program_name)
+
+```
+
+\newpage  
+
+## Waveform capnography - Pediatric
+```{r ped_waveform_capno, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-2b", program = program_name)
+
+```
+
+\newpage  
+
+## Waveform capnography - Adult  
+
+```{r adult_waveform_capno, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-2c", program = program_name)
+
+```
+
+\newpage  
+
+## Tracheal tube confirmation
+```{r confirmed_tt, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "AA-3", program = program_name)
+
+```
+
+
+
+\newpage  
+
+# Intubation Metrics
+## First Attempt Success - Neonatal
+
+```{r first_attempt_success_neo,  eval=TRUE, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+
+metric_results(measure = "IN-1a", program = program_name)
+
+
+```
+
+\newpage  
+
+## First Attempt Success - Pediatric
+```{r first_attempt_success_ped, eval=TRUE, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "IN-1b", program = program_name)
+
+```
+
+\newpage  
+
+## First Attempt Success - Adult
+```{r first_attempt_success_adult, eval=TRUE, fig.path="figures/",  eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "IN-1c", program = program_name)
+
+```
+
+\newpage  
+
+## DASH1A - Neonatal
+
+```{r DASH1A_neo, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "IN-2a", program = program_name)
+
+```
+
+\newpage  
+## DASH1A - Pediatric
+
+```{r DASH1A_ped, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "IN-2b", program = program_name)
+
+
+```
+
+\newpage  
+
+## DASH1A - Adult
+
+```{r DASH1A_adult, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "IN-2c", program = program_name)
+
+```
+
+\newpage  
+
+## RSI Protocol Compliance  
+
+```{r RSI_compliance, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "IN-3", program = program_name)
+
+```
+
+
+
+\newpage  
+
+# General Transport Metrics
+## Neonatal Hypothermia
+
+```{r neonatal_hypothermia,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "GT-1", program = program_name)
+
+```
+
+\newpage   
+
+## Pain Assessment
+```{r pain_assessment, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "GT-2", program = program_name)
+
+```
+
+\newpage  
+
+## HEMS Over-triage
+```{r hems_over_triage, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "GT-3", program = program_name)
+
+```
+
+
+```{r hems_over_triage_table, results='asis', include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+HEMS <-
+    monthly_data %>%
+    select(month, program_name, num=hems_ed_discharge, den=hems_cases) %>%
+    filter(!is.na(num),
+           !is.na(den),
+            den > 0,
+            den >= num)
+
+# kable(HEMS)
+```
+
+\newpage  
+
+## CPR During transport
+```{r cpr, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "GT-4", program = program_name)
+
+```
+
+
+\newpage  
+
+
+## Standardized handoffs
+```{r handoff_tool, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "GT-5", program = program_name)
+
+```
+
+
+\newpage  
+
+# Specific Clinical Metrics
+
+## Blood glucose checks with altered mentation
+```{r bg_check, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SC-1", program = program_name)
+
+```
+
+\newpage  
+## Accurate 12-lead ECG interpretation 
+
+```{r ecg_stemi, include=TRUE, fig.path="figures/",  height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SC-2", program = program_name)
+
+```
+
+
+\newpage  
+
+## Hemorrhagic Stroke
+```{r htn_hem_stroke, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SC-3", program = program_name)
+
+```
+
+\newpage  
+
+## Hemorrhagic Shock
+```{r hem_shock_managed, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SC-4", program = program_name)
+
+```
+
+\newpage  
+
+## Aortic Dissection
+```{r bp_aortic, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SC-5", program = program_name)
+
+```
+
+
+
+\newpage  
+
+# Safety Event Metrics
+## Patient injuries
+```{r patient_injuries, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SE-1", program = program_name)
+
+```
+
+\newpage  
+
+## Crew injuries
+```{r crew_injuries, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SE-2", program = program_name)
+
+
+```
+
+\newpage  
+
+## Medical equipment failures
+```{r med_equip_failure, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SE-3", program = program_name)
+
+
+```
+
+\newpage  
+
+## Device dislodgement
+```{r device_dislogement, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SE-4", program = program_name)
+
+```
+
+\newpage  
+
+## Medication errors
+```{r med_error, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SE-5", program = program_name)
+
+
+```
+
+\newpage  
+
+## Serious Reportable Events
+```{r sre, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SE-6", program = program_name)
+
+
+```
+
+\newpage  
+
+## Transport-related patient mishaps
+```{r nearmiss, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SE-7", program = program_name)
+
+
+```
+
+\newpage  
+
+## Adverse Drug Events
+```{r ade, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+metric_results(measure = "SE-8", program = program_name)
+
+```
+
+\newpage  
+
+```{r time_based, child='time_based_metrics.Rmd', eval = TRUE}
+```
+
+\newpage  
+
+```{r references, child='references.Rmd', eval = TRUE}
+```

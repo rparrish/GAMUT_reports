@@ -1,0 +1,121 @@
+---
+title: "Have we made a difference?"
+date: "March 12, 2016"
+output:
+  pdf_document:
+    highlight: tango
+    includes:
+      in_header: header.tex
+    toc: no
+  html_document: null
+---
+
+```{r overview setup, include=FALSE}
+library(dplyr)
+library(GAMUT)
+
+suppressMessages(library(tidyverse))
+suppressMessages(library(lubridate))
+suppressMessages(library(stringr))
+suppressMessages(library(hrbrthemes))
+suppressMessages(library(qicharts))
+suppressMessages(library(padr))
+
+source("gamut_trend_plot.R")
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, results = FALSE)
+```
+
+```{r overview data, eval = TRUE}
+
+load("GAMUT.Rdata")
+
+start_date <- as.Date("2016-01-01")
+end_date <- as.Date("2016-12-31")
+runchart_data <-
+    monthly_data %>%
+    filter(month <= end_date)
+
+
+
+overview <- list()
+
+overview$enrolled <- 
+        redcap_data %>%
+        with(., levels(as.factor(program_name))) %>%
+        length()
+
+overview$partial <- 
+        monthly_data %>%
+        group_by(program_name, month) %>%
+        group_by(program_name) %>%
+        dplyr::summarise(n = n()) %>%
+        filter(n < 12) %>%
+        nrow()
+
+overview$full <- 
+        monthly_data %>%
+        group_by(program_name, month) %>%
+        group_by(program_name) %>%
+        dplyr::summarise(n = n()) %>%
+        filter(n == 12) %>%
+        nrow()
+
+overview$total_contacts <- 
+        monthly_data %>%
+        with(., sum(total_patients))
+
+overview$countries <- 6
+
+
+```
+
+### Advanced Airway Management
+```{r adv_airway, fig.height = 2.5, results = 'hold'}
+
+plot(gamut_trend_plot("AA-1a"))
+plot(gamut_trend_plot("AA-1b"))
+plot(gamut_trend_plot("AA-1c"))
+
+plot(gamut_trend_plot("AA-2a"))
+plot(gamut_trend_plot("AA-2b"))
+plot(gamut_trend_plot("AA-2c"))
+
+```
+
+### First intubation success
+```{r intubation, fig.height = 2.5, results = 'hold'}
+plot(gamut_trend_plot("IN-1a"))
+plot(gamut_trend_plot("IN-1b"))
+plot(gamut_trend_plot("IN-1c"))
+```
+
+### First intubation success without hypoxia 
+
+```{r intubation_without_hypoxia, fig.height = 2.5, results = 'hold'}
+plot(gamut_trend_plot("IN-2a"))
+plot(gamut_trend_plot("IN-2b"))
+plot(gamut_trend_plot("IN-2c"))
+
+```
+
+
+
+
+
+## General Transport
+```{r general, fig.height = 2.5, results = 'hold'}
+plot(gamut_trend_plot("GT-1"))
+plot(gamut_trend_plot("GT-2"))
+plot(gamut_trend_plot("GT-4"))
+plot(gamut_trend_plot("GT-5"))
+```
+
+
+### Specific clinial scenarios
+```{r specific, fig.height = 2.5, results = 'hold'}
+plot(gamut_trend_plot("SC-1"))
+plot(gamut_trend_plot("SC-3"))
+
+```
+
