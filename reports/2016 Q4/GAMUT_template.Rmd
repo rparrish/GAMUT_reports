@@ -59,7 +59,10 @@ source('map_gamut.R')
 #GAMUT_data("GAMUT.Rdata")
 load("GAMUT.Rdata")
 
-
+# rename Native Air
+monthly_data <- mutate(monthly_data,
+                       program_name = ifelse(program_name == "AIM Native Air AZ/NM", "AIM Native Air AZ-NM", as.character(program_name))
+                       )
 ## time data
 #time_data <- 
 #        monthly_data %>%
@@ -144,12 +147,7 @@ plotData <- pd(dag=dag,
                den="adv_airway_cases"
                )
 
-beeswarm_plot(plotData,
-    "Percent of patient transport contacts with
-  an advanced airway supported by a mechanical ventilator"
-)
-
-metric_results(measure = "AA-1")
+metric_results(measure = "AA-1", program = program_name)
 
 ```
 ## Ventilator utilization - Neonatal
