@@ -1,0 +1,513 @@
+---
+title: 'GAMUT 2018 Q4 Organizational Summary Report'
+author: ''
+date: '`r paste(params$org)`'
+output:
+  pdf_document:
+    highlight: tango
+    includes:
+      in_header: header.tex
+    toc: no
+  html_document:
+    theme: united
+    toc: yes
+  fontsize: 11pt
+nocite: null
+params:
+  dag: 
+  start_date: '2018-01-01'
+  end_date: '2018-12-31'
+  #org: MTr #AEL #AIM #PHI
+  #org: AEL #AIM #PHI
+  #program_name: ''
+  #show_plotData: yes
+  org:
+    label: "Organization"
+    value: PHI
+    input: select
+    choices: [MTr, AEL, AIM, PHI]  
+  fig.height: 6.0 
+bibliography: Bibliography.bib
+---
+
+
+```{r initial_setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(REDCapR)
+library(knitr)
+library(plyr)
+library(dplyr)
+library(magrittr)
+library(GAMUT)
+library(zoo)
+library(beeswarm)
+library(qicharts)
+library(rworldmap)
+
+
+options(scipen = 10)
+
+fig.height = params$fig.height
+
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, 
+                      comment = "", dev = 'pdf',
+                      fig.height = fig.height)
+
+source('beeswarm_plot.R')
+source('beeswarm_plot_1k.R')
+source('beeswarm_plot_10k.R')
+source('shadowtext.R')
+source('show_plotData.R')
+source('dag_results.R')
+source('show_runchart.R')
+source('measure_summary.R')
+source('show_timeData.R')
+source('map_gamut.R')
+source('dag_results.R')
+source('dd.R')
+source('dag_CI.R')
+
+```
+```{r load_data, eval =TRUE}
+# Uncomment next line to get new data from REDCap
+#GAMUT_data("GAMUT.Rdata")
+load("GAMUT.Rdata")
+
+## time data
+#time_data <- 
+#        monthly_data %>%
+#        select(program_name, month, total_patients, mean_mobilization, stemi_cases,
+#               mean_bedside_stemi, mean_scene_stemi) %>%
+#    filter(month < params$end_date)
+
+# Filter past 12 months 
+monthly_data <- filter(monthly_data,
+                       month >= params$start_date & 
+                       month < params$end_date)
+
+dag <- params$dag
+org <- params$org
+start_date <- params$start_date
+end_date <- params$end_date
+
+```
+
+\pagestyle{fancy}
+\fancyheadoffset{0cm}
+
+\rhead{}
+\lhead{`r org`}
+\chead{GAMUT 2018 Q4 Organizational Summary Report}
+\cfoot{Confidential report for quality improvement purposes}
+\fancyfoot[LE,RO]{\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\thispagestyle{empty}
+\begin{center}
+%\Large{`r #paste(dag, ifelse(operator == "AIM", "Air Methods", ""))`}
+\vfill
+`r paste("Report produced on ", Sys.Date(), "\n with support from")`
+
+\end{center}  
+
+\centering
+![](sponsors2.png)
+
+\raggedright
+
+\newpage  
+
+\setcounter{tocdepth}{2}
+\tableofcontents  
+
+\newpage  
+
+```{r introduction, child='introduction.Rmd', eval = FALSE}
+```
+
+
+\newpage  
+
+```{r interpreting graphs, child='interpreting_dag.Rmd', fig.width = 6, eval=TRUE}
+```
+
+
+```{r overview, fig.height = 2.5, child='overview.Rmd', eval = FALSE}
+```
+
+
+```{r summary, child='summary.Rmd', eval = FALSE}
+```
+
+
+
+\newpage  
+
+# Advanced Airway metrics
+
+```{r vent_adv_airway, fig.path="figures/", include=TRUE, eval=FALSE, message=FALSE, echo =FALSE, warning=FALSE, error=FALSE}
+
+plotData <- pd(dag=dag, 
+               num="adv_airway_ventilator",
+               den="adv_airway_cases"
+               )
+
+beeswarm_plot(plotData,
+    "Percent of patient transport contacts with
+  an advanced airway supported by a mechanical ventilator"
+)
+
+dag_results(measure = "AA-1")
+
+```
+## Ventilator utilization - Neonatal
+
+```{r neo_vent_adv_airway, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "AA-1a", org = org)
+
+```
+
+\newpage  
+
+## Ventilator utilization - Pediatric
+
+```{r ped_vent_adv_airway,  fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "AA-1b",  org = org)
+
+```
+
+\newpage  
+
+## Ventilator utilization - Adult  
+
+```{r adult_vent_adv_airway, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "AA-1c",  org = org)
+
+```
+
+\newpage  
+
+
+```{r waveform_capno, include=TRUE, fig.path="figures/", eval=FALSE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "AA-1d", dag = dag, org = org)
+
+```
+
+## Waveform capnography - Neonatal 
+
+```{r neo_waveform_capno, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "AA-2a", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## Waveform capnography - Pediatric
+```{r ped_waveform_capno, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "AA-2b", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## Waveform capnography - Adult  
+
+```{r adult_waveform_capno, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "AA-2c", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## Tracheal tube confirmation
+```{r confirmed_tt, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "AA-3", dag = dag, org = org)
+
+```
+
+
+
+\newpage  
+
+# Intubation metrics
+## First Attempt Success - Neonatal
+
+```{r first_attempt_success_neo,  eval=TRUE, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+
+dag_results(measure = "IN-1a", dag = dag, org = org)
+
+
+```
+
+\newpage  
+
+## First Attempt Success - Pediatric
+```{r first_attempt_success_ped, eval=TRUE, fig.path="figures/", include=TRUE, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "IN-1b", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## First Attempt Success - Adult
+```{r first_attempt_success_adult, eval=TRUE, fig.path="figures/",  eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "IN-1c", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## DASH1A - Neonatal
+
+```{r DASH1A_neo, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "IN-2a", dag = dag, org = org)
+
+```
+
+\newpage  
+## DASH1A - Pediatric
+
+```{r DASH1A_ped, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "IN-2b", dag = dag, org = org)
+
+
+```
+
+\newpage  
+
+## DASH1A - Adult
+
+```{r DASH1A_adult, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "IN-2c", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## RSI Protocol Compliance  
+
+```{r RSI_compliance, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "IN-3", org = org)
+
+```
+
+
+
+\newpage  
+
+# General Transport metrics
+## Neonatal Hypothermia
+
+```{r neonatal_hypothermia,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "GT-1", dag = dag, org = org)
+
+```
+
+\newpage   
+
+## Pain Assessment
+```{r pain_assessment, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "GT-2", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## HEMS Over-triage
+```{r hems_over_triage, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "GT-3", dag = dag, org = org)
+
+```
+
+
+```{r hems_over_triage_table, results='asis', include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+HEMS <-
+    monthly_data %>%
+    select(month, program_name, num=hems_ed_discharge, den=hems_cases) %>%
+    filter(!is.na(num),
+           !is.na(den),
+            den > 0,
+            den >= num)
+
+# kable(HEMS)
+```
+
+\newpage  
+
+## CPR During transport
+```{r cpr, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "GT-4", dag = dag, org = org)
+
+```
+
+
+\newpage  
+
+
+## Standardized handoffs
+```{r handoff_tool, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "GT-5", dag = dag, org = org)
+
+```
+
+
+\newpage  
+
+# Specific Clinical metrics
+
+## Blood glucose checks with altered mentation
+```{r bg_check, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SC-1", dag = dag, org = org)
+
+```
+
+\newpage  
+## Accurate 12-lead ECG interpretation 
+
+```{r ecg_stemi, include=TRUE, fig.path="figures/",  height=4, eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SC-2", dag = dag, org = org)
+
+```
+
+
+\newpage  
+
+## Hemorrhagic Stroke
+```{r htn_hem_stroke, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SC-3", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## Hemorrhagic Shock
+```{r hem_shock_managed, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SC-4", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## Aortic Dissection
+```{r bp_aortic, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SC-5", dag = dag, org = org)
+
+```
+
+
+
+\newpage  
+
+# Safety Event metrrics
+## Patient injuries
+```{r patient_injuries, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SE-1", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## Crew injuries
+```{r crew_injuries, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SE-2", dag = dag, org = org)
+
+
+```
+
+\newpage  
+
+## Medical equipment failures
+```{r med_equip_failure, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SE-3", dag = dag, org = org)
+
+
+```
+
+\newpage  
+
+## Device dislodgement
+```{r device_dislogement, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SE-4", dag = dag, org = org)
+
+```
+
+\newpage  
+
+## Medication errors
+```{r med_error, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SE-5", dag = dag, org = org)
+
+
+```
+
+\newpage  
+
+## Serious Reportable Events
+```{r sre, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SE-6", dag = dag, org = org)
+
+
+```
+
+\newpage  
+
+## Transport-related patient mishaps
+```{r nearmiss, include=TRUE, fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SE-7", dag = dag, org = org)
+
+
+```
+
+\newpage  
+
+## Adverse Drug Events
+```{r ade, include=TRUE,  fig.path="figures/", eval=TRUE, message=FALSE, echo=FALSE, warning=FALSE, error=FALSE}
+
+dag_results(measure = "SE-8", dag = dag, org = org)
+
+```
+
+\newpage  
+
+```{r time_based, child='time_based_metrics.Rmd', eval = FALSE}
+```
+
+\newpage  
+
+```{r references, child='references.Rmd', eval = TRUE}
+```
