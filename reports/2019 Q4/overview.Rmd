@@ -1,0 +1,283 @@
+---
+title: "overview"
+author: "Rollie Parrish"
+date: "`r Sys.Date()`"
+output: html_document
+
+---
+
+```{r overview setup, include=FALSE}
+library(dplyr)
+library(GAMUT)
+
+suppressMessages(library(tidyverse))
+suppressMessages(library(lubridate))
+suppressMessages(library(stringr))
+suppressMessages(library(hrbrthemes))
+suppressMessages(library(qicharts))
+suppressMessages(library(padr))
+
+source("gamut_trend_plot.R")
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, results = FALSE)
+```
+
+```{r overview data, eval = TRUE}
+
+load(here::here("GAMUT.Rdata"))
+
+start_date <- as.Date("2019-01-01")
+end_date <- as.Date("2019-12-31")
+runchart_data <-
+    monthly_data %>%
+    filter(month <= end_date)
+
+
+
+overview <- list()
+
+#overview$enrolled <- 
+#        redcap_data %>%
+#        with(., levels(as.factor(program_name))) %>%
+#        length()
+
+overview$partial <- 
+        monthly_data %>%
+        filter(month >= start_date) %>%
+        filter(month <= end_date) %>%
+        group_by(program_name, month) %>%
+        group_by(program_name) %>%
+        dplyr::summarise(n = n()) %>%
+        filter(n > 0) %>%
+        filter(n < 12) %>%
+        nrow()
+
+overview$full <- 
+        monthly_data %>%
+        filter(month >= start_date) %>%
+        filter(month <= end_date) %>%
+        group_by(program_name, month) %>%
+        group_by(program_name) %>%
+        dplyr::summarise(n = n()) %>% 
+        filter(n == 12) %>%
+        nrow()
+
+overview$total_contacts <- 
+        monthly_data %>%
+        filter(month >= start_date) %>%
+        filter(month <= end_date) %>%
+        with(., sum(total_patients))
+
+overview$submitting <- sum(overview$partial, overview$full)
+
+overview$countries <- 6
+
+
+```
+
+## Overview
+
+- `r overview$submitting` Total programs submitting data
+- `r overview$partial` New programs (partial data during past 12 months)
+- `r overview$full` Established programs (data for all 12 months)
+- `r overview$total_contacts` Total patient contacts (12 months)
+- Rolling 12 months from `r start_date` to `r end_date`
+- Data refreshed:  `r GAMUT_date_loaded`
+
+
+```{r participant months, eval = FALSE, fig.width = 6, fig.align="center"}
+
+participant_months <- 
+        runchart_data %>%
+        group_by(program_name, month) %>%
+        group_by(program_name) %>%
+        dplyr::summarise(n = n()) 
+
+par(mar=c(5,6,4,2))
+hist(participant_months$n, 
+     main = "", 
+     #xlab = "Number of months with data",
+     ylab = "count",
+     xlab = "Distribution of programs \nby number of months with data",
+     cex.main  = .8, 
+     cex.axis  = .8,
+     cex.lab   = .8,
+     las = 1)
+
+```
+
+
+```{r map gamut, fig.width = 10, fig.height = 6, fig.align = "center", eval = FALSE}
+#- `r overview$countries` Countries represented
+map_gamut()
+
+```
+
+
+```{r load data}
+# update log files
+
+gamut_log <- 
+    readr::read_csv(here::here("data/Logs/GAMUTDatabase_Logging.csv"), 
+                            col_types = cols(
+                                timestamp = col_datetime(format = ""),
+                                Username = col_character(),
+                                Action = col_character(),
+                                changes = col_character()
+                                ),
+                            col_names = c("timestamp", "Username", "Action", "changes"), skip = 1
+                    ) 
+AIM_log <- 
+    readr::read_csv(here::here("data/Logs/AIMDatabase_Logging.csv"), 
+                            col_types = cols(
+                                timestamp = col_datetime(format = ""),
+                                Username = col_character(),
+                                Action = col_character(),
+                                changes = col_character()
+                                ),
+                            col_names = c("timestamp", "Username", "Action", "changes"), skip = 1
+                    ) 
+AEL_log <- 
+    readr::read_csv(here::here("data/Logs/AELDatabase_Logging.csv"), 
+                            col_types = cols(
+                                timestamp = col_datetime(format = ""),
+                                Username = col_character(),
+                                Action = col_character(),
+                                changes = col_character()
+                                ),
+                            col_names = c("timestamp", "Username", "Action", "changes"), skip = 1
+                    ) 
+
+MTR_log <- 
+    readr::read_csv(here::here("data/Logs/MTRDatabase_Logging.csv"), 
+                            col_types = cols(
+                                timestamp = col_datetime(format = ""),
+                                Username = col_character(),
+                                Action = col_character(),
+                                changes = col_character()
+                                ),
+                            col_names = c("timestamp", "Username", "Action", "changes"), skip = 1
+                    ) 
+
+log_data <-
+    bind_rows(gamut_log, AIM_log, AEL_log, MTR_log) %>% 
+    filter(grepl("Record", Action)) %>%
+    #count(Action) %>% arrange(desc(n))
+    mutate(record = str_extract(Action, "\\(.*\\)") %>% 
+               gsub("\\(|\\)", "", .), 
+           record_action = stringr::str_extract(Action, "^.*Record") %>%
+               gsub("Record", "", .) %>%
+               str_trim(), 
+           program = stringr::str_extract(Action, ".*Record.* \\(") %>%
+               gsub(".*Record", "", .) %>%
+               gsub("\\(", "", .)) %>% #head()
+    mutate(month = ifelse(record == "Initial", as.Date(as.character(timestamp)), 
+                          paste("1", as.character(record))) %>%
+               as.Date(format = "%d %b %Y")) %>% #head()
+    mutate(record_action = ifelse(grepl("^[A-Z][a-z]{2} 2", record),
+                                  paste(as.character(record_action), "Month"), 
+                                  record_action)) %>% #head()
+    #mutate_each(funs(as.factor), Action, record, record_action, program) %>%
+    #mutate_at(vars(Action, record, record_action, program), ~as.factor) %>% head()
+    select(-4) %>%
+    filter(!is.na(record) )
+
+initial_created <- 
+    log_data %>%
+    filter(record == "Initial") %>% 
+    filter(Username == "admin") %>%
+    filter(grepl("Created", record_action)) %>%
+    mutate(month = floor_date(timestamp, unit = "months")) %>%
+    #droplevels() %>%
+    arrange(month)
+
+initial_deleted <- 
+    log_data %>%
+    filter(record == "Initial") %>% 
+    filter(Username == "admin") %>%
+    filter(grepl("Deleted", record_action)) %>%
+    mutate(month = floor_date(timestamp, unit = "months")) %>%
+    droplevels() %>%
+    arrange(month)
+     
+month_submissions_log <- 
+    log_data %>%
+    filter(record_action == "Created Month") %>%
+    group_by(program, month) %>%
+    #slice(1) %>%
+    group_by(month) %>%
+    summarise(submitted = n())
+ 
+month_submissions_runchart <- 
+    runchart_data %>%
+    select(program_name, month, total_patients) %>%
+    group_by(program_name, month) %>%
+    group_by(month) %>%
+    tally()
+ 
+```
+
+```{r initial plots}
+deleted_programs <- 
+    initial_deleted %>%
+    group_by(month) %>%
+    dplyr::summarise(deleted = n()) %>%
+    mutate(month = as.Date(month))
+
+initial_programs_month <- 
+    initial_created %>% 
+    group_by(month) %>% 
+    dplyr::summarise(new = n()) %>%
+    mutate(month = as.Date(month))
+
+initial_programs <- 
+    month_submissions_log %>%
+    left_join(initial_programs_month, by = "month") %>% 
+    left_join(deleted_programs, by = "month") %>% 
+    replace_na(list(new = 0, deleted = 0)) %>%
+    pad(interval = "month") %>%
+    fill_by_value(new, value = 0) %>%
+    mutate(deleted = ifelse(is.na(deleted), 0, deleted), 
+           initial = new - deleted, 
+           initial_cumsum = cumsum(initial)
+           ) %>%
+    mutate(month = as.Date(month)) 
+   
+
+```
+
+
+## Enrollment vs data submissions
+
+
+
+```{r enrollment barplot, fig.height = 3}
+
+month_trend_data <- 
+    initial_programs %>% 
+    #left_join(month_submissions_log, by = "month") %>% 
+    filter(month <= "2019-12-01") %>% #print()
+    select(month, initial_cumsum, submitted) %>%
+    gather(metric, count, -month)
+   
+
+
+#stacked_barplot <- 
+    month_trend_data %>%
+    ggplot() + 
+    aes(x = month, y = count, fill = metric) +
+    geom_bar(stat = "identity" ) +
+    #geom_bar(aes(y = n), stat = "identity", fill = "blue", color = "blue") +
+    theme_bw() + 
+    scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+    scale_fill_manual(#values = c("light blue", "blue"),
+        values = c("light grey", "light green"), 
+        labels = c("Enrolled", "Submitted data")) +
+    theme(legend.position = "bottom") +
+    labs(title = "GAMUT participation by month",
+         y     = "Number of programs", 
+         fill  = "" # legend title
+         )
+
+
+```

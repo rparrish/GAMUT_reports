@@ -1,0 +1,48 @@
+---
+title: "introduction"
+author: "Rollie Parrish"
+date: "March 12, 2016"
+output: pdf_document
+---
+
+
+## Introduction   
+
+Dear Colleagues,
+ 
+Six more months - and more comparative data are available in bi-annual report. I continue to be energized by the GAMUT (Ground and Air Medical qUality in Transport) Collaborative and the quality improvement that GAMUT has spawned has been remarkable.  It's become the norm for me to hear about how the GAMUT comparative data have pointed programs towards local improvement opportunities.  Thanks for sharing your stories - and congratulations for improvements that are benefitting your patients!!!
+ 
+ 
+I continue to thank those "pioneers" who have been with GAMUT since the beginning - but also would ask us all to welcome new members.  Some of you may have noticed that we've added over 50 new programs since the last GAMUT report.    We're proud of the GAMUT growth - but we're committed to the key simple tenants of the GAMUT Collaborative are as follows:  measure, report, and improve.  
+ 
+We're also committed to making GAMUT as useful as possible.  We have heard from folks who would like a more frequent reporting mechanism for real-time measurement of quality improvement.  To that end, we'd like to announce that on Sept 30th - we are releasing a 1st generation run chart program for GAMUT.  In addition to the twice annual reports, those programs that are wanting to measure the impact of improvement efforts on a more frequent can use this software as a user-friendly interface - a "GAMUT Dashboard."  Details on the dashboard will be released under a separate email.
+ 
+You may recall that we identified two priorities for the GAMUT Collaborative in 2015-16.  First, we committed to improve the usability of the bi-annual report.  We hope that you'll agree that the new report format is easier to read.  Second, we think that after September 30th you'll agree that we've met the 2nd goal - building a GAMUT dashboard.
+ 
+We're going to challenge ourselves with 2 goals for the next 12 months as well.  First, we'll be addressing metric definition revision and review of potentially new metrics.  Details will be released this fall - with a goal for the process to be complete by end of 2016.  Second, there have been some requests around more customized comparisons - that we'll seek to build in the coming year.  For example, some have requested comparisons of metrics amongst neonatal only teams, or amongst pediatric/neonatal teams.  Just be aware that we continue to hear your requests - and will work to make GAMUT the best it can be in facilitating improvement in the quality of care delivered to each of our patients.
+ 
+Respectfully submitted,
+
+\vfill 
+
+__Michael T. Bigham, MD, FAAP, FCCM__  
+Pediatric Intensivist, Division of Critical Care Medicine  
+Medical Director, Transport Services  
+Assistant Patient Safety Officer  
+Clinical Assistant Professor, NEOMED  
+mbigham@chmca.org  
+   
+
+__Hamilton P. Schwartz, MD, MEd, FAAP, FACEP__  
+EMS Medical Director, Cincinnati Children's  
+Medical Director, Cincinnati Children's Transport Team  
+Associate Professor, UC Department of Pediatrics  
+hamilton.schwartz@cchmc.org 
+
+
+__Rollie Parrish, RN, BSN__  
+GAMUT Database Manager, AMPA  
+Manager, Quality & Analytics, Providence Health Care  
+rollie.parrish@ampa.org  
+
+

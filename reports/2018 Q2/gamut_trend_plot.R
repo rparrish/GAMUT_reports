@@ -26,7 +26,7 @@ gamut_trend_plot <- function(measure = "AA-1a", freeze = 12) {
 
         mydata <-
             mydata %>%
-            semi_join(legacy_programs)
+            semi_join(legacy_programs, by = "month")
         return(mydata)
     }
 
