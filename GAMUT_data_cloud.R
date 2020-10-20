@@ -2,25 +2,25 @@
 
 GAMUT_data_cloud <- function (file = "data/GAMUT.Rdata")  { 
   
-  GAMUT_data <- tbl_df(redcap_read_oneshot(redcap_uri = uri, 
+  GAMUT_data <- as_tibble(redcap_read_oneshot(redcap_uri = uri, 
                                            token = GAMUT_token, export_data_access_groups = TRUE, 
                                            raw_or_label = "label")$data) %>%
     mutate_at(vars(total_patients:sre), as.integer) %>%
     select(-zipcode)
               
-  AIM_data <- tbl_df(redcap_read_oneshot(redcap_uri = uri, 
+  AIM_data <- as_tibble(redcap_read_oneshot(redcap_uri = uri, 
                                          token = AIM_token, export_data_access_groups = TRUE, 
                                          raw_or_label = "label")$data) %>%
     mutate_at(vars(total_patients:sre), as.integer) %>%
     select(-zipcode)
   
-  AEL_data <- tbl_df(redcap_read_oneshot(redcap_uri = uri, 
+  AEL_data <- as_tibble(redcap_read_oneshot(redcap_uri = uri, 
                                          token = AEL_token, export_data_access_groups = TRUE, 
                                          raw_or_label = "label")$data) %>%
     mutate_at(vars(total_patients:sre), as.integer) %>%
     select(-zipcode)
   
-  MTr_data <- tbl_df(redcap_read_oneshot(redcap_uri = uri, 
+  MTr_data <- as_tibble(redcap_read_oneshot(redcap_uri = uri, 
                                          token = MTr_token, export_data_access_groups = TRUE, 
                                          raw_or_label = "label")$data) %>%
     mutate_at(vars(total_patients:sre), as.integer) %>%
@@ -44,7 +44,7 @@ GAMUT_data_cloud <- function (file = "data/GAMUT.Rdata")  {
   metricData_count <- monthly_data %>% group_by(program_name) %>% 
     summarise(months_reported = n())
   metric_data <- redcap_read_oneshot(redcap_uri = uri, token = metric_token, 
-                                     raw_or_label = "label")$data %>% tbl_df()
+                                     raw_or_label = "label")$data %>% as_tibble()
   GAMUT_date_loaded <- date()
   save(redcap_data, mydata, program_info, monthly_data, metric_data, 
        GAMUT_date_loaded, file = file)

@@ -1,0 +1,50 @@
+---
+title: "Summary"
+output: html_document
+---
+
+
+### Benchmark Summary 
+
+This table shows your program's rolling 12 month rate vs. the overall GAMUT rate for each metric. 
+
+
+
+```{r summary data, results = 'asis'}
+insufficent_threshold <- 5
+
+measure_overview <- data.frame()
+
+excluded_measures <- c("TM-1", "TM-2a", "TM-2b") # time-based metrics
+
+metric_summary_data <- filter(metric_data, !measure_id %in% excluded_measures)
+
+for(i in metric_summary_data$measure_id) {
+        
+       mydata <- 
+           measure_summary(i, program) %>%
+           data.frame()
+       
+        
+        measure_overview <- bind_rows(measure_overview, mydata)
+}
+
+# remove measures below the insufficient threshold
+
+summary_table <- 
+    metric_summary_data %>%
+    left_join(measure_overview, by = "measure_id") %>%
+    select(short_name, num, den, program_rate, gamut_rate, direction_higher, oe) 
+
+kable(summary_table, format = "pipe",
+      col.names = c("Metric Name", "Num", "Den", "Program", "GAMUT", "Desired", "OE"))
+
+cat("\n")
+
+```
+
+
+
+ - NA:  "Not available" due to no data or < 5 cases in the denominator
+ - Desired: Indicates the desired direction rate of a metric. (ie. "Higher is better", "Lower is better") 
+ - OE: Program's (Observed) rate divided by the GAMUT (Expected) rate. An OE < 1 means the Observed rate is lower than Expected and an OE > 1 means the Observed rate is higher. An OE near 1 means the two rates are similar.   

@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 GAMUT_Reports.Rproj
+gamut_reports.Rproj
 data/
 *.log
 *.synctex.gz
